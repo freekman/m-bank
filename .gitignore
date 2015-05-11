@@ -1,0 +1,5 @@
+ngbp/node_modules
+bank/target
+bank/.idea
+ngbp/.idea
+ngbp/src/bower_components/*

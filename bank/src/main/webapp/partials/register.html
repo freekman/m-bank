@@ -1,0 +1,73 @@
+<div>
+    <div>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Bank</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/login">Login</a></li>
+                        <li class="active"><a href="#/register">Register</a></li>
+                        <li><a href="/welcome">Account</a></li>
+                    </ul>
+                </div>
+
+                <!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        <div class="container">
+            <h2>Register</h2>
+
+            <div class="row">
+
+                <div class="col-lg-4">
+
+                    <form>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input class="form-control" type="text" id="username" ng-model="username"
+                                   placeholder="Please enter username" ng-blur="queryFreeUserName(username)">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input class="form-control " type="password" id="password" ng-model="password"
+                                   placeholder="Please enter password">
+                        </div>
+                        <div class="form-group">
+                            <label for="repassword">Repeat password</label>
+                            <input class="form-control" type="password" id="repassword" ng-model="repassword"
+                                   placeholder="Please repeat entered password">
+                            {{repasswordMsg}}
+                        </div>
+                        <button class="btn btn-success" ng-click="validateAndRegister(username,password,repassword)">
+                            Submit
+                        </button>
+                    </form>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="panel top-buffer" ng-class="statusIsOk ? 'panel-success':'panel-danger' "
+                         ng-show="statusMessages != null">
+                        <div class="panel-heading">Message</div>
+                        <div class="panel-body">
+                            <ul ng-repeat="msg in statusMessages">
+                                {{msg}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
