@@ -24,6 +24,8 @@ describe("Service", function () {
     var HttpRequest;
     var httpBackend;
 
+    beforeEach(module('ngProgress'));
+
     beforeEach(module('HttpModule'));
 
     beforeEach(inject(function ($injector) {

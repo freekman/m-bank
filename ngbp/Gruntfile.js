@@ -62,6 +62,7 @@ module.exports = function (grunt) {
         src: [
           'src/css/*.css',
           'src/bower_components/bootstrap/dist/css/bootstrap.min.css',
+          'src/bower_components/ngprogress/ngProgress.css'
         ],
         dest: '<%= build_assets_dir %><%= pkg.name %>-<%= pkg.version %>.css'
       },
@@ -78,6 +79,7 @@ module.exports = function (grunt) {
           'src/bower_components/jquery/dist/jquery.js',
           'src/bower_components/bootstrap/dist/js/bootstrap.js',
           'src/bower_components/angular-route/angular-route.js',
+          'src/bower_components/ngprogress/build/ngProgress.js',
           'src/js/*.js'
         ],
         dest: '<%= build_assets_dir %><%= pkg.name %>-<%= pkg.version %>.js'
