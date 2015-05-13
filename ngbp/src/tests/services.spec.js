@@ -3,54 +3,35 @@
  */
 describe("Service", function () {
 
-  describe("formValidator", function () {
-    var fieldValidation;
-
-    beforeEach(module("formValidator"));
-
-    beforeEach(inject(function ($injector) {
-      fieldValidation = $injector.get('fieldValidation');
-    }));
-
-    it("should validate field length", function () {
-      expect(fieldValidation("")).toBeFalsy();
-      expect(fieldValidation("123")).toBeTruthy();
-      expect(fieldValidation(undefined)).toBeFalsy()
-    });
-
-  });
-
-  describe("HttpRequest", function () {
+  describe("Gateway", function () {
+    var UserGateway;
     var HttpRequest;
-    var httpBackend;
+    var deferred;
 
-    beforeEach(module('ngProgress'));
+    beforeEach(module('Gateway'));
 
-    beforeEach(module('HttpModule'));
+    beforeEach(function () {
 
-    beforeEach(inject(function ($injector) {
-      httpBackend = $injector.get('$httpBackend');
-      HttpRequest = $injector.get('HttpRequest');
-    }));
+      HttpRequest = {send: jasmine.createSpy().andReturn({promise: 'dummy promise'})};
 
-    it("should send GET request", function () {
-      httpBackend.expectGET('/test').respond('abv');
-
-      HttpRequest.send('GET', "/test").then(function (data) {
-        expect(data).toBe("abv");
+      module(function ($provide) {
+        $provide.value("HttpRequest", HttpRequest);
       });
-      httpBackend.flush();
+
+      inject(function ($injector) {
+        UserGateway = $injector.get("UserGateway");
+      });
+
     });
 
-    it('should send POST request', function () {
-      var params = {param: 'param1', param2: 'param2'};
-      httpBackend.expectPOST('/test', params).respond('stiga ve');
-
-      HttpRequest.send('POST', '/test', params).then(function (data) {
-        expect(data).toBe('stiga ve');
+    it("should register user", function () {
+      var result = UserGateway.register("username", "pass", "pass");
+      expect(HttpRequest.send).toHaveBeenCalledWith("POST", "register/new", {
+        username: 'username',
+        password: 'pass',
+        repassword: 'pass'
       });
-
-      httpBackend.flush();
+      expect(result.promise).toEqual("dummy promise");
     });
 
   });

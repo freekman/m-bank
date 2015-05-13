@@ -5,33 +5,33 @@
 
 describe('Controllers', function () {
 
-
   beforeEach(module('bankControllers'));
 
-  beforeEach(function () {
-    this.addMatchers({
-      toEqualData: function (expected) {
-        return angular.equals(this.actual, expected);
-      }
-    });
-  });
-
   describe('bankControllers', function () {
-    var scope, ctrl, $httpBackend;
+    var scope, ctrl, UserGateway;
+    var dummyPromise = {value: true, messages: ['Is ok']};
 
-    beforeEach(inject(function (_$httpBackend_, $rootScope, $controller) {
-      scope = $rootScope.$new();
-      $httpBackend = _$httpBackend_;
-      ctrl = $controller('RegisterController', {$scope: scope});
+    var deferred;
 
-      $httpBackend.expectPOST('register/new').respond(200, {valid: 'true', messages: ['Registration successful']});
+    beforeEach(inject(function ($q) {
+      deferred = $q.defer();
+      UserGateway = {register: jasmine.createSpy().andReturn(deferred.promise)};
+
+      inject(function ($rootScope, $controller) {
+        scope = $rootScope.$new();
+        $controller('RegisterController', {$scope: scope, UserGateway: UserGateway});
+      });
+
     }));
 
     it('should receive server response for successful registration', function () {
-      expect(scope.statusIsOk).toBeUndefined();
-      expect(scope.statusMessages).toBeUndefined();
       scope.validateAndRegister('test', 'test', 'test');
-      $httpBackend.flush();
+
+      expect(UserGateway.register).toHaveBeenCalledWith('test', 'test', 'test');
+
+      deferred.resolve({valid: true, messages: ['Registration successful']});
+      scope.$digest();
+
       expect(scope.statusIsOk).toBeTruthy();
       expect(scope.statusMessages).toEqual(['Registration successful']);
     });
