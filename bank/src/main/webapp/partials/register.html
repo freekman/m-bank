@@ -31,28 +31,47 @@
 
                 <div class="col-lg-4">
 
-                    <form>
+                    <form name="userForm">
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input class="form-control" type="text" id="username" ng-model="username"
-                                   placeholder="Please enter username" ng-blur="queryFreeUserName(username)">
+                            <input class="form-control" type="text" name="userName" id="username" ng-model="user.name"
+                                   required
+                                   placeholder="Please enter username">
+                            <label class="label label-danger"
+                                   ng-show="userForm.userName.$error.required">Required!</label>
                         </div>
+
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input class="form-control " type="password" id="password" ng-model="password"
-                                   placeholder="Please enter password">
+                            <input class="form-control " type="password" name="password" id="password"
+                                   ng-model="user.password"
+                                   ng-minlength="3" ng-maxlength="10" placeholder="Please enter password" required>
+                            <label class="label label-danger"
+                                   ng-show="userForm.password.$error.required">Required!</label>
+                            <label class="label label-warning"
+                                   ng-show="userForm.password.$error.minlength">Too short!</label>
+                            <label class="label label-warning"
+                                   ng-show="userForm.password.$error.maxlength">Too long!</label>
                         </div>
                         <div class="form-group">
                             <label for="repassword">Repeat password</label>
-                            <input class="form-control" type="password" id="repassword" ng-model="repassword"
-                                   placeholder="Please repeat entered password">
-                            {{repasswordMsg}}
+                            <input class="form-control" type="password" name="rePassword" id="repassword"
+                                   ng-model="user.repassword"
+                                   ng-minlength="3" ng-maxlength="10" placeholder="Please repeat entered password"
+                                   required>
+                            <label class="label label-danger"
+                                   ng-show="userForm.rePassword.$error.required">Required!</label>
+                            <label class="label label-warning"
+                                   ng-show="userForm.rePassword.$error.minlength">Too short!</label>
+                            <label class="label label-warning"
+                                   ng-show="userForm.rePassword.$error.maxlength">Too long!</label>
                         </div>
-                        <button class="btn btn-success" ng-click="register(username,password,repassword)">
+                        <button class="btn btn-success" ng-click="register(userForm.$valid)">
                             Submit
                         </button>
                     </form>
                 </div>
+
 
                 <div class="col-lg-4">
                     <div class="panel top-buffer" ng-class="statusIsOk ? 'panel-success':'panel-danger' "
@@ -65,7 +84,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>

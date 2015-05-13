@@ -38705,9 +38705,7 @@ angular.module('ngProgress', ['ngProgress.directive', 'ngProgress.provider']);
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 
-var bankApp = angular.module('bankApp',
-        ['ngRoute',
-          'bankCtrl']);
+var bankApp = angular.module('bankApp', ['ngRoute', 'bankCtrl']);
 
 bankApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
@@ -38718,6 +38716,10 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/register.html',
             controller: 'registerCtrl'
           })
+          .when('/test', {
+            templateUrl: 'partials/inputTest.html',
+            controller: 'inputCtrl'
+          })
           .otherwise({redirectTo: '/phones'});
 }]);
 /**
@@ -38726,27 +38728,27 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
 
 var bankCtrl = angular.module('bankCtrl', ['gateway']);
 
-bankCtrl.controller('registerCtrl',
-        ['$scope', 'userGateway',
-          function ($scope, userGateway) {
+bankCtrl
+        .controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
+          $scope.user = {name: '', password: '', repassword: ''};
+          $scope.isUserValid = false;
 
-            $scope.register = function (username, password, repassword) {
+          $scope.register = function (isValid) {
+            if (isValid) {
+              userGateway.register($scope.user.name, $scope.user.password, $scope.user.repassword).then(function (data) {
+                $scope.statusIsOk = data.valid;
+                $scope.statusMessages = data.messages;
+              });
+            } else {
+              $scope.statusIsOk = false;
+              $scope.statusMessages = ['Fields must be at least 3 chars.'];
+            }
+          };
+        }])
+        .controller('inputCtrl', ['$scope', function ($scope) {
+          $scope.user = {name: 'guest', last: 'visitor'};
+        }]);
 
-              if (isLengthValid(username) && isLengthValid(password) && isLengthValid(repassword)) {
-                userGateway.register(username, password, repassword).then(function (data) {
-                  $scope.statusIsOk = data.valid;
-                  $scope.statusMessages = data.messages;
-                });
-              } else {
-                $scope.statusIsOk = false;
-                $scope.statusMessages = ['Fields must be at least 3 chars.'];
-              }
-            };
-          }]);
-
-function isLengthValid(field) {
-  return !(field == null || field.length < 3);
-}
 
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
@@ -38775,15 +38777,9 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 
-var GatewayModule = angular.module('gateway', ['httpModule']);
-//
-//serviceModule.service('fieldValidation', function () {
-//  this.validate = function (field) {
-//    return !(field == null || field.length < 3);
-//  }
-//});
+var gatewayModule = angular.module('gateway', ['httpModule']);
 
-GatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
+gatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
   return {
     register: function (username, password, repassword) {
       return HttpRequest
@@ -38792,4 +38788,3 @@ GatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
     }
   };
 }]);
-
