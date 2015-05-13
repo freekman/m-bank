@@ -4,29 +4,28 @@
 describe("Service", function () {
 
   describe("Gateway", function () {
-    var UserGateway;
-    var HttpRequest;
-    var deferred;
+    var userGateway;
+    var httpRequest;
 
-    beforeEach(module('Gateway'));
+    beforeEach(module('gateway'));
 
     beforeEach(function () {
 
-      HttpRequest = {send: jasmine.createSpy().andReturn({promise: 'dummy promise'})};
+      httpRequest = {send: jasmine.createSpy().andReturn({promise: 'dummy promise'})};
 
       module(function ($provide) {
-        $provide.value("HttpRequest", HttpRequest);
+        $provide.value("httpRequest", httpRequest);
       });
 
       inject(function ($injector) {
-        UserGateway = $injector.get("UserGateway");
+        userGateway = $injector.get("userGateway");
       });
 
     });
 
     it("should register user", function () {
-      var result = UserGateway.register("username", "pass", "pass");
-      expect(HttpRequest.send).toHaveBeenCalledWith("POST", "register/new", {
+      var result = userGateway.register("username", "pass", "pass");
+      expect(httpRequest.send).toHaveBeenCalledWith("POST", "register/new", {
         username: 'username',
         password: 'pass',
         repassword: 'pass'

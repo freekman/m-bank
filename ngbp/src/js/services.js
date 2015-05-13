@@ -2,7 +2,7 @@
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 
-var GatewayModule = angular.module('Gateway', ['HttpModule']);
+var GatewayModule = angular.module('gateway', ['httpModule']);
 //
 //serviceModule.service('fieldValidation', function () {
 //  this.validate = function (field) {
@@ -10,7 +10,7 @@ var GatewayModule = angular.module('Gateway', ['HttpModule']);
 //  }
 //});
 
-GatewayModule.service('UserGateway', ['HttpRequest', function (HttpRequest) {
+GatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
   return {
     register: function (username, password, repassword) {
       return HttpRequest

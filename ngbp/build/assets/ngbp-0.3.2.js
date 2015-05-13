@@ -38705,9 +38705,56 @@ angular.module('ngProgress', ['ngProgress.directive', 'ngProgress.provider']);
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 
-var httpModule = angular.module('HttpModule', ['ngProgress']);
+var bankApp = angular.module('bankApp',
+        ['ngRoute',
+          'bankCtrl']);
 
-httpModule.service('HttpRequest', ['$http', '$q', 'ngProgress', function ($http, $q, ngProgress) {
+bankApp.config(['$routeProvider', function ($routeProvider) {
+  $routeProvider
+          .when('/', {
+            templateUrl: 'partials/register.html',
+            controller: 'registerCtrl'
+          }).when('/register', {
+            templateUrl: 'partials/register.html',
+            controller: 'registerCtrl'
+          })
+          .otherwise({redirectTo: '/phones'});
+}]);
+/**
+ * @author Marian Zlatev (mzlatev91@gmail.com)
+ */
+
+var bankCtrl = angular.module('bankCtrl', ['gateway']);
+
+bankCtrl.controller('registerCtrl',
+        ['$scope', 'userGateway',
+          function ($scope, userGateway) {
+
+            $scope.register = function (username, password, repassword) {
+
+              if (isLengthValid(username) && isLengthValid(password) && isLengthValid(repassword)) {
+                userGateway.register(username, password, repassword).then(function (data) {
+                  $scope.statusIsOk = data.valid;
+                  $scope.statusMessages = data.messages;
+                });
+              } else {
+                $scope.statusIsOk = false;
+                $scope.statusMessages = ['Fields must be at least 3 chars.'];
+              }
+            };
+          }]);
+
+function isLengthValid(field) {
+  return !(field == null || field.length < 3);
+}
+
+/**
+ * @author Marian Zlatev (mzlatev91@gmail.com)
+ */
+
+var httpModule = angular.module('httpModule', ['ngProgress']);
+
+httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http, $q, ngProgress) {
   this.send = function (method, url, data) {
     ngProgress.start();
     var deferred = $q.defer();
@@ -38728,59 +38775,7 @@ httpModule.service('HttpRequest', ['$http', '$q', 'ngProgress', function ($http,
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 
-var bankApp = angular.module('bankApp',
-        ['ngRoute',
-          'bankControllers']);
-
-bankApp.config(['$routeProvider', function ($routeProvider) {
-  $routeProvider
-          .when('/', {
-            templateUrl: 'partials/register.html',
-            controller: 'RegisterController'
-          }).when('/register', {
-            templateUrl: 'partials/register.html',
-            controller: 'RegisterController'
-          })
-          .otherwise({redirectTo: '/phones'});
-}]);
-/**
- * @author Marian Zlatev (mzlatev91@gmail.com)
- */
-
-var bankControllers = angular.module('bankControllers', ['Gateway']);
-
-bankControllers.controller('RegisterController',
-        ['$scope', 'UserGateway',
-          function ($scope, UserGateway) {
-
-            $scope.validateAndRegister = function (username, password, repassword) {
-
-              if (isLengthValid(username) && isLengthValid(password) && isLengthValid(repassword)) {
-                UserGateway.register(username, password, repassword)
-                        .then(function (data) {
-                          $scope.statusIsOk = data.valid;
-                          $scope.statusMessages = data.messages;
-                        }, function (data) {
-                          $scope.statusIsOk = false;
-                          $scope.statusMessages = ['Fields must be at least 3 chars.'];
-                        });
-              } else {
-                $scope.statusIsOk = false;
-                $scope.statusMessages = ['Fields must be at least 3 chars.'];
-              }
-            };
-
-          }]);
-
-function isLengthValid(field) {
-  return !(field == null || field.length < 3);
-}
-
-/**
- * @author Marian Zlatev (mzlatev91@gmail.com)
- */
-
-var GatewayModule = angular.module('Gateway', ['HttpModule']);
+var GatewayModule = angular.module('gateway', ['httpModule']);
 //
 //serviceModule.service('fieldValidation', function () {
 //  this.validate = function (field) {
@@ -38788,22 +38783,12 @@ var GatewayModule = angular.module('Gateway', ['HttpModule']);
 //  }
 //});
 
-GatewayModule.service('UserGateway', ['HttpRequest', function (HttpRequest) {
+GatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
   return {
     register: function (username, password, repassword) {
       return HttpRequest
-              .send('POST', 'register/new', {
-                username: username,
-                password: password,
-                repassword: repassword
-              });
-              //.then(function (data) {
-              //  $scope.statusIsOk = data.valid;
-              //  $scope.statusMessages = data.messages;
-              //}, function (data) {
-              //  $scope.statusIsOk = false;
-              //  $scope.statusMessages = ['Fields must be at least 3 chars.'];
-              //});
+              .send('POST', 'register/new'
+              , {username: username, password: password, repassword: repassword});
     }
   };
 }]);

@@ -2,16 +2,16 @@
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 
-var bankControllers = angular.module('bankControllers', ['Gateway']);
+var bankCtrl = angular.module('bankCtrl', ['gateway']);
 
-bankControllers.controller('RegisterController',
-        ['$scope', 'UserGateway',
-          function ($scope, UserGateway) {
+bankCtrl.controller('registerCtrl',
+        ['$scope', 'userGateway',
+          function ($scope, userGateway) {
 
-            $scope.validateAndRegister = function (username, password, repassword) {
+            $scope.register = function (username, password, repassword) {
 
               if (isLengthValid(username) && isLengthValid(password) && isLengthValid(repassword)) {
-                UserGateway.register(username, password, repassword).then(function (data) {
+                userGateway.register(username, password, repassword).then(function (data) {
                   $scope.statusIsOk = data.valid;
                   $scope.statusMessages = data.messages;
                 });
@@ -20,7 +20,6 @@ bankControllers.controller('RegisterController',
                 $scope.statusMessages = ['Fields must be at least 3 chars.'];
               }
             };
-
           }]);
 
 function isLengthValid(field) {

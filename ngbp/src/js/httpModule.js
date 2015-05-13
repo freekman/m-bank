@@ -2,9 +2,9 @@
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 
-var httpModule = angular.module('HttpModule', ['ngProgress']);
+var httpModule = angular.module('httpModule', ['ngProgress']);
 
-httpModule.service('HttpRequest', ['$http', '$q', 'ngProgress', function ($http, $q, ngProgress) {
+httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http, $q, ngProgress) {
   this.send = function (method, url, data) {
     ngProgress.start();
     var deferred = $q.defer();

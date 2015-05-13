@@ -4,16 +4,16 @@
 
 var bankApp = angular.module('bankApp',
         ['ngRoute',
-          'bankControllers']);
+          'bankCtrl']);
 
 bankApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
           .when('/', {
             templateUrl: 'partials/register.html',
-            controller: 'RegisterController'
+            controller: 'registerCtrl'
           }).when('/register', {
             templateUrl: 'partials/register.html',
-            controller: 'RegisterController'
+            controller: 'registerCtrl'
           })
           .otherwise({redirectTo: '/phones'});
 }]);
