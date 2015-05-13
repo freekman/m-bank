@@ -6,10 +6,11 @@ var gatewayModule = angular.module('gateway', ['httpModule']);
 
 gatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
   return {
-    register: function (username, password, repassword) {
+    register: function (user) {
+      console.log(user);
       return HttpRequest
               .send('POST', 'register/new'
-              , {username: username, password: password, repassword: repassword});
+              , {username: user.name, password: user.password, repassword: user.repassword});
     }
   };
 }]);

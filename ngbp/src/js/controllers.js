@@ -6,22 +6,14 @@ var bankCtrl = angular.module('bankCtrl', ['gateway']);
 
 bankCtrl
         .controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
-          $scope.user = {name: '', password: '', repassword: ''};
-          $scope.isUserValid = false;
-
-          $scope.register = function (isValid) {
-            if (isValid) {
-              userGateway.register($scope.user.name, $scope.user.password, $scope.user.repassword).then(function (data) {
-                $scope.statusIsOk = data.valid;
-                $scope.statusMessages = data.messages;
-              });
-            } else {
-              $scope.statusIsOk = false;
-              $scope.statusMessages = ['Fields must be at least 3 chars.'];
-            }
+          $scope.register = function (user) {
+            userGateway.register(user).then(function (data) {
+              $scope.statusIsOk = data.valid;
+              $scope.statusMessages = data.messages;
+            });
           };
         }])
-        .controller('inputCtrl', ['$scope', function ($scope) {
+        .controller('inputCtrl', ['$scope', function ($scope) { // for test page
           $scope.user = {name: 'guest', last: 'visitor'};
         }]);
 

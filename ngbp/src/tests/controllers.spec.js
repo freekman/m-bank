@@ -11,6 +11,8 @@ describe('Controllers', function () {
     var scope, userGateway;
     var deferred;
 
+    var dummyUser = {username: 'Dummy', password: 'pass', repassword: 'pass'};
+
     beforeEach(inject(function ($q) {
       deferred = $q.defer();
       userGateway = {register: jasmine.createSpy().andReturn(deferred.promise)};
@@ -22,24 +24,16 @@ describe('Controllers', function () {
 
     }));
 
-    it('should receive server response for successful registration', function () {
-      scope.register('test', 'test', 'test');
 
-      expect(userGateway.register).toHaveBeenCalledWith('test', 'test', 'test');
+    it('should receive server response for successful registration', function () {
+      scope.register(dummyUser);
+      expect(userGateway.register).toHaveBeenCalledWith(dummyUser);
 
       deferred.resolve({valid: true, messages: ['Registration successful']});
       scope.$digest();
 
       expect(scope.statusIsOk).toBeTruthy();
       expect(scope.statusMessages).toEqual(['Registration successful']);
-    });
-
-    it('should not register if fields are undefined', function () {
-      expect(scope.statusIsOk).toBeUndefined();
-      expect(scope.statusMessages).toBeUndefined();
-      scope.register();
-      expect(scope.statusIsOk).toBeFalsy();
-      expect(scope.statusMessages).toEqual(['Fields must be at least 3 chars.']);
     });
 
   });
