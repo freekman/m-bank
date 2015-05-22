@@ -1,6 +1,7 @@
 package com.clouway.bricky.adapter.http.service;
 
 import com.clouway.bricky.core.Validator;
+import com.clouway.bricky.core.db.user.MongoUserRepository;
 import com.clouway.bricky.core.db.user.UserRepository;
 import com.clouway.bricky.core.user.UserDTO;
 import com.google.common.collect.Lists;
@@ -31,20 +32,23 @@ public class RegisterService {
     this.validator = validator;
   }
 
+  @Get
+  public Reply<?> lookupUser(Request request) {
+    boolean isExisting = repository.isExisting(request.param("username"));
+    if (isExisting) {
+      return Reply.with("Username exists");
+    }
+    return Reply.with("error");
+  }
+
   @Post
   public Reply<?> register(Request request) {
 
     UserDTO dto = request.read(UserDTO.class).as(Json.class);
 
     List<String> messages = Lists.newArrayList();
-    if (dto.password == null) {
-      messages.add("Please enter password");
-    }
-    if (dto.username == null) {
-      messages.add("Please enter username");
-    }
-    if (dto.repassword == null) {
-      messages.add("Please repeat entered password");
+    if (dto.password == null || dto.username == null || dto.repassword == null) {
+      messages.add("Please enter all fields");
     }
 
     if (!messages.isEmpty()) {
@@ -52,6 +56,7 @@ public class RegisterService {
     }
 
     messages = validator.validate(dto);
+
     if (!messages.isEmpty()) {
       return Reply.with(new FormResponse(false, messages)).as(Json.class);
     }
