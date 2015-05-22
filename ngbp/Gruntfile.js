@@ -48,7 +48,7 @@ module.exports = function (grunt) {
         'src/partials/*.html',
         'src/index.html'
       ],
-      tasks: ['concat', 'copy']
+      tasks: ['jshint','concat', 'copy']
     },
     /**
      * `grunt concat` concatenates multiple source files into a single file.
@@ -330,10 +330,10 @@ module.exports = function (grunt) {
      */
     jshint: {
       src: [
-        '<%= app_files.js %>'
+        'src/js/*.js'
       ],
       test: [
-        '<%= app_files.jsunit %>'
+        'src/tests/*.spec.js'
       ],
       gruntfile: [
         'Gruntfile.js'

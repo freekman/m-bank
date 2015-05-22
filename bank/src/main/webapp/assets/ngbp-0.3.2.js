@@ -1,5 +1,5 @@
 /**
- * ngbp - v0.3.2 - 2015-05-13
+ * ngbp - v0.3.2 - 2015-05-22
  * https://github.com/ngbp/ngbp
  *
  * Copyright (c) 2015 Josh David Miller
@@ -38725,30 +38725,37 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
+var bankModule = angular.module('bankCtrl', ['gateway']);
 
-var bankCtrl = angular.module('bankCtrl', ['gateway']);
+bankModule.controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
+  'use strict';
 
-bankCtrl
-        .controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
-          $scope.register = function (user) {
-            userGateway.register(user).then(function (data) {
-              $scope.statusIsOk = data.valid;
-              $scope.statusMessages = data.messages;
-            });
-          };
-        }])
+  $scope.lookup = function (username) {
+    userGateway.lookup(username).then(function (data) {
+      $scope.statusIsOk = data.valid;
+      $scope.statusMessages = data.messages;
+    });
+  };
+
+  $scope.register = function (user) {
+    userGateway.register(user).then(function (data) {
+      $scope.statusIsOk = data.valid;
+      $scope.statusMessages = data.messages;
+    });
+  };
+}])
         .controller('inputCtrl', ['$scope', function ($scope) { // for test page
           $scope.user = {name: 'guest', last: 'visitor'};
         }]);
 
-
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
-
 var httpModule = angular.module('httpModule', ['ngProgress']);
 
 httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http, $q, ngProgress) {
+  'use strict';
+
   this.send = function (method, url, data) {
     ngProgress.start();
     var deferred = $q.defer();
@@ -38762,22 +38769,30 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
               ngProgress.complete();
             });
     return deferred.promise;
-  }
+  };
 }]);
 
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
-
 var gatewayModule = angular.module('gateway', ['httpModule']);
 
 gatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
+  'use strict';
   return {
+    lookup: function (username) {
+      return HttpRequest
+              .send('GET', 'register/new', username);
+    },
     register: function (user) {
       console.log(user);
       return HttpRequest
-              .send('POST', 'register/new'
-              , {username: user.name, password: user.password, repassword: user.repassword});
+              .send('POST', 'register/new',
+              {
+                username: user.name,
+                password: user.password,
+                repassword: user.repassword
+              });
     }
   };
 }]);

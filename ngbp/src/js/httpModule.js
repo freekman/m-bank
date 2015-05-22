@@ -1,10 +1,11 @@
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
-
 var httpModule = angular.module('httpModule', ['ngProgress']);
 
 httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http, $q, ngProgress) {
+  'use strict';
+
   this.send = function (method, url, data) {
     ngProgress.start();
     var deferred = $q.defer();
@@ -18,5 +19,5 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
               ngProgress.complete();
             });
     return deferred.promise;
-  }
+  };
 }]);

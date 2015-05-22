@@ -3,6 +3,7 @@ package com.clouway.bricky.adapter.http.service;
 import com.clouway.bricky.core.Validator;
 import com.clouway.bricky.core.db.user.UserRepository;
 import com.clouway.bricky.core.user.UserDTO;
+import com.google.common.collect.Lists;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import org.jmock.Expectations;
@@ -48,7 +49,23 @@ public class RegisterServiceTest {
     }});
 
     Reply<?> reply = service.lookupUser(request);
-    assertThat(reply, isEqualToReply(Reply.with("Username exists")));
+    assertThat(reply, isEqualToReply(Reply.with(new FormResponse(false, Lists.newArrayList("Username exists")))));
+  }
+
+  @Test
+  public void lookupMissingUser() throws Exception {
+    final String username = "Marian";
+
+    context.checking(new Expectations() {{
+      oneOf(request).param("username");
+      will(returnValue(username));
+
+      oneOf(repository).isExisting(username);
+      will(returnValue(false));
+    }});
+
+    Reply<?> reply = service.lookupUser(request);
+    assertThat(reply, isEqualToReply(Reply.with(new FormResponse(true, Lists.newArrayList("Username is free")))));
   }
 
 

@@ -2,6 +2,7 @@
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 describe("Service", function () {
+  'use strict';
 
   describe("Gateway", function () {
     var userGateway;
@@ -29,6 +30,13 @@ describe("Service", function () {
       expect(httpRequest.send).toHaveBeenCalledWith("POST", "register/new",
               {username: 'Dummy', password: 'pass', repassword: 'pass'});
       expect(result.promise).toEqual("dummy promise");
+    });
+
+    it('should lookup username', function () {
+      var username = 'dummy_name';
+      var result = userGateway.lookup(username);
+      expect(httpRequest.send).toHaveBeenCalledWith('GET', 'register/new', username);
+      expect(result.promise).toEqual('dummy promise');
     });
 
   });

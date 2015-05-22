@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input class="form-control" type="text" name="userName" id="username" ng-model="user.name"
-                                   required
+                                   required ng-blur="lookup(user.username)"
                                    placeholder="Please enter username">
                             <label class="label label-danger"
                                    ng-show="userForm.userName.$error.required">Required!</label>

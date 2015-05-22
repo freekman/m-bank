@@ -36,9 +36,9 @@ public class RegisterService {
   public Reply<?> lookupUser(Request request) {
     boolean isExisting = repository.isExisting(request.param("username"));
     if (isExisting) {
-      return Reply.with("Username exists");
+      return Reply.with(new FormResponse(false, Lists.newArrayList("Username exists"))).as(Json.class);
     }
-    return Reply.with("error");
+    return Reply.with(new FormResponse(true, Lists.newArrayList("Username is free"))).as(Json.class);
   }
 
   @Post
