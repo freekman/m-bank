@@ -6,9 +6,9 @@ var gatewayModule = angular.module('gateway', ['httpModule']);
 gatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
   'use strict';
   return {
-    lookup: function (username) {
+    lookup: function (user) {
       return HttpRequest
-              .send('GET', 'register/new', username);
+              .send('GET', 'register/new?username=' + user.name, {});
     },
     register: function (user) {
       console.log(user);

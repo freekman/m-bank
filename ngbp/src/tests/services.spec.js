@@ -8,6 +8,8 @@ describe("Service", function () {
     var userGateway;
     var httpRequest;
 
+    var dummy = {name: "Dummy", password: "pass", repassword: "pass"};
+
     beforeEach(module('gateway'));
 
     beforeEach(function () {
@@ -25,17 +27,15 @@ describe("Service", function () {
     });
 
     it("should register user", function () {
-      var dummyUser = {name: "Dummy", password: "pass", repassword: "pass"};
-      var result = userGateway.register(dummyUser);
+      var result = userGateway.register(dummy);
       expect(httpRequest.send).toHaveBeenCalledWith("POST", "register/new",
               {username: 'Dummy', password: 'pass', repassword: 'pass'});
       expect(result.promise).toEqual("dummy promise");
     });
 
     it('should lookup username', function () {
-      var username = 'dummy_name';
-      var result = userGateway.lookup(username);
-      expect(httpRequest.send).toHaveBeenCalledWith('GET', 'register/new', username);
+      var result = userGateway.lookup(dummy);
+      expect(httpRequest.send).toHaveBeenCalledWith('GET', 'register/new?username=' + dummy.name, {});
       expect(result.promise).toEqual('dummy promise');
     });
 

@@ -37,8 +37,8 @@ describe('Controllers', function () {
     });
 
     it('should lookup free username on server', function () {
-      scope.lookup(dummy.username);
-      expect(userGateway.lookup).toHaveBeenCalledWith(dummy.username);
+      scope.lookup(dummy);
+      expect(userGateway.lookup).toHaveBeenCalledWith(dummy);
 
       deferred.resolve({valid: true, messages: ['Username is free']});
       scope.$digest();

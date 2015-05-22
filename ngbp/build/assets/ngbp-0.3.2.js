@@ -38727,23 +38727,24 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
  */
 var bankModule = angular.module('bankCtrl', ['gateway']);
 
-bankModule.controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
-  'use strict';
+bankModule
+        .controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
+          'use strict';
 
-  $scope.lookup = function (username) {
-    userGateway.lookup(username).then(function (data) {
-      $scope.statusIsOk = data.valid;
-      $scope.statusMessages = data.messages;
-    });
-  };
+          $scope.lookup = function (user) {
+            userGateway.lookup(user).then(function (data) {
+              $scope.statusIsOk = data.valid;
+              $scope.statusMessages = data.messages;
+            });
+          };
 
-  $scope.register = function (user) {
-    userGateway.register(user).then(function (data) {
-      $scope.statusIsOk = data.valid;
-      $scope.statusMessages = data.messages;
-    });
-  };
-}])
+          $scope.register = function (user) {
+            userGateway.register(user).then(function (data) {
+              $scope.statusIsOk = data.valid;
+              $scope.statusMessages = data.messages;
+            });
+          };
+        }])
         .controller('inputCtrl', ['$scope', function ($scope) { // for test page
           $scope.user = {name: 'guest', last: 'visitor'};
         }]);
@@ -38780,9 +38781,9 @@ var gatewayModule = angular.module('gateway', ['httpModule']);
 gatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
   'use strict';
   return {
-    lookup: function (username) {
+    lookup: function (user) {
       return HttpRequest
-              .send('GET', 'register/new', username);
+              .send('GET', 'register/new?username=' + user.name, {});
     },
     register: function (user) {
       console.log(user);
