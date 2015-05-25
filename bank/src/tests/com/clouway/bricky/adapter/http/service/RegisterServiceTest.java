@@ -1,8 +1,6 @@
 package com.clouway.bricky.adapter.http.service;
 
-import com.clouway.bricky.core.Validation.Validator;
 import com.clouway.bricky.core.db.user.UserRepository;
-import com.clouway.bricky.core.user.User;
 import com.google.common.collect.Lists;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;

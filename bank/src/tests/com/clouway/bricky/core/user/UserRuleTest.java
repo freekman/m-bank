@@ -20,6 +20,13 @@ public class UserRuleTest {
     rule = new UserRule();
   }
 
+
+  @Test
+  public void happyPath() throws Exception {
+    List<String> messages = rule.apply(user("Marian", "123"));
+    assertTrue(messages.isEmpty());
+  }
+
   @Test
   public void emptyUserName() throws Exception {
     List<String> messages = rule.apply(user("", "123"));
@@ -41,17 +48,13 @@ public class UserRuleTest {
   @Test
   public void shortName() throws Exception {
     List<String> messages = rule.apply(user("aa", "123"));
-    assertThat(messages,hasItem("Please enter valid username"));
+    assertThat(messages, hasItem("Please enter valid username"));
   }
+
   @Test
   public void shortPassword() throws Exception {
     List<String> messages = rule.apply(user("Alphonse", "12"));
-    assertThat(messages,hasItem("Please enter valid password"));
-  }
-
-  @Test
-  public void name() throws Exception {
-
+    assertThat(messages, hasItem("Please enter valid password"));
   }
 
   private User user(String name, String password) {

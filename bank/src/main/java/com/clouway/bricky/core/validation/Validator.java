@@ -1,4 +1,4 @@
-package com.clouway.bricky.core.Validation;
+package com.clouway.bricky.core.validation;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>

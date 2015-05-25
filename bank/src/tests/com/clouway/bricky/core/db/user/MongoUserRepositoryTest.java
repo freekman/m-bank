@@ -21,7 +21,7 @@ public class MongoUserRepositoryTest extends UserDbContractTest {
 
   @Override
   public UserRepository getRepository() {
-    return new MongoUserRepository(fongoRule.getDatabase("accounts"));
+    return new MongoUserRepository(fongoRule.getDatabase("bank"));
   }
 
 }

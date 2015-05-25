@@ -2,6 +2,7 @@ package com.clouway.bricky.adapter.http;
 
 import com.clouway.bricky.core.AuthorizationException;
 import com.clouway.bricky.core.Registry;
+import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
 import com.google.sitebricks.headless.Reply;
 import org.jmock.Expectations;
@@ -23,32 +24,35 @@ import static org.junit.Assert.*;
 public class LoginTest {
 
   private Login login;
-  private Registry manager;
+  private Registry registry;
+  private SessionManager manager;
 
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
 
   @Before
   public void setUp() throws Exception {
-    manager = context.mock(Registry.class);
-    login = new Login(manager);
+    registry = context.mock(Registry.class);
+    manager = context.mock(SessionManager.class);
+    login = new Login(registry, manager);
   }
 
   @Test
-  public void userAuthorizationAndLogin() throws Exception {
+  public void happyPath() throws Exception {
     context.checking(new Expectations() {{
-      oneOf(manager).authorize(with(any(User.class)));
+      oneOf(registry).authorize(with(any(User.class)));
+      oneOf(manager).openSessionFor(with(any(User.class)));
     }});
 
     Reply<?> reply = login.login();
-    assertThat(reply, isEqualToReply(Reply.saying().redirect("/home")));
+    assertThat(reply, isEqualToReply(Reply.saying().redirect("#")));
     assertThat(login.messages, is(empty()));
   }
 
   @Test
   public void userAuthorizationFail() throws Exception {
     context.checking(new Expectations() {{
-      oneOf(manager).authorize(with(any(User.class)));
+      oneOf(registry).authorize(with(any(User.class)));
       will(throwException(new AuthorizationException()));
     }});
 
@@ -56,5 +60,6 @@ public class LoginTest {
     assertThat(reply, is(equalTo(null)));
     assertThat(login.messages, contains("Wrong username or password"));
   }
+
 
 }

@@ -2,6 +2,7 @@ package com.clouway.bricky.adapter.http;
 
 import com.clouway.bricky.core.AuthorizationException;
 import com.clouway.bricky.core.Registry;
+import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
@@ -19,26 +20,30 @@ import java.util.List;
 @At("/login")
 public class Login {
 
-  private Registry manager;
+  private Registry registry;
+  private SessionManager manager;
 
   public String username;
   public String password;
   public List<String> messages = Lists.newArrayList();
 
   @Inject
-  public Login(Registry manager) {
+  public Login(Registry registry, SessionManager manager) {
+    this.registry = registry;
     this.manager = manager;
   }
 
   @Post
   public Reply<?> login() {
     try {
-      manager.authorize(new User(username, password));
+      User user = new User(username, password);
+      registry.authorize(user);
+      manager.openSessionFor(user);
     } catch (AuthorizationException e) {
       messages.add("Wrong username or password");
       return null;
     }
-    return Reply.saying().redirect("/home");
+    return Reply.saying().redirect("#");
   }
 
 }

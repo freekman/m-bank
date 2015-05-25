@@ -1,11 +1,12 @@
 package com.clouway.bricky.core;
 
 import com.clouway.bricky.adapter.http.service.FormResponse;
-import com.clouway.bricky.core.Validation.ValidationRule;
-import com.clouway.bricky.core.Validation.Validator;
 import com.clouway.bricky.core.db.user.UserRepository;
+import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.core.user.UserRegistry;
+import com.clouway.bricky.core.validation.ValidationRule;
+import com.clouway.bricky.core.validation.Validator;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.jmock.Expectations;
@@ -13,6 +14,8 @@ import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
@@ -69,6 +72,20 @@ public class UserRegistryTest {
     }});
     userRegistry.authorize(testUser());
   }
+
+  //todo
+//  @Test
+//  public void openUserSession() throws Exception {
+//    final User user = testUser();
+//    context.checking(new Expectations() {{
+//      oneOf(sidManager).openSessionFor(user);
+//      will(returnValue("123"));
+//      oneOf(repository).addSession(user, "123");
+//    }});
+//
+//    userRegistry.attachSession(user);
+//    assertFalse(userRegistry.isCurrentUserExpired());
+//  }
 
   @NotNull
   private User testUser() {

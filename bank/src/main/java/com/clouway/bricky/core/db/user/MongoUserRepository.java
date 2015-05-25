@@ -41,5 +41,4 @@ public class MongoUserRepository implements UserRepository {
     Document doc = collection.find(eq("username", username)).first();
     return doc != null;
   }
-
 }

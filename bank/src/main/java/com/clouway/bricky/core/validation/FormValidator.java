@@ -1,4 +1,4 @@
-package com.clouway.bricky.core.Validation;
+package com.clouway.bricky.core.validation;
 
 
 import com.clouway.bricky.adapter.http.service.FormResponse;

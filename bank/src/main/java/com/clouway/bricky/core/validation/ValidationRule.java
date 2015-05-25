@@ -1,4 +1,4 @@
-package com.clouway.bricky.core.Validation;
+package com.clouway.bricky.core.validation;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.clouway.bricky.core.user;
 
-import com.clouway.bricky.core.Validation.ValidationRule;
+import com.clouway.bricky.core.validation.ValidationRule;
 import com.google.common.collect.Lists;
 
 import java.util.List;

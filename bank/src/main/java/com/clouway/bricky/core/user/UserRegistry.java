@@ -2,10 +2,10 @@ package com.clouway.bricky.core.user;
 
 import com.clouway.bricky.adapter.http.service.FormResponse;
 import com.clouway.bricky.core.AuthorizationException;
-import com.clouway.bricky.core.Validation.FormValidator;
 import com.clouway.bricky.core.Registry;
-import com.clouway.bricky.core.Validation.Validator;
 import com.clouway.bricky.core.db.user.UserRepository;
+import com.clouway.bricky.core.sesion.SessionManager;
+import com.clouway.bricky.core.validation.Validator;
 import com.google.inject.Inject;
 
 /**
@@ -29,4 +29,5 @@ public class UserRegistry implements Registry {
     }
     throw new AuthorizationException();
   }
+
 }

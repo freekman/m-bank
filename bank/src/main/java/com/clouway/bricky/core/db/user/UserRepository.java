@@ -12,6 +12,6 @@ public interface UserRepository {
 
   boolean isAuthentic(User user);
 
-  boolean isExisting(String userName);
+  boolean isExisting(String username);
 
 }

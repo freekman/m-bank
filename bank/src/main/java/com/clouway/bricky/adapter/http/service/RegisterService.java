@@ -1,8 +1,7 @@
 package com.clouway.bricky.adapter.http.service;
 
-import com.clouway.bricky.core.Validation.Validator;
+import com.clouway.bricky.core.validation.Validator;
 import com.clouway.bricky.core.db.user.UserRepository;
-import com.clouway.bricky.core.Validation.FormValidator;
 import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.core.user.UserDTO;
 import com.clouway.bricky.core.user.UserDTORule;
