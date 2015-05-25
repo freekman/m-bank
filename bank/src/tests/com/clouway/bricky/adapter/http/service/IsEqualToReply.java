@@ -18,6 +18,8 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
   private Reply<?> expectedValue;
   private Optional<Object> optExpectedEntity;
   private Optional<Object> optActualEntity;
+  private Optional<Object> optExpectedUri;
+  private Optional<Object> optActualUri;
 
 
   public IsEqualToReply(Reply<?> expectedValue) {
@@ -29,10 +31,10 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
     boolean match;
 
     optExpectedEntity = getDeclaredFieldValue(expectedValue, "entity");
-    Optional<Object> optExpectedUri = getDeclaredFieldValue(expectedValue, "redirectUri");
+    optExpectedUri = getDeclaredFieldValue(expectedValue, "redirectUri");
 
     optActualEntity = getDeclaredFieldValue(actualValue, "entity");
-    Optional<Object> optActualUri = getDeclaredFieldValue(actualValue, "redirectUri");
+    optActualUri = getDeclaredFieldValue(actualValue, "redirectUri");
 
     if (optExpectedEntity.isPresent() && optActualEntity.isPresent()) {
       Object expected = optExpectedEntity.get();
@@ -73,7 +75,12 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
 
   @Override
   public void describeTo(Description description) {
-    description.appendText("Reply '" + optActualEntity.orNull() + "' to equal Reply '" + optExpectedEntity.orNull() + "'");
+    description
+            .appendText("entity:'" + optActualEntity.orNull() + "'")
+            .appendText(" redirectUri:'" + optActualUri.orNull() + "'")
+            .appendText(" to equal \n\t\t")
+            .appendText(" entity:'" + optExpectedEntity.orNull() + "'")
+            .appendText(" redirectUri:'" + optExpectedUri.orNull() + "'");
   }
 
   @Factory
@@ -83,7 +90,9 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
 
   @Override
   protected void describeMismatchSafely(Reply<?> item, Description mismatchDescription) {
-    mismatchDescription.appendText("was '" + optExpectedEntity.orNull() + "'");
+    mismatchDescription
+            .appendText("was entity:'" + optExpectedEntity.orNull() + "'")
+            .appendText("redirectUri:'" + optExpectedUri.orNull() + "'");
   }
 
 

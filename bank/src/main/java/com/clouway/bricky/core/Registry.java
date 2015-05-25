@@ -5,8 +5,8 @@ import com.clouway.bricky.core.user.User;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public interface UserManager {
+public interface Registry {
 
-  void authorize(User user);
+  void authorize(User user) throws AuthorizationException;
 
 }

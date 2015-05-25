@@ -1,11 +1,12 @@
 package com.clouway.bricky.core.db.user;
 
-import com.clouway.bricky.core.user.UserDTO;
+import com.clouway.bricky.core.user.User;
 import com.google.inject.Inject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 /**
@@ -17,16 +18,22 @@ public class MongoUserRepository implements UserRepository {
 
   @Inject
   public MongoUserRepository(MongoDatabase db) {
-    collection = db.getCollection("bank");
+    collection = db.getCollection("accounts");
   }
 
   @Override
-  public boolean register(UserDTO user) {
+  public boolean register(User user) {
     if (isExisting(user.username)) {
       return false;
     }
     collection.insertOne(new Document("username", user.username).append("password", user.password));
     return true;
+  }
+
+  @Override
+  public boolean isAuthentic(User user) {
+    Document doc = collection.find(and(eq("username", user.username), eq("password", user.password))).first();
+    return doc != null;
   }
 
   @Override

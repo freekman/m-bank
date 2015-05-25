@@ -1,6 +1,8 @@
 package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.core.db.user.UserRepository;
+import com.clouway.bricky.core.AuthorizationException;
+import com.clouway.bricky.core.Registry;
+import com.clouway.bricky.core.user.User;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.sitebricks.At;
@@ -17,21 +19,26 @@ import java.util.List;
 @At("/login")
 public class Login {
 
-  private final UserRepository repository;
-  public List<String> messages = Lists.newArrayList();
+  private Registry manager;
 
   public String username;
   public String password;
+  public List<String> messages = Lists.newArrayList();
 
   @Inject
-  public Login(UserRepository repository) {
-    this.repository = repository;
+  public Login(Registry manager) {
+    this.manager = manager;
   }
 
   @Post
   public Reply<?> login() {
-
-    return Reply.saying().redirect("#");
+    try {
+      manager.authorize(new User(username, password));
+    } catch (AuthorizationException e) {
+      messages.add("Wrong username or password");
+      return null;
+    }
+    return Reply.saying().redirect("/home");
   }
 
 }

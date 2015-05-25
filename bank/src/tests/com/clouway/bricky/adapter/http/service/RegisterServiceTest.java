@@ -1,8 +1,8 @@
 package com.clouway.bricky.adapter.http.service;
 
-import com.clouway.bricky.core.Validator;
+import com.clouway.bricky.core.Validation.Validator;
 import com.clouway.bricky.core.db.user.UserRepository;
-import com.clouway.bricky.core.user.UserDTO;
+import com.clouway.bricky.core.user.User;
 import com.google.common.collect.Lists;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
@@ -13,7 +13,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static com.clouway.bricky.adapter.http.service.IsEqualToReply.isEqualToReply;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 /**
@@ -23,7 +22,6 @@ public class RegisterServiceTest {
 
   private RegisterService service;
   private UserRepository repository;
-  private Validator<UserDTO> validator;
   private Request request;
 
   @Rule
@@ -32,8 +30,7 @@ public class RegisterServiceTest {
   @Before
   public void setUp() throws Exception {
     repository = context.mock(UserRepository.class);
-    validator = context.mock(Validator.class);
-    service = new RegisterService(repository, validator);
+    service = new RegisterService(repository, null);
     request = context.mock(Request.class);
   }
 
@@ -67,6 +64,5 @@ public class RegisterServiceTest {
     Reply<?> reply = service.lookupUser(request);
     assertThat(reply, isEqualToReply(Reply.with(new FormResponse(true, Lists.newArrayList("Username is free")))));
   }
-
 
 }

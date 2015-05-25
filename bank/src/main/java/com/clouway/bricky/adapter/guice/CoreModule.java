@@ -1,10 +1,8 @@
 package com.clouway.bricky.adapter.guice;
 
-import com.clouway.bricky.core.UserValidator;
-import com.clouway.bricky.core.Validator;
-import com.clouway.bricky.core.user.UserDTO;
+import com.clouway.bricky.core.Registry;
+import com.clouway.bricky.core.user.UserRegistry;
 import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
 
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
@@ -12,7 +10,7 @@ import com.google.inject.TypeLiteral;
 public class CoreModule extends AbstractModule {
   @Override
   protected void configure() {
-    bind(new TypeLiteral<Validator<UserDTO>>() {
-    }).toInstance(new UserValidator());
+
+    bind(Registry.class).to(UserRegistry.class);
   }
 }

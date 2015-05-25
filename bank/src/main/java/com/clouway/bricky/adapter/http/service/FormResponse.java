@@ -6,11 +6,11 @@ import java.util.List;
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 public class FormResponse {
-  public final boolean valid;
+  public final boolean isValid;
   public final List<String> messages;
 
   public FormResponse(boolean valid, List<String> messages) {
-    this.valid = valid;
+    this.isValid = valid;
     this.messages = messages;
   }
 
@@ -21,13 +21,13 @@ public class FormResponse {
 
     FormResponse that = (FormResponse) o;
 
-    if (valid != that.valid) return false;
+    if (isValid != that.isValid) return false;
     return messages.equals(that.messages);
   }
 
   @Override
   public int hashCode() {
-    int result = (valid ? 1 : 0);
+    int result = (isValid ? 1 : 0);
     result = 31 * result + messages.hashCode();
     return result;
   }
@@ -35,7 +35,7 @@ public class FormResponse {
   @Override
   public String toString() {
     return "FormResponse{" +
-            "valid=" + valid +
+            "isValid=" + isValid +
             ", messages=" + messages +
             '}';
   }
