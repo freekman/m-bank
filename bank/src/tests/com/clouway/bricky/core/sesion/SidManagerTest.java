@@ -3,6 +3,7 @@ package com.clouway.bricky.core.sesion;
 import com.clouway.bricky.core.db.session.SessionRepository;
 import com.clouway.bricky.core.user.User;
 import com.google.inject.Provider;
+import org.jetbrains.annotations.NotNull;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
@@ -48,7 +49,7 @@ public class SidManagerTest {
     repository = context.mock(SessionRepository.class);
     response = context.mock(HttpServletResponse.class);
     request = context.mock(HttpServletRequest.class);
-    manager = new SidManager(new Encrypt(), new FakeProvider<HttpServletRequest>(request), new FakeProvider<HttpServletResponse>(response), repository);
+    manager = new SidManager(getFakeSession(),repository);
   }
 
   @Test
@@ -111,5 +112,10 @@ public class SidManagerTest {
 
   private Cookie[] dummySession() {
     return new Cookie[]{new Cookie("sid", "session_id")};
+  }
+
+  @NotNull
+  private CurrentSession getFakeSession() {
+    return new CurrentSession(new Encrypt(), new FakeProvider<HttpServletRequest>(request), new FakeProvider<HttpServletResponse>(response));
   }
 }
