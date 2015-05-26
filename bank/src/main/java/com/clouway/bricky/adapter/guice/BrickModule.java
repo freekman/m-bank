@@ -13,5 +13,7 @@ public class BrickModule extends SitebricksModule {
   protected void configureSitebricks() {
     at("/register/new").serve(RegisterService.class);
     at("/login").show(Login.class);
+
+
   }
 }

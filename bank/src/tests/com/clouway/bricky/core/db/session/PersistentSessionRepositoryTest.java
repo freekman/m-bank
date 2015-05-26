@@ -74,6 +74,38 @@ public class PersistentSessionRepositoryTest {
     assertTrue(repository.isSessionExpired("foo"));
   }
 
+  @Test
+  public void refreshSession() throws Exception {
+    context.checking(new Expectations() {{
+      oneOf(clock).newExpirationTime();
+      will(returnValue(firstOfJanuary(2015, 5, 5)));
+      oneOf(clock).newExpirationTime();
+      will(returnValue(firstOfJanuary(2015, 5, 10)));
+      oneOf(clock).getTime();
+      will(returnValue(firstOfJanuary(2015, 5, 8)));
+    }});
+
+    User foo = new User("Foo", "bar");
+    pretendUserHasAccount(foo);
+    repository.addSession(foo, "1234");
+    repository.refreshSession("1234");
+    assertFalse(repository.isSessionExpired("1234"));
+  }
+
+  @Test
+  public void resetSessionExpiration() throws Exception {
+    context.checking(new Expectations() {{
+      oneOf(clock).newExpirationTime();
+      will(returnValue(firstOfJanuary(2015, 10, 10)));
+      oneOf(clock).getTime();
+      will(returnValue(firstOfJanuary(2015, 10, 5)));
+    }});
+    pretendUserHasAccount(new User("Foo", "Bar"));
+    repository.addSession(new User("Foo", "Bar"), "123");
+    repository.clearSession("123");
+    assertTrue(repository.isSessionExpired("123"));
+  }
+
   private void pretendUserHasAccount(User user) {
     MongoCollection<Document> accounts = db.getCollection("accounts");
     accounts.insertOne(new Document("username", user.username).append("password", user.password));

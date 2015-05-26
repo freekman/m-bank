@@ -19,10 +19,12 @@ public interface SessionManager {
    *
    * @return true if there is a valid session false otherwise.
    */
-  boolean isCurrentUserSessionExpired();
+  boolean isUserSessionExpired();
 
   /**
    * Updates expiration time of the current user's id. Or opens a new one if not opened.
    */
-  void refreshCurrentUserSession();
+  void refreshUserSession();
+
+  void closeUserSession();
 }

@@ -2,6 +2,7 @@ package com.clouway.bricky.core.sesion;
 
 import com.clouway.bricky.core.db.session.SessionRepository;
 import com.clouway.bricky.core.user.User;
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -37,18 +38,37 @@ public class SidManager implements SessionManager {
   }
 
   @Override
-  public boolean isCurrentUserSessionExpired() {
-    HttpServletRequest request = requestProvider.get();
-    for (Cookie each : request.getCookies()) {
-      if ("sid".equals(each.getName())) {
-        return repository.isSessionExpired(each.getValue());
-      }
-    }
-    return true;
+  public boolean isUserSessionExpired() {
+    Optional<String> sid = getSid();
+    return !sid.isPresent() || repository.isSessionExpired(sid.get());
   }
 
   @Override
-  public void refreshCurrentUserSession() {
+  public void refreshUserSession() {
+    Optional<String> sid = getSid();
+    if (sid.isPresent()) {
+      repository.refreshSession(sid.get());
+    }
+  }
 
+  private Optional<String> getSid() {
+    HttpServletRequest request = requestProvider.get();
+    for (Cookie each : request.getCookies()) {
+      if ("sid".equals(each.getName())) {
+        return Optional.of(each.getValue());
+      }
+    }
+    return Optional.absent();
+  }
+
+  @Override
+  public void closeUserSession() {
+    Optional<String> sid = getSid();
+    if (sid.isPresent()) {
+      repository.clearSession(sid.get());
+      Cookie removalCookie = new Cookie("sid", "");
+      removalCookie.setMaxAge(0);
+      responseProvider.get().addCookie(removalCookie);
+    }
   }
 }

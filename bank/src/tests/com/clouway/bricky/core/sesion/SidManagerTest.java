@@ -13,11 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
@@ -42,8 +38,6 @@ public class SidManagerTest {
   private SidManager manager;
   private HttpServletResponse response;
   private HttpServletRequest request;
-  private Provider<HttpServletResponse> responseProvider;
-  private Provider<HttpServletRequest> requestProvider;
   private SessionRepository repository;
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
@@ -75,7 +69,7 @@ public class SidManagerTest {
       will(returnValue(false));
     }});
 
-    assertFalse(manager.isCurrentUserSessionExpired());
+    assertFalse(manager.isUserSessionExpired());
   }
 
   @Test
@@ -85,7 +79,30 @@ public class SidManagerTest {
       will(returnValue(new Cookie[]{}));
     }});
 
-    assertTrue(manager.isCurrentUserSessionExpired());
+    assertTrue(manager.isUserSessionExpired());
+  }
+
+  @Test
+  public void refreshCurrentUserSession() throws Exception {
+    context.checking(new Expectations() {{
+      oneOf(request).getCookies();
+      will(returnValue(dummySession()));
+      oneOf(repository).refreshSession(with(any(String.class)));
+    }});
+
+    manager.refreshUserSession();
+  }
+
+  @Test
+  public void removeRedundantSession() throws Exception {
+    context.checking(new Expectations() {{
+      oneOf(request).getCookies();
+      will(returnValue(dummySession()));
+      oneOf(response).addCookie(with(any(Cookie.class)));
+      oneOf(repository).clearSession(with(any(String.class)));
+    }});
+
+    manager.closeUserSession();
   }
 
   private User dummyUser() {

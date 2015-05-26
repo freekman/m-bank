@@ -1,5 +1,5 @@
 /**
- * ngbp - v0.3.2 - 2015-05-22
+ * ngbp - v0.3.2 - 2015-05-25
  * https://github.com/ngbp/ngbp
  *
  * Copyright (c) 2015 Josh David Miller
@@ -38733,14 +38733,14 @@ bankModule
 
           $scope.lookup = function (user) {
             userGateway.lookup(user).then(function (data) {
-              $scope.statusIsOk = data.valid;
+              $scope.statusIsOk = data.isValid;
               $scope.statusMessages = data.messages;
             });
           };
 
           $scope.register = function (user) {
             userGateway.register(user).then(function (data) {
-              $scope.statusIsOk = data.valid;
+              $scope.statusIsOk = data.isValid;
               $scope.statusMessages = data.messages;
             });
           };

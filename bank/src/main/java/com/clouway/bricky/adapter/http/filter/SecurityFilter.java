@@ -10,6 +10,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -18,9 +20,11 @@ import java.io.IOException;
 @Singleton
 public class SecurityFilter implements Filter {
 
+  private SessionManager manager;
+
   @Inject
   public SecurityFilter(SessionManager manager) {
-
+    this.manager = manager;
   }
 
   @Override
@@ -31,6 +35,29 @@ public class SecurityFilter implements Filter {
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
+    HttpServletRequest req = (HttpServletRequest) servletRequest;
+    HttpServletResponse resp = (HttpServletResponse) servletResponse;
+
+    boolean sessionExpired = manager.isUserSessionExpired();
+    if (sessionExpired) {
+      manager.closeUserSession();
+    }
+
+    String requestUri = req.getRequestURI();
+    if (sessionExpired && requestUri.equalsIgnoreCase("/welcome")) {
+      resp.sendRedirect("/login");
+      return;
+    }
+
+    if (!sessionExpired) {
+      manager.refreshUserSession();
+      if (requestUri.equalsIgnoreCase("/login") || requestUri.equalsIgnoreCase("/register")) {
+        resp.sendRedirect("/welcome");
+        return;
+      }
+    }
+
+    filterChain.doFilter(req, resp);
   }
 
   @Override

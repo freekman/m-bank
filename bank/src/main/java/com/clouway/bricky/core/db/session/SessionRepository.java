@@ -9,4 +9,8 @@ public interface SessionRepository {
   void addSession(User user, String sid);
 
   boolean isSessionExpired(String sid);
+
+  void refreshSession(String sid);
+
+  void clearSession(String sid);
 }

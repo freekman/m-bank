@@ -5,11 +5,13 @@ import com.clouway.bricky.core.user.User;
 import com.google.inject.Inject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 
 import java.util.Date;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.ne;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
@@ -28,12 +30,11 @@ public class PersistentSessionRepository implements SessionRepository {
 
   @Override
   public void addSession(User user, String sid) {
-    Date time = clock.newExpirationTime();
     collection.updateOne(eq("username", user.username),
             new Document("$set",
                     new Document("session",
                             new Document("sid", sid)
-                                    .append("expiration", time.getTime()))));
+                                    .append("expiration", clock.newExpirationTime().getTime()))));
   }
 
   @Override
@@ -44,6 +45,21 @@ public class PersistentSessionRepository implements SessionRepository {
     }
     long expiration = ((Document) user.get("session")).getLong("expiration");
     long current = clock.getTime().getTime();
-    return expiration < current;
+    return current > expiration;
   }
+
+  @Override
+  public void refreshSession(String sid) {
+    collection.updateOne(eq("session.sid", sid),
+            new Document("$set",
+                    new Document("session.expiration", clock.newExpirationTime().getTime())));
+  }
+
+  @Override
+  public void clearSession(String sid) {
+    collection.updateOne(eq("session.sid", sid),
+            new Document("$set",
+                    new Document("session.expiration", 0l)));
+  }
+
 }
