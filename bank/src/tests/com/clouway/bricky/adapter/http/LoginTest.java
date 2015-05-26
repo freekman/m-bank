@@ -45,7 +45,7 @@ public class LoginTest {
     }});
 
     Reply<?> reply = login.login();
-    assertThat(reply, isEqualToReply(Reply.saying().redirect("#")));
+    assertThat(reply, isEqualToReply(Reply.saying().redirect("#/account")));
     assertThat(login.messages, is(empty()));
   }
 

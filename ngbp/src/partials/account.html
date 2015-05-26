@@ -1,0 +1,85 @@
+<div class="container">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/account">Bank</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/#/">Register</a></li>
+                    <li class="active"><a href="#/account">Account</a></li>
+                </ul>
+            </div>
+
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+
+    <div class="top-">
+        <h2>Account information</h2>
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6">
+            <div class="pull-left label label-success info">Welcome:${name}</div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="pull-right label label-primary info">Balance:${balance}</div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-5 jumbotron">
+            <form action="/welcome" method="post">
+                <div class="form-group">
+                    <input type="hidden" name="operation" value="deposit">
+                    <label for="deposit">Deposit</label>
+                    <input id="deposit" class="form-control" type="text" name="amount"
+                           placeholder="Please enter amount to deposit">
+                </div>
+                <input class="btn btn-primary" type="submit">
+            </form>
+        </div>
+
+        <div class="col-lg-2"></div>
+
+        <div class="col-lg-5 jumbotron">
+            <form action="/welcome" method="post">
+                <div class="form-group">
+                    <input type="hidden" name="operation" value="withdraw">
+                    <label for="withdraw">Withdraw</label>
+                    <input id="withdraw" class="form-control" type="text" name="amount"
+                           placeholder="Please enter amount to withdraw">
+                </div>
+                <input class="btn btn-primary" type="submit">
+            </form>
+        </div>
+
+    </div>
+
+    @ShowIf(!transactionErrors.isEmpty())
+    <div class="panel panel-warning">
+        <div class="panel-heading">Operation failed</div>
+        <div class="panel-body">
+            <ul>
+                @Repeat(items=transactionErrors, var="message")
+                <li>${message}</li>
+            </ul>
+        </div>
+    </div>
+
+
+</div>

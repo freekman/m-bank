@@ -26,5 +26,8 @@ public interface SessionManager {
    */
   void refreshUserSession();
 
+  /**
+   * Remove current user session references from persistence layer and resources.
+   */
   void closeUserSession();
 }

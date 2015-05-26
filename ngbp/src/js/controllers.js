@@ -21,6 +21,9 @@ bankModule
             });
           };
         }])
+        .controller('accountCtrl', ['$scope', function ($scope) {
+
+        }])
         .controller('inputCtrl', ['$scope', function ($scope) { // for test page
           $scope.user = {name: 'guest', last: 'visitor'};
         }]);

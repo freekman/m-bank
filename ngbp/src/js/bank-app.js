@@ -17,5 +17,9 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/inputTest.html',
             controller: 'inputCtrl'
           })
+          .when('/account', {
+            templateUrl: 'partials/account.html',
+            controller: 'accountCtrl'
+          })
           .otherwise({redirectTo: '/phones'});
 }]);

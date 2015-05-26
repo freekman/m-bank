@@ -5,19 +5,14 @@ import com.clouway.bricky.core.user.User;
 import com.google.inject.Inject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 
-import java.util.Date;
-
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.ne;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
 public class PersistentSessionRepository implements SessionRepository {
-
 
   private final MongoCollection<Document> collection;
   private final SessionClock clock;

@@ -52,7 +52,7 @@ public class SecurityFilter implements Filter {
     if (!sessionExpired) {
       manager.refreshUserSession();
       if (requestUri.equalsIgnoreCase("/login") || requestUri.equalsIgnoreCase("/register")) {
-        resp.sendRedirect("/welcome");
+        resp.sendRedirect("#/account");
         return;
       }
     }

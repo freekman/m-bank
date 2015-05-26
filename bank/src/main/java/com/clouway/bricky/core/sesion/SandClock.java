@@ -1,7 +1,5 @@
 package com.clouway.bricky.core.sesion;
 
-import org.joda.time.DateTime;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -9,11 +7,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class ReaperClock implements SessionClock {
+public class SandClock implements SessionClock {
 
   private final int durationInSeconds;
 
-  public ReaperClock(long duration, TimeUnit timeUnit) {
+  public SandClock(long duration, TimeUnit timeUnit) {
     if (duration < 1) {
       throw new IllegalStateException();
     }

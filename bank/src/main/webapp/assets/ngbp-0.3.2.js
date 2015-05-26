@@ -1,5 +1,5 @@
 /**
- * ngbp - v0.3.2 - 2015-05-25
+ * ngbp - v0.3.2 - 2015-05-26
  * https://github.com/ngbp/ngbp
  *
  * Copyright (c) 2015 Josh David Miller
@@ -38720,6 +38720,10 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/inputTest.html',
             controller: 'inputCtrl'
           })
+          .when('/account', {
+            templateUrl: 'partials/account.html',
+            controller: 'accountCtrl'
+          })
           .otherwise({redirectTo: '/phones'});
 }]);
 /**
@@ -38744,6 +38748,9 @@ bankModule
               $scope.statusMessages = data.messages;
             });
           };
+        }])
+        .controller('accountCtrl', ['$scope', function ($scope) {
+
         }])
         .controller('inputCtrl', ['$scope', function ($scope) { // for test page
           $scope.user = {name: 'guest', last: 'visitor'};

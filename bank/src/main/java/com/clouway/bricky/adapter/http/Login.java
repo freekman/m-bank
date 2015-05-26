@@ -43,7 +43,7 @@ public class Login {
       messages.add("Wrong username or password");
       return null;
     }
-    return Reply.saying().redirect("#");
+    return Reply.saying().redirect("#/account");
   }
 
 }

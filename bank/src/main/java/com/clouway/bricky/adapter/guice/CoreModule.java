@@ -2,18 +2,17 @@ package com.clouway.bricky.adapter.guice;
 
 import com.clouway.bricky.adapter.http.service.FormResponse;
 import com.clouway.bricky.core.Registry;
-import com.clouway.bricky.core.sesion.ReaperClock;
+import com.clouway.bricky.core.sesion.SandClock;
 import com.clouway.bricky.core.sesion.SessionClock;
 import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.sesion.SidManager;
-import com.clouway.bricky.core.validation.FormValidator;
-import com.clouway.bricky.core.validation.Validator;
 import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.core.user.UserDTO;
 import com.clouway.bricky.core.user.UserRegistry;
+import com.clouway.bricky.core.validation.FormValidator;
+import com.clouway.bricky.core.validation.Validator;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import org.eclipse.jetty.server.session.JDBCSessionManager.Session;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +39,7 @@ public class CoreModule extends AbstractModule {
 
   @Provides
   SessionClock provideClock() {
-    return new ReaperClock(1, TimeUnit.MINUTES);
+    return new SandClock(1, TimeUnit.MINUTES);
   }
 
 }

@@ -2,7 +2,6 @@ package com.clouway.bricky.core.sesion;
 
 import com.clouway.bricky.core.db.session.SessionRepository;
 import com.clouway.bricky.core.user.User;
-import com.google.inject.Provider;
 import org.jetbrains.annotations.NotNull;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
@@ -21,35 +20,20 @@ import static org.junit.Assert.*;
  */
 public class SidManagerTest {
 
-  private class FakeProvider<T> implements Provider<T> {
-
-    private final T item;
-
-    private FakeProvider(T item) {
-      this.item = item;
-    }
-
-    @Override
-    public T get() {
-      return item;
-    }
-  }
-
-
   private SidManager manager;
   private HttpServletResponse response;
   private HttpServletRequest request;
   private SessionRepository repository;
+
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
-
 
   @Before
   public void setUp() throws Exception {
     repository = context.mock(SessionRepository.class);
     response = context.mock(HttpServletResponse.class);
     request = context.mock(HttpServletRequest.class);
-    manager = new SidManager(getFakeSession(),repository);
+    manager = new SidManager(new FakeSession(request,response), repository);
   }
 
   @Test
@@ -58,6 +42,7 @@ public class SidManagerTest {
       oneOf(response).addCookie(with(any(Cookie.class)));
       oneOf(repository).addSession(with(any(User.class)), with(any(String.class)));
     }});
+
     manager.openSessionFor(dummyUser());
   }
 
@@ -106,16 +91,14 @@ public class SidManagerTest {
     manager.closeUserSession();
   }
 
+  @NotNull
   private User dummyUser() {
     return new User("Marian", "pswd");
   }
 
+  @NotNull
   private Cookie[] dummySession() {
     return new Cookie[]{new Cookie("sid", "session_id")};
   }
 
-  @NotNull
-  private CurrentSession getFakeSession() {
-    return new CurrentSession(new Encrypt(), new FakeProvider<HttpServletRequest>(request), new FakeProvider<HttpServletResponse>(response));
-  }
 }

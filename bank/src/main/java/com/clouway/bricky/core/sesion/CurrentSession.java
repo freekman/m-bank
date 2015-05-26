@@ -3,7 +3,6 @@ package com.clouway.bricky.core.sesion;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.Provides;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
