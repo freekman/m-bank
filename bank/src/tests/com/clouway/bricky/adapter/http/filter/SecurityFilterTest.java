@@ -73,7 +73,7 @@ public class SecurityFilterTest {
       oneOf(manager).refreshUserSession();
       oneOf(request).getRequestURI();
       will(returnValue("/login"));
-      oneOf(response).sendRedirect("/account");
+      oneOf(response).sendRedirect("#/account");
     }});
 
     filter.doFilter(request, response, chain);

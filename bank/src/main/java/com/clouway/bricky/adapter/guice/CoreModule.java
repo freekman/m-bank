@@ -1,6 +1,6 @@
 package com.clouway.bricky.adapter.guice;
 
-import com.clouway.bricky.adapter.http.service.FormResponse;
+import com.clouway.bricky.adapter.http.service.MessagesDTO;
 import com.clouway.bricky.core.Registry;
 import com.clouway.bricky.core.sesion.SandClock;
 import com.clouway.bricky.core.sesion.SessionClock;
@@ -28,12 +28,12 @@ public class CoreModule extends AbstractModule {
   }
 
   @Provides
-  Validator<FormResponse, UserDTO> provideUserDTOValidator() {
+  Validator<MessagesDTO, UserDTO> provideUserDTOValidator() {
     return new FormValidator<UserDTO>();
   }
 
   @Provides
-  Validator<FormResponse, User> provideUserValidator() {
+  Validator<MessagesDTO, User> provideUserValidator() {
     return new FormValidator<User>();
   }
 

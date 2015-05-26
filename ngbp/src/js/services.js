@@ -11,7 +11,6 @@ gatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
               .send('GET', 'register/new?username=' + user.name, {});
     },
     register: function (user) {
-      console.log(user);
       return HttpRequest
               .send('POST', 'register/new',
               {

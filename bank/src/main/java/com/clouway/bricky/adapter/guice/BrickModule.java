@@ -1,6 +1,7 @@
 package com.clouway.bricky.adapter.guice;
 
 import com.clouway.bricky.adapter.http.Login;
+import com.clouway.bricky.adapter.http.service.LogoutService;
 import com.clouway.bricky.adapter.http.service.RegisterService;
 import com.google.sitebricks.SitebricksModule;
 
@@ -12,8 +13,7 @@ public class BrickModule extends SitebricksModule {
   @Override
   protected void configureSitebricks() {
     at("/register/new").serve(RegisterService.class);
+    at("/logout").serve(LogoutService.class);
     at("/login").show(Login.class);
-
-
   }
 }

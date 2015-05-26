@@ -9,14 +9,25 @@ bankModule
 
           $scope.lookup = function (user) {
             userGateway.lookup(user).then(function (data) {
-              $scope.statusIsOk = data.isValid;
-              $scope.statusMessages = data.messages;
+              $scope.statusIsOk = true;
+              $scope.statusMessages = [data];
+            }, function (data) {
+              console.log(data);
+              $scope.statusIsOk = false;
+              $scope.statusMessages = [data];
             });
           };
 
           $scope.register = function (user) {
             userGateway.register(user).then(function (data) {
-              $scope.statusIsOk = data.isValid;
+              console.log("controller success:");
+              console.log(data);
+              $scope.statusIsOk = true;
+              $scope.statusMessages = data.messages;
+            }, function (data) {
+              console.log("controller error:");
+              console.log(data);
+              $scope.statusIsOk = false;
               $scope.statusMessages = data.messages;
             });
           };

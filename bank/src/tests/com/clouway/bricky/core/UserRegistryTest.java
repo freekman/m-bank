@@ -1,8 +1,7 @@
 package com.clouway.bricky.core;
 
-import com.clouway.bricky.adapter.http.service.FormResponse;
+import com.clouway.bricky.adapter.http.service.MessagesDTO;
 import com.clouway.bricky.core.db.user.UserRepository;
-import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.core.user.UserRegistry;
 import com.clouway.bricky.core.validation.ValidationRule;
@@ -15,8 +14,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
@@ -24,7 +21,7 @@ public class UserRegistryTest {
 
   private UserRegistry userRegistry;
   private UserRepository repository;
-  private Validator<FormResponse, User> validator;
+  private Validator<MessagesDTO, User> validator;
 
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
@@ -92,12 +89,12 @@ public class UserRegistryTest {
     return new User("Marian", "pswd");
   }
 
-  private FormResponse validFormResponse() {
-    return new FormResponse(true, Lists.<String>newArrayList());
+  private MessagesDTO validFormResponse() {
+    return new MessagesDTO(Lists.<String>newArrayList());
   }
 
-  private FormResponse invalidFormResponse() {
-    return new FormResponse(false, Lists.<String>newArrayList("Random error msg"));
+  private MessagesDTO invalidFormResponse() {
+    return new MessagesDTO("Random error msg");
   }
 
 

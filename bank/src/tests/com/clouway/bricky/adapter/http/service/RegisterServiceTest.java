@@ -44,7 +44,7 @@ public class RegisterServiceTest {
     }});
 
     Reply<?> reply = service.lookupUser(request);
-    assertThat(reply, isEqualToReply(Reply.with(new FormResponse(false, Lists.newArrayList("Username exists")))));
+    assertThat(reply, isEqualToReply(Reply.with(new MessagesDTO(Lists.newArrayList("Username exists")))));
   }
 
   @Test
@@ -60,7 +60,7 @@ public class RegisterServiceTest {
     }});
 
     Reply<?> reply = service.lookupUser(request);
-    assertThat(reply, isEqualToReply(Reply.with(new FormResponse(true, Lists.newArrayList("Username is free")))));
+    assertThat(reply, isEqualToReply(Reply.with(new MessagesDTO(Lists.newArrayList("Username is free")))));
   }
 
 }
