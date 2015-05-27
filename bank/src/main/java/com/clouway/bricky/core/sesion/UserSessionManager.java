@@ -8,13 +8,13 @@ import com.google.inject.Inject;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class SidManager implements SessionManager {
+public class UserSessionManager implements SessionManager {
 
   private SessionRepository repository;
-  private CurrentSession session;
+  private Session session;
 
   @Inject
-  public SidManager(CurrentSession session, SessionRepository repository) {
+  public UserSessionManager(Session session, SessionRepository repository) {
     this.session = session;
     this.repository = repository;
   }

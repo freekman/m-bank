@@ -29,22 +29,22 @@ describe('Controllers', function () {
       scope.register(dummy);
       expect(userGateway.register).toHaveBeenCalledWith(dummy);
 
-      deferred.resolve({valid: true, messages: ['Registration successful']});
+      deferred.resolve('Registration successful');
       scope.$digest();
 
       expect(scope.statusIsOk).toBeTruthy();
-      expect(scope.statusMessages).toEqual(['Registration successful']);
+      expect(scope.statusMessage).toEqual('Registration successful');
     });
 
     it('should lookup free username on server', function () {
       scope.lookup(dummy);
       expect(userGateway.lookup).toHaveBeenCalledWith(dummy);
 
-      deferred.resolve({valid: true, messages: ['Username is free']});
+      deferred.resolve('Username is free');
       scope.$digest();
 
       expect(scope.statusIsOk).toBeTruthy();
-      expect(scope.statusMessages).toEqual(['Username is free']);
+      expect(scope.statusMessage).toEqual('Username is free');
     });
 
   });

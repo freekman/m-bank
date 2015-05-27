@@ -1,8 +1,5 @@
-package com.clouway.bricky.adapter.guice;
+package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.adapter.http.Login;
-import com.clouway.bricky.adapter.http.service.LogoutService;
-import com.clouway.bricky.adapter.http.service.RegisterService;
 import com.google.sitebricks.SitebricksModule;
 
 /**

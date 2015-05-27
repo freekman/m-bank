@@ -20,10 +20,10 @@ import static org.junit.Assert.*;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class PersistentSessionRepositoryTest {
+public class MongoSessionRepositoryTest {
 
   private SessionClock clock;
-  private PersistentSessionRepository repository;
+  private MongoSessionRepository repository;
 
   @Rule
   public FongoRule fongo = new FongoRule();
@@ -36,7 +36,7 @@ public class PersistentSessionRepositoryTest {
   public void setUp() throws Exception {
     clock = context.mock(SessionClock.class);
     db = fongo.getDatabase("bank");
-    repository = new PersistentSessionRepository(db, clock);
+    repository = new MongoSessionRepository(db, clock);
   }
 
   @Test

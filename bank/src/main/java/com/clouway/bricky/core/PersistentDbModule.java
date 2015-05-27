@@ -1,6 +1,6 @@
-package com.clouway.bricky.adapter.guice;
+package com.clouway.bricky.core;
 
-import com.clouway.bricky.core.db.session.PersistentSessionRepository;
+import com.clouway.bricky.core.db.session.MongoSessionRepository;
 import com.clouway.bricky.core.db.session.SessionRepository;
 import com.clouway.bricky.core.db.user.MongoUserRepository;
 import com.clouway.bricky.core.db.user.UserRepository;
@@ -19,7 +19,7 @@ public class PersistentDbModule extends AbstractModule {
 
     bind(UserRepository.class).to(MongoUserRepository.class);
 
-    bind(SessionRepository.class).to(PersistentSessionRepository.class);
+    bind(SessionRepository.class).to(MongoSessionRepository.class);
   }
 
   @Provides

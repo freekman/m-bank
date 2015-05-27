@@ -1,7 +1,7 @@
 package com.clouway.bricky.adapter.http.service;
 
+import com.clouway.bricky.adapter.http.RegisterService;
 import com.clouway.bricky.core.db.user.UserRepository;
-import com.google.common.collect.Lists;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import org.jmock.Expectations;
@@ -44,7 +44,7 @@ public class RegisterServiceTest {
     }});
 
     Reply<?> reply = service.lookupUser(request);
-    assertThat(reply, isEqualToReply(Reply.with(new MessagesDTO(Lists.newArrayList("Username exists")))));
+    assertThat(reply, isEqualToReply(Reply.with("Username exists")));
   }
 
   @Test
@@ -60,7 +60,7 @@ public class RegisterServiceTest {
     }});
 
     Reply<?> reply = service.lookupUser(request);
-    assertThat(reply, isEqualToReply(Reply.with(new MessagesDTO(Lists.newArrayList("Username is free")))));
+    assertThat(reply, isEqualToReply(Reply.with("Username is free")));
   }
 
 }

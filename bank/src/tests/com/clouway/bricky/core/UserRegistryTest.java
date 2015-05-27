@@ -1,12 +1,11 @@
 package com.clouway.bricky.core;
 
-import com.clouway.bricky.adapter.http.service.MessagesDTO;
+import com.clouway.bricky.adapter.http.validation.ValidationRule;
+import com.clouway.bricky.adapter.http.validation.Validator;
 import com.clouway.bricky.core.db.user.UserRepository;
 import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.core.user.UserRegistry;
-import com.clouway.bricky.core.validation.ValidationRule;
-import com.clouway.bricky.core.validation.Validator;
-import com.google.common.collect.Lists;
+import com.google.common.base.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
@@ -21,7 +20,7 @@ public class UserRegistryTest {
 
   private UserRegistry userRegistry;
   private UserRepository repository;
-  private Validator<MessagesDTO, User> validator;
+  private Validator<User> validator;
 
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
@@ -37,7 +36,7 @@ public class UserRegistryTest {
   public void authorizeValidUser() throws Exception {
     context.checking(new Expectations() {{
       oneOf(validator).validate(with(any(User.class)), with(any(ValidationRule.class)));
-      will(returnValue(validFormResponse()));
+      will(returnValue(validResponse()));
 
       oneOf(repository).isAuthentic(with(any(User.class)));
       will(returnValue(true));
@@ -50,7 +49,7 @@ public class UserRegistryTest {
   public void failNonValidUserAuthorization() throws Exception {
     context.checking(new Expectations() {{
       oneOf(validator).validate(with(any(User.class)), with(any(ValidationRule.class)));
-      will(returnValue(invalidFormResponse()));
+      will(returnValue(invalidResponse()));
 
       never(repository).isAuthentic(with(any(User.class)));
     }});
@@ -62,7 +61,7 @@ public class UserRegistryTest {
   public void failNonAuthenticUserAuthorization() throws Exception {
     context.checking(new Expectations() {{
       oneOf(validator).validate(with(any(User.class)), with(any(ValidationRule.class)));
-      will(returnValue(validFormResponse()));
+      will(returnValue(validResponse()));
 
       oneOf(repository).isAuthentic(with(any(User.class)));
       will(returnValue(false));
@@ -70,31 +69,17 @@ public class UserRegistryTest {
     userRegistry.authorize(testUser());
   }
 
-  //todo
-//  @Test
-//  public void openUserSession() throws Exception {
-//    final User user = testUser();
-//    context.checking(new Expectations() {{
-//      oneOf(sidManager).openSessionFor(user);
-//      will(returnValue("123"));
-//      oneOf(repository).addSession(user, "123");
-//    }});
-//
-//    userRegistry.attachSession(user);
-//    assertFalse(userRegistry.isCurrentUserExpired());
-//  }
-
   @NotNull
   private User testUser() {
     return new User("Marian", "pswd");
   }
 
-  private MessagesDTO validFormResponse() {
-    return new MessagesDTO(Lists.<String>newArrayList());
+  private Optional validResponse() {
+    return Optional.absent();
   }
 
-  private MessagesDTO invalidFormResponse() {
-    return new MessagesDTO("Random error msg");
+  private Optional invalidResponse() {
+    return Optional.of("Random error msg");
   }
 
 

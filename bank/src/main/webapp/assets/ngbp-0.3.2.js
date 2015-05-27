@@ -1,5 +1,5 @@
 /**
- * ngbp - v0.3.2 - 2015-05-26
+ * ngbp - v0.3.2 - 2015-05-27
  * https://github.com/ngbp/ngbp
  *
  * Copyright (c) 2015 Josh David Miller
@@ -38738,30 +38738,24 @@ bankModule
           $scope.lookup = function (user) {
             userGateway.lookup(user).then(function (data) {
               $scope.statusIsOk = true;
-              $scope.statusMessages = [data];
+              $scope.statusMessage = data;
             }, function (data) {
-              console.log(data);
               $scope.statusIsOk = false;
-              $scope.statusMessages = [data];
+              $scope.statusMessage = data;
             });
           };
 
           $scope.register = function (user) {
             userGateway.register(user).then(function (data) {
-              console.log("controller success:");
-              console.log(data);
               $scope.statusIsOk = true;
-              $scope.statusMessages = data.messages;
+              $scope.statusMessage = data;
             }, function (data) {
-              console.log("controller error:");
-              console.log(data);
               $scope.statusIsOk = false;
-              $scope.statusMessages = data.messages;
+              $scope.statusMessage = data;
             });
           };
         }])
         .controller('accountCtrl', ['$scope', function ($scope) {
-
         }])
         .controller('inputCtrl', ['$scope', function ($scope) { // for test page
           $scope.user = {name: 'guest', last: 'visitor'};
@@ -38780,14 +38774,10 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
     var deferred = $q.defer();
     $http({method: method, url: url, data: data})
             .success(function (data) {
-              console.log("httpModule success:");
-              console.log(data);
               deferred.resolve(data);
               ngProgress.complete();
             })
             .error(function (data) {
-              console.log("httpModule error:");
-              console.log(data);
               deferred.reject(data);
               ngProgress.complete();
             });
@@ -38797,38 +38787,7 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
 
 httpModule.factory('authInterceptor', ['$q', function ($q) {
   return {
-    //// optional method
-    //'request': function (config) {
-    //  // do something on success
-    //  return config;
-    //},
-    //
-    //// optional method
-    //'requestError': function (rejection) {
-    //  // do something on error
-    //  if (canRecover(rejection)) {
-    //    return responseOrNewPromise
-    //  }
-    //  return $q.reject(rejection);
-    //},
-
-
-    // optional method
-    'response': function (response) {
-      console.log("interceptor success:");
-      console.log(response);
-      if (response.status == 401) {
-        console.log("Repose 401");
-      }
-
-      return response;
-    },
-
-    // optional method
     'responseError': function (rejection) {
-      console.log("interceptor error:");
-      console.log(rejection);
-
       return $q.reject(rejection);
     }
   };

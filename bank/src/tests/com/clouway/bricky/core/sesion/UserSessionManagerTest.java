@@ -18,9 +18,9 @@ import static org.junit.Assert.*;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class SidManagerTest {
+public class UserSessionManagerTest {
 
-  private SidManager manager;
+  private UserSessionManager manager;
   private HttpServletResponse response;
   private HttpServletRequest request;
   private SessionRepository repository;
@@ -33,7 +33,7 @@ public class SidManagerTest {
     repository = context.mock(SessionRepository.class);
     response = context.mock(HttpServletResponse.class);
     request = context.mock(HttpServletRequest.class);
-    manager = new SidManager(new FakeSession(request,response), repository);
+    manager = new UserSessionManager(new FakeSession(request,response), repository);
   }
 
   @Test

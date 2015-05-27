@@ -74,12 +74,10 @@
 
                 <div class="col-lg-4">
                     <div class="panel top-buffer" ng-class="statusIsOk ? 'panel-success':'panel-danger' "
-                         ng-show="statusMessages != null">
+                         ng-show="statusMessage != null">
                         <div class="panel-heading">Message</div>
                         <div class="panel-body">
-                            <ul ng-repeat="msg in statusMessages">
-                                {{msg}}
-                            </ul>
+                            <ul>{{statusMessage}}</ul>
                         </div>
                     </div>
                 </div>

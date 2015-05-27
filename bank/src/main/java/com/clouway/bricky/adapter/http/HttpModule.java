@@ -1,39 +1,40 @@
-package com.clouway.bricky.adapter.guice;
+package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.adapter.http.service.MessagesDTO;
+import com.clouway.bricky.adapter.http.validation.FormValidator;
+import com.clouway.bricky.adapter.http.validation.Validator;
 import com.clouway.bricky.core.Registry;
+import com.clouway.bricky.core.sesion.CurrentSession;
 import com.clouway.bricky.core.sesion.SandClock;
+import com.clouway.bricky.core.sesion.Session;
 import com.clouway.bricky.core.sesion.SessionClock;
 import com.clouway.bricky.core.sesion.SessionManager;
-import com.clouway.bricky.core.sesion.SidManager;
+import com.clouway.bricky.core.sesion.UserSessionManager;
 import com.clouway.bricky.core.user.User;
-import com.clouway.bricky.core.user.UserDTO;
 import com.clouway.bricky.core.user.UserRegistry;
-import com.clouway.bricky.core.validation.FormValidator;
-import com.clouway.bricky.core.validation.Validator;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Marian Zlatev (mzlatev91@gmail.com)
+ * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class CoreModule extends AbstractModule {
+public class HttpModule extends AbstractModule {
 
   @Override
   protected void configure() {
     bind(Registry.class).to(UserRegistry.class);
-    bind(SessionManager.class).to(SidManager.class);
+    bind(Session.class).to(CurrentSession.class);
+    bind(SessionManager.class).to(UserSessionManager.class);
   }
 
   @Provides
-  Validator<MessagesDTO, UserDTO> provideUserDTOValidator() {
+  Validator<UserDTO> provideUserDTOValidator() {
     return new FormValidator<UserDTO>();
   }
 
   @Provides
-  Validator<MessagesDTO, User> provideUserValidator() {
+  Validator<User> provideUserValidator() {
     return new FormValidator<User>();
   }
 
@@ -41,5 +42,4 @@ public class CoreModule extends AbstractModule {
   SessionClock provideClock() {
     return new SandClock(1, TimeUnit.MINUTES);
   }
-
 }

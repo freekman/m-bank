@@ -1,9 +1,9 @@
-package com.clouway.bricky.core.user;
+package com.clouway.bricky.adapter.http;
 
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
-public class UserDTO {
+class UserDTO {
 
   public String username;
   public String password;

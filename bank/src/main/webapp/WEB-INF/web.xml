@@ -15,7 +15,7 @@
   </filter-mapping>
 
   <listener>
-    <listener-class>com.clouway.bricky.adapter.guice.GuiceListener</listener-class>
+    <listener-class>com.clouway.bricky.GuiceListener</listener-class>
   </listener>
 
 </web-app>

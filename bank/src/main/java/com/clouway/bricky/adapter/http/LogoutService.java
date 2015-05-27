@@ -1,4 +1,4 @@
-package com.clouway.bricky.adapter.http.service;
+package com.clouway.bricky.adapter.http;
 
 import com.clouway.bricky.core.sesion.SessionManager;
 import com.google.inject.Inject;

@@ -12,13 +12,13 @@ import static com.mongodb.client.model.Filters.eq;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class PersistentSessionRepository implements SessionRepository {
+public class MongoSessionRepository implements SessionRepository {
 
   private final MongoCollection<Document> collection;
   private final SessionClock clock;
 
   @Inject
-  public PersistentSessionRepository(MongoDatabase database, SessionClock clock) {
+  public MongoSessionRepository(MongoDatabase database, SessionClock clock) {
     this.clock = clock;
     collection = database.getCollection("accounts");
   }

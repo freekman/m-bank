@@ -1,9 +1,7 @@
-package com.clouway.bricky.core.user;
+package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.core.validation.ValidationRule;
-import com.google.common.collect.Lists;
-
-import java.util.List;
+import com.clouway.bricky.adapter.http.validation.ValidationRule;
+import com.google.common.base.Optional;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
@@ -14,24 +12,19 @@ public class UserDTORule implements ValidationRule<UserDTO> {
   private String passwordRule = "[^\\^!@#$%^&*()_=]{3,20}";
 
   @Override
-  public List<String> apply(UserDTO user) {
-
+  public Optional<String> apply(UserDTO user) {
     if (user.password == null || user.username == null || user.repassword == null) {
-      return Lists.newArrayList("Please enter all fields");
+      return Optional.of("Please enter all fields");
     }
-
-    List<String> errorList = Lists.newArrayList();
-
     if (!user.username.matches(nameRule)) {
-      errorList.add("Please enter valid username.");
+      return Optional.of("Please enter valid username.");
     }
     if (!user.password.equals(user.repassword)) {
-      errorList.add("Please enter passwords that match.");
+      return Optional.of("Please enter passwords that match.");
     }
     if (!user.password.matches(passwordRule) || !user.repassword.matches(passwordRule)) {
-      errorList.add("Please enter valid password.");
+      return Optional.of("Please enter valid password.");
     }
-
-    return errorList;
+    return Optional.absent();
   }
 }

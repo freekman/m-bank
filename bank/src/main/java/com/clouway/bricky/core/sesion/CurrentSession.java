@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class CurrentSession {
+public class CurrentSession implements Session {
 
   private Encrypt encrypt;
   private Provider<HttpServletRequest> requestProvider;
@@ -24,6 +24,7 @@ public class CurrentSession {
     this.responseProvider = responseProvider;
   }
 
+  @Override
   public String attach() {
     HttpServletResponse response = responseProvider.get();
     String sid = encrypt.sha1(Double.toString(Math.random()));
@@ -31,12 +32,14 @@ public class CurrentSession {
     return sid;
   }
 
+  @Override
   public void detach() {
     Cookie removalCookie = new Cookie("sid", "");
     removalCookie.setMaxAge(0);
     responseProvider.get().addCookie(removalCookie);
   }
 
+  @Override
   public Optional<String> getSid() {
     HttpServletRequest request = requestProvider.get();
     for (Cookie each : request.getCookies()) {
@@ -46,6 +49,5 @@ public class CurrentSession {
     }
     return Optional.absent();
   }
-
 
 }
