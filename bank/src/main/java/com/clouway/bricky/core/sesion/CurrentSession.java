@@ -42,9 +42,13 @@ public class CurrentSession implements Session {
   @Override
   public Optional<String> getSid() {
     HttpServletRequest request = requestProvider.get();
-    for (Cookie each : request.getCookies()) {
-      if ("sid".equals(each.getName())) {
-        return Optional.of(each.getValue());
+
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie each : cookies) {
+        if ("sid".equals(each.getName())) {
+          return Optional.of(each.getValue());
+        }
       }
     }
     return Optional.absent();

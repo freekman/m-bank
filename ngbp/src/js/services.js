@@ -3,21 +3,32 @@
  */
 var gatewayModule = angular.module('gateway', ['httpModule']);
 
-gatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
-  'use strict';
-  return {
-    lookup: function (user) {
-      return HttpRequest
-              .send('GET', 'register/new?username=' + user.name, {});
-    },
-    register: function (user) {
-      return HttpRequest
-              .send('POST', 'register/new',
-              {
-                username: user.name,
-                password: user.password,
-                repassword: user.repassword
-              });
-    }
-  };
-}]);
+gatewayModule
+        .service('userGateway', ['httpRequest', function (httpRequest) {
+          'use strict';
+          return {
+            lookup: function (user) {
+              return httpRequest
+                      .send('GET', '/r/register?username=' + user.name, {});
+            },
+            register: function (user) {
+              return httpRequest
+                      .send('POST', '/r/register',
+                      {
+                        username: user.name,
+                        password: user.password,
+                        repassword: user.repassword
+                      });
+            }
+          };
+        }])
+        .service('accGateway', ['httpRequest', function (httpRequest) {
+          return {
+            deposit: function (amount) {
+              return httpRequest.send('POST', '/r/deposit', amount);
+            },
+            withdraw: function (amount) {
+              return httpRequest.send('POST', '/r/withdraw', amount);
+            }
+          };
+        }]);

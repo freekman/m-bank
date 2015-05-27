@@ -19,7 +19,7 @@
                     <li class="active"><a href="#/account">Account</a></li>
                 </ul>
                 <ul class="nav navbar-right navbar-nav">
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="/r/logout">Logout</a></li>
                 </ul>
             </div>
 
@@ -29,7 +29,7 @@
     </nav>
 
 
-    <div class="top-">
+    <div class="top-buffer">
         <h2>Account information</h2>
     </div>
 
@@ -47,29 +47,34 @@
     <div class="row">
 
         <div class="col-lg-5 jumbotron">
-            <form action="/welcome" method="post">
+            <form name="deposit">
                 <div class="form-group">
-                    <input type="hidden" name="operation" value="deposit">
                     <label for="deposit">Deposit</label>
-                    <input id="deposit" class="form-control" type="text" name="amount"
-                           placeholder="Please enter amount to deposit">
+                    <input id="deposit" class="form-control" type="text" name="depositAmount" ng-model="depositAmount"
+                           placeholder="Please enter amount to deposit" required ng-pattern="/^[1-9][0-9]{0,5}$/">
                 </div>
-                <input class="btn btn-primary" type="submit">
+                <button class="btn btn-primary" ng-disabled="deposit.depositAmount.$invalid">Submit</button>
             </form>
         </div>
 
         <div class="col-lg-2"></div>
 
         <div class="col-lg-5 jumbotron">
-            <form action="/welcome" method="post">
+            <form name="withdraw">
                 <div class="form-group">
-                    <input type="hidden" name="operation" value="withdraw">
                     <label for="withdraw">Withdraw</label>
-                    <input id="withdraw" class="form-control" type="text" name="amount"
-                           placeholder="Please enter amount to withdraw">
+                    <input id="withdraw" class="form-control" type="text" name="withdrawAmount" ng-model="withdrawAmount"
+                           placeholder="Please enter amount to withdraw" required ng-pattern="/^[1-9][0-9]{0,5}$/">
                 </div>
-                <input class="btn btn-primary" type="submit">
+                <button class="btn btn-primary" ng-disabled="withdraw.withdrawAmount.$invalid">Submit</button>
             </form>
+        </div>
+
+        <div>
+            <p>Deposit</p>
+            <p>{{depositAmount}}</p>
+            <p>Withdraw</p>
+            <p>{{withdrawAmount}}</p>
         </div>
 
     </div>

@@ -9,8 +9,8 @@ public class BrickModule extends SitebricksModule {
 
   @Override
   protected void configureSitebricks() {
-    at("/register/new").serve(RegisterService.class);
-    at("/logout").serve(LogoutService.class);
+    at("/r/register").serve(RegisterService.class);
+    at("/r/logout").serve(LogoutService.class);
     at("/login").show(Login.class);
   }
 }

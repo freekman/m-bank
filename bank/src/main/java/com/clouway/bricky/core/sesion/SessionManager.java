@@ -22,7 +22,7 @@ public interface SessionManager {
   boolean isUserSessionExpired();
 
   /**
-   * Updates expiration time of the current user's id. Or opens a new one if not opened.
+   * Updates expiration time of the current user's session. Or opens a new one if not opened.
    */
   void refreshUserSession();
 

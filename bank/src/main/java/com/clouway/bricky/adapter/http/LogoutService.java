@@ -11,7 +11,7 @@ import com.google.sitebricks.http.Post;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-@At("/logout")
+@At("/r/logout")
 @Service
 public class LogoutService {
 

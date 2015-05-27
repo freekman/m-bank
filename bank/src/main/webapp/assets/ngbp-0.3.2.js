@@ -38712,13 +38712,9 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
           .when('/', {
             templateUrl: 'partials/register.html',
             controller: 'registerCtrl'
-          }).when('/register', {
+          }).when('/r/register', {
             templateUrl: 'partials/register.html',
             controller: 'registerCtrl'
-          })
-          .when('/test', {
-            templateUrl: 'partials/inputTest.html',
-            controller: 'inputCtrl'
           })
           .when('/account', {
             templateUrl: 'partials/account.html',
@@ -38755,12 +38751,16 @@ bankModule
             });
           };
         }])
-        .controller('accountCtrl', ['$scope', function ($scope) {
-        }])
-        .controller('inputCtrl', ['$scope', function ($scope) { // for test page
-          $scope.user = {name: 'guest', last: 'visitor'};
+        .controller('accountCtrl', ['$scope', 'accGateway', function ($scope, accGateway) {
+          $scope.deposit = function (amount) {
+            accGateway.deposit(amount).then(function (balance) {
+                      $scope.balance = balance;
+                    }, function (data) {
+                      $scope.statusMessage = data;
+                    }
+            );
+          };
         }]);
-
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
@@ -38802,21 +38802,32 @@ httpModule.config(['$httpProvider', function ($httpProvider) {
  */
 var gatewayModule = angular.module('gateway', ['httpModule']);
 
-gatewayModule.service('userGateway', ['httpRequest', function (HttpRequest) {
-  'use strict';
-  return {
-    lookup: function (user) {
-      return HttpRequest
-              .send('GET', 'register/new?username=' + user.name, {});
-    },
-    register: function (user) {
-      return HttpRequest
-              .send('POST', 'register/new',
-              {
-                username: user.name,
-                password: user.password,
-                repassword: user.repassword
-              });
-    }
-  };
-}]);
+gatewayModule
+        .service('userGateway', ['httpRequest', function (httpRequest) {
+          'use strict';
+          return {
+            lookup: function (user) {
+              return httpRequest
+                      .send('GET', '/r/register?username=' + user.name, {});
+            },
+            register: function (user) {
+              return httpRequest
+                      .send('POST', '/r/register',
+                      {
+                        username: user.name,
+                        password: user.password,
+                        repassword: user.repassword
+                      });
+            }
+          };
+        }])
+        .service('accGateway', ['httpRequest', function (httpRequest) {
+          return {
+            deposit: function (amount) {
+              return httpRequest.send('POST', '/r/deposit', amount);
+            },
+            withdraw: function (amount) {
+              return httpRequest.send('POST', '/r/withdraw', amount);
+            }
+          };
+        }]);

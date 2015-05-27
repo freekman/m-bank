@@ -27,8 +27,13 @@ bankModule
             });
           };
         }])
-        .controller('accountCtrl', ['$scope', function ($scope) {
-        }])
-        .controller('inputCtrl', ['$scope', function ($scope) { // for test page
-          $scope.user = {name: 'guest', last: 'visitor'};
+        .controller('accountCtrl', ['$scope', 'accGateway', function ($scope, accGateway) {
+          $scope.deposit = function (amount) {
+            accGateway.deposit(amount).then(function (balance) {
+                      $scope.balance = balance;
+                    }, function (data) {
+                      $scope.statusMessage = data;
+                    }
+            );
+          };
         }]);

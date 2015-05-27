@@ -49,4 +49,50 @@ describe('Controllers', function () {
 
   });
 
+
+  describe('accountCtrl', function () {
+    var scope, accGateway, deferred;
+
+    beforeEach(module('bankCtrl'));
+
+    beforeEach(inject(function ($q) {
+      deferred = $q.defer();
+
+      accGateway = {
+        deposit: jasmine.createSpy().andReturn(deferred.promise),
+        withdraw: jasmine.createSpy().andReturn(deferred.promise)
+      };
+
+      inject(function ($rootScope, $controller) {
+        scope = $rootScope.$new();
+        $controller('accountCtrl', {$scope: scope, accGateway: accGateway});
+      });
+
+    }));
+
+
+    it('should perform deposit request and update balance', function () {
+      var amount = 15;
+      scope.deposit(amount);
+      expect(accGateway.deposit).toHaveBeenCalledWith(amount);
+
+      deferred.resolve(amount);
+      scope.$digest();
+
+      expect(scope.balance).toEqual(amount);
+    });
+
+    it('should notify for failed deposit request', function () {
+      var amount = 'five';
+      scope.deposit(amount);
+      expect(accGateway.deposit).toHaveBeenCalledWith(amount);
+
+      deferred.reject('Invalid operation');
+      scope.$digest();
+
+      expect(scope.statusMessage).toEqual('Invalid operation');
+    });
+
+  });
+
 });

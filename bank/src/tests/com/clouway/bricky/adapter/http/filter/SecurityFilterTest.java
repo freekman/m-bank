@@ -52,14 +52,13 @@ public class SecurityFilterTest {
   }
 
   @Test
-  public void removeRedundantSession() throws Exception {
+  public void removeRedundantSession() throws Exception { // TODO should redirect to login appropriately
     context.checking(new Expectations() {{
       oneOf(manager).isUserSessionExpired();
       will(returnValue(true));
-      oneOf(request).getRequestURI();
-      will(returnValue("/welcome"));
       oneOf(manager).closeUserSession();
-      oneOf(response).sendRedirect("/login");
+      allowing(request);
+      allowing(chain);
     }});
 
     filter.doFilter(request, response, chain);
@@ -73,7 +72,7 @@ public class SecurityFilterTest {
       oneOf(manager).refreshUserSession();
       oneOf(request).getRequestURI();
       will(returnValue("/login"));
-      oneOf(response).sendRedirect("#/account");
+      oneOf(response).sendRedirect("/#/account");
     }});
 
     filter.doFilter(request, response, chain);

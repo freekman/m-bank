@@ -9,13 +9,9 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
           .when('/', {
             templateUrl: 'partials/register.html',
             controller: 'registerCtrl'
-          }).when('/register', {
+          }).when('/r/register', {
             templateUrl: 'partials/register.html',
             controller: 'registerCtrl'
-          })
-          .when('/test', {
-            templateUrl: 'partials/inputTest.html',
-            controller: 'inputCtrl'
           })
           .when('/account', {
             templateUrl: 'partials/account.html',

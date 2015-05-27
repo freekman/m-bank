@@ -43,16 +43,10 @@ public class SecurityFilter implements Filter {
       manager.closeUserSession();
     }
 
-    String requestUri = req.getRequestURI();
-    if (sessionExpired && requestUri.equalsIgnoreCase("/welcome")) {
-      resp.sendRedirect("/login");
-      return;
-    }
-
     if (!sessionExpired) {
       manager.refreshUserSession();
-      if (requestUri.equalsIgnoreCase("/login") || requestUri.equalsIgnoreCase("/register")) {
-        resp.sendRedirect("#/account");
+      if ("/login".equalsIgnoreCase(req.getRequestURI())) {
+        resp.sendRedirect("/#/account");
         return;
       }
     }

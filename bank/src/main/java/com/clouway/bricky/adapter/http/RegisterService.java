@@ -20,7 +20,7 @@ import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 @Service
-@At("/register/new")
+@At("/r/register")
 public class RegisterService {
 
   private final UserRepository repository;
