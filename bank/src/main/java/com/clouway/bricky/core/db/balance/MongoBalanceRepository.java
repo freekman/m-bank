@@ -1,6 +1,6 @@
 package com.clouway.bricky.core.db.balance;
 
-import com.clouway.bricky.core.AuthorizationException;
+import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.sesion.Session;
 import com.clouway.bricky.core.user.CurrentUser;
 import com.google.common.base.Optional;
@@ -8,7 +8,6 @@ import com.google.inject.Inject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.jetbrains.annotations.NotNull;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -33,7 +32,7 @@ public class MongoBalanceRepository implements BalanceRepository {
       accounts.updateOne(eq("session.sid", sid.get()), new Document("$inc", new Document("balance", amount)));
       return getCurrentUser();
     }
-    throw new AuthorizationException();
+    throw new UnauthorizedException();
   }
 
   @Override
@@ -48,7 +47,7 @@ public class MongoBalanceRepository implements BalanceRepository {
       return new CurrentUser(user.name, user.balance - amount);
     }
 
-    throw new AuthorizationException();
+    throw new UnauthorizedException();
   }
 
   @Override
@@ -58,6 +57,6 @@ public class MongoBalanceRepository implements BalanceRepository {
       Document user = accounts.find(new Document("session.sid", sid.get())).first();
       return new CurrentUser(user.getString("username"), user.getDouble("balance"));
     }
-    throw new AuthorizationException();
+    throw new UnauthorizedException();
   }
 }

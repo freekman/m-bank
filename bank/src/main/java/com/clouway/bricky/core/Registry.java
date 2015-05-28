@@ -7,6 +7,6 @@ import com.clouway.bricky.core.user.User;
  */
 public interface Registry {
 
-  void authorize(User user) throws AuthorizationException;
+  void authorize(User user) throws UnauthorizedException;
 
 }

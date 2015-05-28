@@ -12,4 +12,27 @@ public class CurrentUser {
     this.name = name;
     this.balance = balance;
   }
+
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CurrentUser)) return false;
+
+    CurrentUser that = (CurrentUser) o;
+
+    if (Double.compare(that.balance, balance) != 0) return false;
+    return !(name != null ? !name.equals(that.name) : that.name != null);
+
+  }
+
+  @Override
+  public int hashCode() {
+    int result;
+    long temp;
+    result = name != null ? name.hashCode() : 0;
+    temp = Double.doubleToLongBits(balance);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    return result;
+  }
 }

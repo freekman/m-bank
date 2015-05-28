@@ -1,6 +1,6 @@
 package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.core.AuthorizationException;
+import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.Registry;
 import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
@@ -39,7 +39,7 @@ public class Login {
       User user = new User(username, password);
       registry.authorize(user);
       manager.openSessionFor(user);
-    } catch (AuthorizationException e) {
+    } catch (UnauthorizedException e) {
       messages.add("Wrong username or password");
       return null;
     }

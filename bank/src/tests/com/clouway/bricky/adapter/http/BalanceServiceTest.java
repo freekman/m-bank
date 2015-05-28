@@ -1,6 +1,6 @@
 package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.core.AuthorizationException;
+import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.db.balance.BalanceRepository;
 import com.clouway.bricky.core.db.balance.FundDeficitException;
 import com.clouway.bricky.core.user.CurrentUser;
@@ -17,6 +17,7 @@ import org.junit.Test;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.clouway.bricky.adapter.http.IsEqualToReply.isEqualToReply;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -57,11 +58,11 @@ public class BalanceServiceTest {
     pretendDepositAmountIs(20);
     context.checking(new Expectations() {{
       oneOf(repository).depositToCurrentUser(20);
-      will(throwException(new AuthorizationException()));
+      will(throwException(new UnauthorizedException()));
     }});
 
     Reply<?> result = service.deposit(request);
-    assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(HttpServletResponse.SC_UNAUTHORIZED)));
+    assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(SC_UNAUTHORIZED)));
   }
 
   @Test
@@ -114,11 +115,32 @@ public class BalanceServiceTest {
     pretendWithdrawAmountIs(20);
     context.checking(new Expectations() {{
       oneOf(repository).withdrawFromCurrentUser(20);
-      will(throwException(new AuthorizationException()));
+      will(throwException(new UnauthorizedException()));
     }});
 
     Reply<?> result = service.withdraw(request);
-    assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(HttpServletResponse.SC_UNAUTHORIZED)));
+    assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(SC_UNAUTHORIZED)));
+  }
+
+  @Test
+  public void queryUserInfo() throws Exception {
+    context.checking(new Expectations() {{
+      oneOf(repository).getCurrentUser();
+      will(returnValue(userWithBalance(20)));
+    }});
+    Reply<?> result = service.userInfo();
+    assertThat(result, isEqualToReply(Reply.with(userWithBalance(20)).ok()));
+  }
+
+  @Test
+  public void unauthorizedUserInfoQuery() throws Exception {
+    context.checking(new Expectations() {{
+      oneOf(repository).getCurrentUser();
+      will(throwException(new UnauthorizedException()));
+    }});
+
+    Reply<?> reply = service.userInfo();
+    assertThat(reply, isEqualToReply(Reply.with("Operation failed.").status(SC_UNAUTHORIZED)));
   }
 
   private void pretendWithdrawAmountIs(double amount) {
@@ -135,7 +157,6 @@ public class BalanceServiceTest {
   private CurrentUser userWithBalance(double balance) {
     return new CurrentUser("DummyUser", balance);
   }
-
 
   private void pretendDepositAmountIs(double amount) {
     final AmountDTO dto = new AmountDTO();

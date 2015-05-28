@@ -1,6 +1,6 @@
 package com.clouway.bricky.core.db.balance;
 
-import com.clouway.bricky.core.AuthorizationException;
+import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.sesion.Session;
 import com.clouway.bricky.core.user.CurrentUser;
 import com.github.fakemongo.junit.FongoRule;
@@ -60,7 +60,7 @@ public class MongoBalanceRepositoryTest {
     assertThat(user.name, is(equalTo("Mark")));
   }
 
-  @Test(expected = AuthorizationException.class)
+  @Test(expected = UnauthorizedException.class)
   public void attemptDepositOfExpiredUser() throws Exception {
     context.checking(new Expectations() {{
       oneOf(session).getSid();
@@ -93,7 +93,7 @@ public class MongoBalanceRepositoryTest {
     assertThat(user.name, is(equalTo("Alf")));
   }
 
-  @Test(expected = AuthorizationException.class)
+  @Test(expected = UnauthorizedException.class)
   public void withdrawFromExpiredUser() throws Exception {
     context.checking(new Expectations() {{
       oneOf(session).getSid();
@@ -125,7 +125,7 @@ public class MongoBalanceRepositoryTest {
     }});
     bank.getCollection("accounts").insertOne(new Document("username", name).append("session", new Document("sid", "dummy_sid").append("expiration", 20)));
   }
-  
+
   private void pretendUserWithBalanceExists(String name, double balance) {
     context.checking(new Expectations() {{
       allowing(session).getSid();

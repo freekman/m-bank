@@ -1,6 +1,6 @@
 package com.clouway.bricky.core.db.balance;
 
-import com.clouway.bricky.core.AuthorizationException;
+import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.user.CurrentUser;
 
 /**
@@ -8,9 +8,9 @@ import com.clouway.bricky.core.user.CurrentUser;
  */
 public interface BalanceRepository {
 
-  CurrentUser depositToCurrentUser(double amount) throws AuthorizationException;
+  CurrentUser depositToCurrentUser(double amount) throws UnauthorizedException;
 
-  CurrentUser withdrawFromCurrentUser(double amount) throws FundDeficitException, AuthorizationException;
+  CurrentUser withdrawFromCurrentUser(double amount) throws FundDeficitException, UnauthorizedException;
 
   CurrentUser getCurrentUser();
 }

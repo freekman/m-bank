@@ -1,6 +1,6 @@
 package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.core.AuthorizationException;
+import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.Registry;
 import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
@@ -53,7 +53,7 @@ public class LoginTest {
   public void userAuthorizationFail() throws Exception {
     context.checking(new Expectations() {{
       oneOf(registry).authorize(with(any(User.class)));
-      will(throwException(new AuthorizationException()));
+      will(throwException(new UnauthorizedException()));
     }});
 
     Reply<?> reply = this.login.login();

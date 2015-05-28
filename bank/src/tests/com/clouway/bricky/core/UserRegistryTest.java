@@ -45,7 +45,7 @@ public class UserRegistryTest {
     userRegistry.authorize(testUser());
   }
 
-  @Test(expected = AuthorizationException.class)
+  @Test(expected = UnauthorizedException.class)
   public void failNonValidUserAuthorization() throws Exception {
     context.checking(new Expectations() {{
       oneOf(validator).validate(with(any(User.class)), with(any(ValidationRule.class)));
@@ -57,7 +57,7 @@ public class UserRegistryTest {
     userRegistry.authorize(testUser());
   }
 
-  @Test(expected = AuthorizationException.class)
+  @Test(expected = UnauthorizedException.class)
   public void failNonAuthenticUserAuthorization() throws Exception {
     context.checking(new Expectations() {{
       oneOf(validator).validate(with(any(User.class)), with(any(ValidationRule.class)));
