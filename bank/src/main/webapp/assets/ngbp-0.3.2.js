@@ -1,5 +1,5 @@
 /**
- * ngbp - v0.3.2 - 2015-05-27
+ * ngbp - v0.3.2 - 2015-05-28
  * https://github.com/ngbp/ngbp
  *
  * Copyright (c) 2015 Josh David Miller
@@ -38730,6 +38730,7 @@ var bankModule = angular.module('bankCtrl', ['gateway']);
 bankModule
         .controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
           'use strict';
+
           $scope.lookup = function (user) {
             userGateway.lookup(user).then(function (data) {
               $scope.statusIsOk = true;
@@ -38752,8 +38753,6 @@ bankModule
         }])
         .controller('accountCtrl', ['$scope', 'accGateway', function ($scope, accGateway) {
 
-          $scope.balance = 5;
-
           $scope.deposit = function (amount) {
             accGateway.deposit(amount).then(function (balance) {
               $scope.statusIsOk = true;
@@ -38767,14 +38766,15 @@ bankModule
 
           $scope.withdraw = function (amount) {
             accGateway.withdraw(amount).then(function (balance) {
+              $scope.statusIsOk = true;
               $scope.balance = balance;
+              $scope.statusMessage = "Operation successful.";
             }, function (data) {
+              $scope.statusIsOk = false;
               $scope.statusMessage = data;
             });
           };
 
-
-          $scope.deposit(10);
         }]);
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)

@@ -70,11 +70,6 @@ public class MongoBalanceRepositoryTest {
     repository.depositToCurrentUser(30);
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void attemptDepositWithNegativeAmount() throws Exception {
-    repository.depositToCurrentUser(-20);
-  }
-
   @Test
   public void withdrawFromUser() throws Exception {
     pretendSessionExitsFor("Alf");
@@ -106,11 +101,6 @@ public class MongoBalanceRepositoryTest {
     }});
 
     repository.withdrawFromCurrentUser(10);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void attemptWithdrawWithNegativeAmount() throws Exception {
-    repository.withdrawFromCurrentUser(-15);
   }
 
   @Test(expected = FundDeficitException.class)

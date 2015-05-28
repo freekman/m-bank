@@ -6,6 +6,7 @@ var bankModule = angular.module('bankCtrl', ['gateway']);
 bankModule
         .controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
           'use strict';
+
           $scope.lookup = function (user) {
             userGateway.lookup(user).then(function (data) {
               $scope.statusIsOk = true;
@@ -28,8 +29,6 @@ bankModule
         }])
         .controller('accountCtrl', ['$scope', 'accGateway', function ($scope, accGateway) {
 
-          $scope.balance = 5;
-
           $scope.deposit = function (amount) {
             accGateway.deposit(amount).then(function (balance) {
               $scope.statusIsOk = true;
@@ -43,12 +42,13 @@ bankModule
 
           $scope.withdraw = function (amount) {
             accGateway.withdraw(amount).then(function (balance) {
+              $scope.statusIsOk = true;
               $scope.balance = balance;
+              $scope.statusMessage = "Operation successful.";
             }, function (data) {
+              $scope.statusIsOk = false;
               $scope.statusMessage = data;
             });
           };
 
-
-          $scope.deposit(10);
         }]);

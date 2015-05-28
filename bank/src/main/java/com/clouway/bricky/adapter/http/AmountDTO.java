@@ -1,9 +1,9 @@
-package com.clouway.bricky;
+package com.clouway.bricky.adapter.http;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class AmountDTO {
+class AmountDTO {
 
   public double amount;
 

@@ -28,9 +28,6 @@ public class MongoBalanceRepository implements BalanceRepository {
 
   @Override
   public CurrentUser depositToCurrentUser(double amount) {
-    if (amount < 0) {
-      throw new IllegalArgumentException("Can not deposit negative amount: " + amount);
-    }
     Optional<String> sid = session.getSid();
     if (sid.isPresent()) {
       accounts.updateOne(eq("session.sid", sid.get()), new Document("$inc", new Document("balance", amount)));
@@ -41,9 +38,6 @@ public class MongoBalanceRepository implements BalanceRepository {
 
   @Override
   public CurrentUser withdrawFromCurrentUser(double amount) throws FundDeficitException {
-    if (amount < 0) {
-      throw new IllegalArgumentException("Can not withdraw negative amount: " + amount);
-    }
     Optional<String> sid = session.getSid();
     if (sid.isPresent()) {
       CurrentUser user = getCurrentUser(sid.get());
