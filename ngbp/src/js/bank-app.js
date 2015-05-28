@@ -17,5 +17,5 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/account.html',
             controller: 'accountCtrl'
           })
-          .otherwise({redirectTo: '/phones'});
+          .otherwise({redirectTo: '/account'});
 }]);

@@ -65,14 +65,14 @@ describe("Service", function () {
     it('should send deposit request', function () {
       var amount = 10;
       var result = accGateway.deposit(amount);
-      expect(httpRequest.send).toHaveBeenCalledWith("POST", "/r/deposit", amount);
+      expect(httpRequest.send).toHaveBeenCalledWith("POST", "/r/deposit", {amount: amount});
       expect(result.promise).toEqual('dummy promise');
     });
 
     it('should send withdraw request', function () {
       var amount = 20;
       var result = accGateway.withdraw(amount);
-      expect(httpRequest.send).toHaveBeenCalledWith('POST', '/r/withdraw', amount);
+      expect(httpRequest.send).toHaveBeenCalledWith('POST', '/r/withdraw', {amount: amount});
       expect(result.promise).toEqual('dummy promise');
     });
 

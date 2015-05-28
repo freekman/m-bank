@@ -80,6 +80,8 @@ describe('Controllers', function () {
       scope.$digest();
 
       expect(scope.balance).toEqual(amount);
+      expect(scope.statusIsOk).toBeTruthy();
+      expect(scope.statusMessage).toEqual("Operation successful.");
     });
 
     it('should notify for failed deposit request', function () {
@@ -87,10 +89,37 @@ describe('Controllers', function () {
       scope.deposit(amount);
       expect(accGateway.deposit).toHaveBeenCalledWith(amount);
 
-      deferred.reject('Invalid operation');
+      deferred.reject('Operation failed.');
       scope.$digest();
 
-      expect(scope.statusMessage).toEqual('Invalid operation');
+      expect(scope.statusIsOk).toBeFalsy();
+      expect(scope.statusMessage).toEqual('Operation failed.');
+    });
+
+    it('should perform withdraw request and update balance', function () {
+      var amount = 3;
+      scope.withdraw(amount);
+      expect(accGateway.withdraw).toHaveBeenCalledWith(amount);
+
+      deferred.resolve(1);
+      scope.$digest();
+
+      expect(scope.balance).toEqual(1);
+      expect(scope.statusIsOk).toBeTruthy();
+      expect(scope.statusMessage).toEqual("Operation successful.");
+    });
+
+    it('should notify for failed withdraw request', function () {
+      var amount = 'hello';
+
+      scope.withdraw(amount);
+      expect(accGateway.withdraw).toHaveBeenCalledWith(amount);
+
+      deferred.reject('Operation failed.');
+      scope.$digest();
+
+      expect(scope.statusIsOk).toBeFalsy();
+      expect(scope.statusMessage).toEqual('Operation failed.');
     });
 
   });

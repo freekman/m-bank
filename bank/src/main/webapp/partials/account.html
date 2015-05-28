@@ -36,59 +36,56 @@
     <div class="row">
 
         <div class="col-lg-6">
-            <div class="pull-left label label-success info">Welcome:${name}</div>
+            <div class="pull-left label label-success info">Welcome:{{name}}</div>
         </div>
 
         <div class="col-lg-6">
-            <div class="pull-right label label-primary info">Balance:${balance}</div>
+            <div class="pull-right label label-primary info">Balance:{{balance}}</div>
         </div>
     </div>
+
 
     <div class="row">
 
         <div class="col-lg-5 jumbotron">
-            <form name="deposit">
+            <form name="depositForm">
                 <div class="form-group">
                     <label for="deposit">Deposit</label>
-                    <input id="deposit" class="form-control" type="text" name="depositAmount" ng-model="depositAmount"
+                    <input id="deposit" class="form-control" type="number" name="depositAmount" ng-model="depositValue"
                            placeholder="Please enter amount to deposit" required ng-pattern="/^[1-9][0-9]{0,5}$/">
                 </div>
-                <button class="btn btn-primary" ng-disabled="deposit.depositAmount.$invalid">Submit</button>
+                <button class="btn btn-primary" ng-disabled="depositForm.depositAmount.$invalid"
+                        ng-click="deposit(depositValue)">Submit
+                </button>
             </form>
         </div>
 
         <div class="col-lg-2"></div>
 
         <div class="col-lg-5 jumbotron">
-            <form name="withdraw">
+            <form name="withdrawForm">
                 <div class="form-group">
                     <label for="withdraw">Withdraw</label>
-                    <input id="withdraw" class="form-control" type="text" name="withdrawAmount" ng-model="withdrawAmount"
+                    <input id="withdraw" class="form-control" type="number" name="withdrawAmount"
+                           ng-model="withdrawValue"
                            placeholder="Please enter amount to withdraw" required ng-pattern="/^[1-9][0-9]{0,5}$/">
                 </div>
-                <button class="btn btn-primary" ng-disabled="withdraw.withdrawAmount.$invalid">Submit</button>
+                <button class="btn btn-primary" ng-disabled="withdrawForm.withdrawAmount.$invalid"
+                        ng-click="withdraw(withdrawValue)">Submit
+                </button>
             </form>
         </div>
 
-        <div>
-            <p>Deposit</p>
-            <p>{{depositAmount}}</p>
-            <p>Withdraw</p>
-            <p>{{withdrawAmount}}</p>
-        </div>
-
     </div>
 
-    @ShowIf(!transactionErrors.isEmpty())
-    <div class="panel panel-warning">
-        <div class="panel-heading">Operation failed</div>
-        <div class="panel-body">
-            <ul>
-                @Repeat(items=transactionErrors, var="message")
-                <li>${message}</li>
-            </ul>
+    <div class="col-lg-4">
+        <div class="panel top-buffer" ng-class="statusIsOk ? 'panel-success': 'panel-danger'"
+             ng-show="statusMessage != null">
+            <div class="panel-heading">Message</div>
+            <div class="panel-body">
+                <ul>{{statusMessage}}</ul>
+            </div>
         </div>
     </div>
-
 
 </div>

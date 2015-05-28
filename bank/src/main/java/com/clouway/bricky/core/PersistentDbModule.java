@@ -1,5 +1,7 @@
 package com.clouway.bricky.core;
 
+import com.clouway.bricky.core.db.balance.BalanceRepository;
+import com.clouway.bricky.core.db.balance.MongoBalanceRepository;
 import com.clouway.bricky.core.db.session.MongoSessionRepository;
 import com.clouway.bricky.core.db.session.SessionRepository;
 import com.clouway.bricky.core.db.user.MongoUserRepository;
@@ -20,6 +22,8 @@ public class PersistentDbModule extends AbstractModule {
     bind(UserRepository.class).to(MongoUserRepository.class);
 
     bind(SessionRepository.class).to(MongoSessionRepository.class);
+
+    bind(BalanceRepository.class).to(MongoBalanceRepository.class);
   }
 
   @Provides

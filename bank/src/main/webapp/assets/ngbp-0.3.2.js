@@ -38720,7 +38720,7 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/account.html',
             controller: 'accountCtrl'
           })
-          .otherwise({redirectTo: '/phones'});
+          .otherwise({redirectTo: '/account'});
 }]);
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
@@ -38730,7 +38730,6 @@ var bankModule = angular.module('bankCtrl', ['gateway']);
 bankModule
         .controller('registerCtrl', ['$scope', 'userGateway', function ($scope, userGateway) {
           'use strict';
-
           $scope.lookup = function (user) {
             userGateway.lookup(user).then(function (data) {
               $scope.statusIsOk = true;
@@ -38752,14 +38751,30 @@ bankModule
           };
         }])
         .controller('accountCtrl', ['$scope', 'accGateway', function ($scope, accGateway) {
+
+          $scope.balance = 5;
+
           $scope.deposit = function (amount) {
             accGateway.deposit(amount).then(function (balance) {
-                      $scope.balance = balance;
-                    }, function (data) {
-                      $scope.statusMessage = data;
-                    }
-            );
+              $scope.statusIsOk = true;
+              $scope.statusMessage = "Operation successful.";
+              $scope.balance = balance;
+            }, function (data) {
+              $scope.statusIsOk = false;
+              $scope.statusMessage = data;
+            });
           };
+
+          $scope.withdraw = function (amount) {
+            accGateway.withdraw(amount).then(function (balance) {
+              $scope.balance = balance;
+            }, function (data) {
+              $scope.statusMessage = data;
+            });
+          };
+
+
+          $scope.deposit(10);
         }]);
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
@@ -38824,10 +38839,10 @@ gatewayModule
         .service('accGateway', ['httpRequest', function (httpRequest) {
           return {
             deposit: function (amount) {
-              return httpRequest.send('POST', '/r/deposit', amount);
+              return httpRequest.send('POST', '/r/deposit', {amount: amount});
             },
             withdraw: function (amount) {
-              return httpRequest.send('POST', '/r/withdraw', amount);
+              return httpRequest.send('POST', '/r/withdraw', {amount: amount});
             }
           };
         }]);
