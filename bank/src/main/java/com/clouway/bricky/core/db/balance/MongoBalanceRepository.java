@@ -31,7 +31,7 @@ public class MongoBalanceRepository implements BalanceRepository {
     Optional<String> sid = session.getSid();
     if (sid.isPresent()) {
       accounts.updateOne(eq("session.sid", sid.get()), new Document("$inc", new Document("balance", amount)));
-      return getCurrentUser(sid.get());
+      return getCurrentUser();
     }
     throw new AuthorizationException();
   }
@@ -40,7 +40,7 @@ public class MongoBalanceRepository implements BalanceRepository {
   public CurrentUser withdrawFromCurrentUser(double amount) throws FundDeficitException {
     Optional<String> sid = session.getSid();
     if (sid.isPresent()) {
-      CurrentUser user = getCurrentUser(sid.get());
+      CurrentUser user = getCurrentUser();
       if (user.balance < amount) {
         throw new FundDeficitException();
       }
@@ -51,9 +51,13 @@ public class MongoBalanceRepository implements BalanceRepository {
     throw new AuthorizationException();
   }
 
-  @NotNull
-  private CurrentUser getCurrentUser(String sid) {
-    Document user = accounts.find(new Document("session.sid", sid)).first();
-    return new CurrentUser(user.getString("username"), user.getDouble("balance"));
+  @Override
+  public CurrentUser getCurrentUser() {
+    Optional<String> sid = session.getSid();
+    if (sid.isPresent()) {
+      Document user = accounts.find(new Document("session.sid", sid.get())).first();
+      return new CurrentUser(user.getString("username"), user.getDouble("balance"));
+    }
+    throw new AuthorizationException();
   }
 }

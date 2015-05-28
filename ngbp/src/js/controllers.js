@@ -29,6 +29,16 @@ bankModule
         }])
         .controller('accountCtrl', ['$scope', 'accGateway', function ($scope, accGateway) {
 
+
+          $scope.fetchUser = function () {
+            accGateway.fetchUser().then(function (user) {
+              $scope.username = user.name;
+              $scope.balance = user.balance;
+            });
+          };
+
+          $scope.fetchUser(); //todo test with different deffer
+
           $scope.deposit = function (amount) {
             accGateway.deposit(amount).then(function (balance) {
               $scope.statusIsOk = true;

@@ -25,10 +25,13 @@ gatewayModule
         .service('accGateway', ['httpRequest', function (httpRequest) {
           return {
             deposit: function (amount) {
-              return httpRequest.send('POST', '/r/deposit', {amount: amount});
+              return httpRequest.send('POST', '/r/balance/deposit', {amount: amount});
             },
             withdraw: function (amount) {
-              return httpRequest.send('POST', '/r/withdraw', {amount: amount});
+              return httpRequest.send('POST', '/r/balance/withdraw', {amount: amount});
+            },
+            fetchUser: function () {
+              return httpRequest.send('POST', '/r/balance/info', {});
             }
           };
         }]);

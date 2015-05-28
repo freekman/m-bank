@@ -111,12 +111,27 @@ public class MongoBalanceRepositoryTest {
     repository.withdrawFromCurrentUser(30);
   }
 
+  @Test
+  public void extractCurrentUser() throws Exception {
+    pretendUserWithBalanceExists("Josh", 20);
+    CurrentUser user = repository.getCurrentUser();
+    assertThat(user.name, is(equalTo("Josh")));
+  }
+
   private void pretendSessionExitsFor(String name) {
-    final String sid = "dummy_sid";
     context.checking(new Expectations() {{
       allowing(session).getSid();
-      will(returnValue(Optional.of(sid)));
+      will(returnValue(Optional.of("dummy_sid")));
     }});
-    bank.getCollection("accounts").insertOne(new Document("username", name).append("session", new Document("sid", sid).append("expiration", 20)));
+    bank.getCollection("accounts").insertOne(new Document("username", name).append("session", new Document("sid", "dummy_sid").append("expiration", 20)));
   }
+  
+  private void pretendUserWithBalanceExists(String name, double balance) {
+    context.checking(new Expectations() {{
+      allowing(session).getSid();
+      will(returnValue(Optional.of("dummy_sid")));
+    }});
+    bank.getCollection("accounts").insertOne(new Document("username", name).append("balance", balance).append("session", new Document("sid", "dummy_sid").append("expiration", 20)));
+  }
+
 }

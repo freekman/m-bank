@@ -38753,6 +38753,16 @@ bankModule
         }])
         .controller('accountCtrl', ['$scope', 'accGateway', function ($scope, accGateway) {
 
+
+          $scope.fetchUser = function () {
+            accGateway.fetchUser().then(function (user) {
+              $scope.username = user.name;
+              $scope.balance = user.balance;
+            });
+          };
+
+          $scope.fetchUser(); //todo test with different deffer
+
           $scope.deposit = function (amount) {
             accGateway.deposit(amount).then(function (balance) {
               $scope.statusIsOk = true;
@@ -38800,9 +38810,15 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
   };
 }]);
 
-httpModule.factory('authInterceptor', ['$q', function ($q) {
+httpModule.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
   return {
     'responseError': function (rejection) {
+      console.log(rejection);
+      if (rejection.status == 401) {
+        console.log("status is " + rejection.status);
+        $window.location = '/login';
+        return;
+      }
       return $q.reject(rejection);
     }
   };
@@ -38839,10 +38855,13 @@ gatewayModule
         .service('accGateway', ['httpRequest', function (httpRequest) {
           return {
             deposit: function (amount) {
-              return httpRequest.send('POST', '/r/deposit', {amount: amount});
+              return httpRequest.send('POST', '/r/balance/deposit', {amount: amount});
             },
             withdraw: function (amount) {
-              return httpRequest.send('POST', '/r/withdraw', {amount: amount});
+              return httpRequest.send('POST', '/r/balance/withdraw', {amount: amount});
+            },
+            fetchUser: function () {
+              return httpRequest.send('POST', '/r/balance/info', {});
             }
           };
         }]);

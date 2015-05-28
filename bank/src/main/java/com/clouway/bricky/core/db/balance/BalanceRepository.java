@@ -11,4 +11,6 @@ public interface BalanceRepository {
   CurrentUser depositToCurrentUser(double amount) throws AuthorizationException;
 
   CurrentUser withdrawFromCurrentUser(double amount) throws FundDeficitException, AuthorizationException;
+
+  CurrentUser getCurrentUser();
 }

@@ -2,6 +2,7 @@ package com.clouway.bricky.adapter.http;
 
 import com.clouway.bricky.core.AuthorizationException;
 import com.clouway.bricky.core.db.balance.BalanceRepository;
+import com.clouway.bricky.core.db.balance.FundDeficitException;
 import com.clouway.bricky.core.user.CurrentUser;
 import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
@@ -21,9 +22,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-public class DepositServiceTest {
+public class BalanceServiceTest {
 
-  private DepositService service;
+  private BalanceService service;
   private Request request;
   private RequestRead requestRead;
   private BalanceRepository repository;
@@ -34,13 +35,13 @@ public class DepositServiceTest {
   @Before
   public void setUp() throws Exception {
     repository = context.mock(BalanceRepository.class);
-    service = new DepositService(repository);
+    service = new BalanceService(repository);
     request = context.mock(Request.class);
     requestRead = context.mock(RequestRead.class);
   }
 
   @Test
-  public void happyPath() throws Exception {
+  public void depositHappyPath() throws Exception {
     final double amount = 10;
     pretendDepositAmountIs(amount);
     context.checking(new Expectations() {{
@@ -71,6 +72,70 @@ public class DepositServiceTest {
 
     assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(HttpServletResponse.SC_BAD_REQUEST)));
   }
+
+  @Test
+  public void withdrawHappyPath() throws Exception {
+    final double amount = 10, balance = 20;
+    pretendWithdrawAmountIs(amount);
+
+    context.checking(new Expectations() {{
+      oneOf(repository).withdrawFromCurrentUser(amount);
+      will(returnValue(userWithBalance(balance)));
+    }});
+
+    Reply<?> reply = service.withdraw(request);
+    assertThat(reply, isEqualToReply(Reply.with(balance).status(HttpServletResponse.SC_CREATED)));
+  }
+
+  @Test
+  public void withdrawNegativeAmount() throws Exception {
+    pretendWithdrawAmountIs(-10);
+
+    Reply<?> reply = service.withdraw(request);
+    assertThat(reply, isEqualToReply(Reply.with("Operation failed.").status(HttpServletResponse.SC_FORBIDDEN)));
+  }
+
+  @Test
+  public void withdrawMoreThanAvailable() throws Exception {
+    final double amount = 25;
+    pretendWithdrawAmountIs(amount);
+
+    context.checking(new Expectations() {{
+      oneOf(repository).withdrawFromCurrentUser(amount);
+      will(throwException(new FundDeficitException()));
+    }});
+
+    Reply<?> reply = service.withdraw(request);
+    assertThat(reply, isEqualToReply(Reply.with("Operation failed.").status(HttpServletResponse.SC_FORBIDDEN)));
+  }
+
+  @Test
+  public void unauthorizedWithdraw() throws Exception {
+    pretendWithdrawAmountIs(20);
+    context.checking(new Expectations() {{
+      oneOf(repository).withdrawFromCurrentUser(20);
+      will(throwException(new AuthorizationException()));
+    }});
+
+    Reply<?> result = service.withdraw(request);
+    assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(HttpServletResponse.SC_UNAUTHORIZED)));
+  }
+
+  private void pretendWithdrawAmountIs(double amount) {
+    final AmountDTO dto = new AmountDTO();
+    dto.setAmount(amount);
+    context.checking(new Expectations() {{
+      oneOf(request).read(AmountDTO.class);
+      will(returnValue(requestRead));
+      oneOf(requestRead).as(Json.class);
+      will(returnValue(dto));
+    }});
+  }
+
+  private CurrentUser userWithBalance(double balance) {
+    return new CurrentUser("DummyUser", balance);
+  }
+
 
   private void pretendDepositAmountIs(double amount) {
     final AmountDTO dto = new AmountDTO();

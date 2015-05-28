@@ -60,7 +60,8 @@ describe('Controllers', function () {
 
       accGateway = {
         deposit: jasmine.createSpy().andReturn(deferred.promise),
-        withdraw: jasmine.createSpy().andReturn(deferred.promise)
+        withdraw: jasmine.createSpy().andReturn(deferred.promise),
+        fetchUser: jasmine.createSpy().andReturn(deferred.promise)
       };
 
       inject(function ($rootScope, $controller) {
@@ -120,6 +121,20 @@ describe('Controllers', function () {
 
       expect(scope.statusIsOk).toBeFalsy();
       expect(scope.statusMessage).toEqual('Operation failed.');
+    });
+
+    it('should fetch user info', function () {
+
+      var dummyUser = {name: "Marian", balance: 123};
+
+      scope.fetchUser();
+      expect(accGateway.fetchUser).toHaveBeenCalled();
+
+      deferred.resolve(dummyUser);
+      scope.$digest();
+
+      expect(scope.username).toEqual(dummyUser.name);
+      expect(scope.balance).toEqual(dummyUser.balance);
     });
 
   });
