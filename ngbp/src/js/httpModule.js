@@ -25,11 +25,8 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
 httpModule.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
   return {
     'responseError': function (rejection) {
-      console.log(rejection);
       if (rejection.status == 401) {
-        console.log("status is " + rejection.status);
         $window.location = '/login';
-        return;
       }
       return $q.reject(rejection);
     }
