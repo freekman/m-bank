@@ -10,10 +10,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import static org.junit.Assert.*;
 
 /**

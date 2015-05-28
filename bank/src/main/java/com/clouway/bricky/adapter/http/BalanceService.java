@@ -12,9 +12,10 @@ import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.headless.Service;
 import com.google.sitebricks.http.Post;
 
-import javax.servlet.http.HttpServletResponse;
-
-import static javax.servlet.http.HttpServletResponse.*;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_CREATED;
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
@@ -49,7 +50,6 @@ public class BalanceService {
   @Post
   @At("/withdraw")
   public Reply<?> withdraw(Request request) {
-
     AmountDTO dto = request.read(AmountDTO.class).as(Json.class);
 
     if (dto.amount < 0) {

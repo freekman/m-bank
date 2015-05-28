@@ -1,8 +1,8 @@
 package com.clouway.bricky.core.user;
 
 import com.clouway.bricky.adapter.http.validation.Validator;
-import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.Registry;
+import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.db.user.UserRepository;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;

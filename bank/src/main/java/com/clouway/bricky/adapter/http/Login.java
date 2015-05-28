@@ -1,7 +1,7 @@
 package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.Registry;
+import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
 import com.google.common.collect.Lists;
