@@ -1,4 +1,4 @@
-package com.clouway.bricky.adapter.http.service;
+package com.clouway.bricky.adapter.http;
 
 import com.google.common.base.Optional;
 import com.google.sitebricks.headless.Reply;
@@ -20,6 +20,8 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
   private Optional<Object> optActualEntity;
   private Optional<Object> optExpectedUri;
   private Optional<Object> optActualUri;
+  private Optional<Object> optActualStatus;
+  private Optional<Object> optExpectedStatus;
 
 
   public IsEqualToReply(Reply<?> expectedValue) {
@@ -31,32 +33,48 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
     boolean match;
 
     optExpectedEntity = getDeclaredFieldValue(expectedValue, "entity");
-    optExpectedUri = getDeclaredFieldValue(expectedValue, "redirectUri");
-
     optActualEntity = getDeclaredFieldValue(actualValue, "entity");
+
+    optExpectedUri = getDeclaredFieldValue(expectedValue, "redirectUri");
     optActualUri = getDeclaredFieldValue(actualValue, "redirectUri");
 
-    if (optExpectedEntity.isPresent() && optActualEntity.isPresent()) {
-      Object expected = optExpectedEntity.get();
-      Object actual = optActualEntity.get();
-      match = actual.equals(expected);
-    } else {
-      match = bothAreNull(optExpectedEntity.orNull(), optActualEntity.orNull());
-    }
+    optExpectedStatus = getDeclaredFieldValue(actualValue, "status");
+    optActualStatus = getDeclaredFieldValue(expectedValue, "status");
 
-    if (match && optExpectedUri.isPresent() && optActualUri.isPresent()) {
-      Object expected = optExpectedUri.get();
-      Object actual = optActualUri.get();
-      match = actual.equals(expected);
-    } else if (match) {
-      match = bothAreNull(optExpectedUri.orNull(), optActualUri.orNull());
+    match = areEqual(optExpectedEntity, optActualEntity);
+
+    if (match) {
+      match = areEqual(optExpectedUri, optActualUri);
+    }
+    if (match) {
+      match = areEqual(optExpectedStatus, optActualStatus);
     }
 
     return match;
   }
 
-  private boolean bothAreNull(Object first, Object second) {
-    return (first == null && second == null);
+  @Override
+  public void describeTo(Description description) {
+    description
+            .appendText("entity:'" + optActualEntity.orNull() + "'")
+            .appendText(" redirectUri:'" + optActualUri.orNull() + "'")
+            .appendText(" status:'" + optActualStatus.orNull() + "'")
+            .appendText(" to equal \n\t\t")
+            .appendText(" entity:'" + optExpectedEntity.orNull() + "'")
+            .appendText(" redirectUri:'" + optExpectedUri.orNull() + "'")
+            .appendText(" status:'" + optExpectedStatus.orNull() + "'");
+  }
+
+  @Factory
+  public static Matcher<Reply<?>> isEqualToReply(Reply<?> operand) {
+    return new IsEqualToReply(operand);
+  }
+
+  @Override
+  protected void describeMismatchSafely(Reply<?> item, Description mismatchDescription) {
+    mismatchDescription
+            .appendText("was entity:'" + optExpectedEntity.orNull() + "'")
+            .appendText("redirectUri:'" + optExpectedUri.orNull() + "'");
   }
 
   private Optional<Object> getDeclaredFieldValue(Object item, String fieldName) {
@@ -73,27 +91,20 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
     return Optional.absent();
   }
 
-  @Override
-  public void describeTo(Description description) {
-    description
-            .appendText("entity:'" + optActualEntity.orNull() + "'")
-            .appendText(" redirectUri:'" + optActualUri.orNull() + "'")
-            .appendText(" to equal \n\t\t")
-            .appendText(" entity:'" + optExpectedEntity.orNull() + "'")
-            .appendText(" redirectUri:'" + optExpectedUri.orNull() + "'");
+  private boolean areEqual(Optional optExpected, Optional optActual) {
+    boolean areEqual;
+    if (optExpected.isPresent() && optActual.isPresent()) {
+      Object expected = optExpected.get();
+      Object actual = optActual.get();
+      areEqual = actual.equals(expected);
+    } else {
+      areEqual = bothAreNull(optExpected.orNull(), optActual.orNull());
+    }
+    return areEqual;
   }
 
-  @Factory
-  public static Matcher<Reply<?>> isEqualToReply(Reply<?> operand) {
-    return new IsEqualToReply(operand);
+  private boolean bothAreNull(Object first, Object second) {
+    return (first == null && second == null);
   }
-
-  @Override
-  protected void describeMismatchSafely(Reply<?> item, Description mismatchDescription) {
-    mismatchDescription
-            .appendText("was entity:'" + optExpectedEntity.orNull() + "'")
-            .appendText("redirectUri:'" + optExpectedUri.orNull() + "'");
-  }
-
 
 }

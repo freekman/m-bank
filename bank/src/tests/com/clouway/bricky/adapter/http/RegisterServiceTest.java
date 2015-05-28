@@ -1,6 +1,5 @@
-package com.clouway.bricky.adapter.http.service;
+package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.adapter.http.RegisterService;
 import com.clouway.bricky.core.db.user.UserRepository;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
@@ -10,7 +9,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.clouway.bricky.adapter.http.service.IsEqualToReply.isEqualToReply;
+import static com.clouway.bricky.adapter.http.IsEqualToReply.isEqualToReply;
 import static org.junit.Assert.*;
 
 /**
@@ -44,7 +43,7 @@ public class RegisterServiceTest {
     }});
 
     Reply<?> reply = service.lookupUser(request);
-    assertThat(reply, isEqualToReply(Reply.with("Username exists")));
+    assertThat(reply, isEqualToReply(Reply.with("Username exists").status(403)));
   }
 
   @Test
@@ -60,7 +59,7 @@ public class RegisterServiceTest {
     }});
 
     Reply<?> reply = service.lookupUser(request);
-    assertThat(reply, isEqualToReply(Reply.with("Username is free")));
+    assertThat(reply, isEqualToReply(Reply.with("Username is free").status(202)));
   }
 
 }

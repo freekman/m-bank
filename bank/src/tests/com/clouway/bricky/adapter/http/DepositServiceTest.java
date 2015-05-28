@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static com.clouway.bricky.adapter.http.service.IsEqualToReply.isEqualToReply;
+import static com.clouway.bricky.adapter.http.IsEqualToReply.isEqualToReply;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**

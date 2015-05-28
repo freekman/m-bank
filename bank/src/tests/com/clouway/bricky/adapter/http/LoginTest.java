@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.clouway.bricky.adapter.http.service.IsEqualToReply.isEqualToReply;
+import static com.clouway.bricky.adapter.http.IsEqualToReply.isEqualToReply;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
