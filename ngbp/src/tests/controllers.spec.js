@@ -104,7 +104,6 @@ describe('Controllers', function () {
       deferred.resolve(1);
       scope.$digest();
 
-
       expect(scope.balance).toEqual(1);
       expect(scope.statusIsOk).toBeTruthy();
       expect(scope.statusMessage).toEqual("Operation successful.");
