@@ -22,7 +22,7 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
   };
 }]);
 
-httpModule.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
+httpModule.factory('authInterceptor', ['$q', '$window', '$location', function ($q, $window, $location) {
   return {
     'responseError': function (rejection) {
       if (rejection.status == 401) {

@@ -20,12 +20,12 @@ import java.util.List;
 @At("/login")
 public class Login {
 
-  private Registry registry;
-  private SessionManager manager;
-
   public String username;
   public String password;
   public List<String> messages = Lists.newArrayList();
+
+  private Registry registry;
+  private SessionManager manager;
 
   @Inject
   public Login(Registry registry, SessionManager manager) {

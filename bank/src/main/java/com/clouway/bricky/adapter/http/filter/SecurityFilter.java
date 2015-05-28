@@ -38,14 +38,24 @@ public class SecurityFilter implements Filter {
     HttpServletRequest req = (HttpServletRequest) servletRequest;
     HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
+    String requestURI = req.getRequestURI();
     boolean sessionExpired = manager.isUserSessionExpired();
+
+    System.out.println(requestURI);
+
     if (sessionExpired) {
       manager.closeUserSession();
+      if (requestURI.contains("/login") || requestURI.contains("/register") || requestURI.equals("/") || requestURI.contains(".css") || requestURI.contains(".js")) {
+        filterChain.doFilter(req, resp);
+        return;
+      }
+      resp.sendRedirect("/login");
+      return;
     }
 
     if (!sessionExpired) {
       manager.refreshUserSession();
-      if ("/login".equalsIgnoreCase(req.getRequestURI())) {
+      if ("/login".equalsIgnoreCase(requestURI)) {
         resp.sendRedirect("/#/account");
         return;
       }

@@ -38709,10 +38709,7 @@ var bankApp = angular.module('bankApp', ['ngRoute', 'bankCtrl']);
 
 bankApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
-          .when('/', {
-            templateUrl: 'partials/register.html',
-            controller: 'registerCtrl'
-          }).when('/r/register', {
+          .when('/register', {
             templateUrl: 'partials/register.html',
             controller: 'registerCtrl'
           })
@@ -38720,7 +38717,12 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/account.html',
             controller: 'accountCtrl'
           })
-          .otherwise({redirectTo: '/account'});
+          .otherwise({
+            controller: function () {
+              window.location.replace('/login');
+            },
+            template: "<div></div>"
+          });
 }]);
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
@@ -38810,7 +38812,7 @@ httpModule.service('httpRequest', ['$http', '$q', 'ngProgress', function ($http,
   };
 }]);
 
-httpModule.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
+httpModule.factory('authInterceptor', ['$q', '$window', '$location', function ($q, $window, $location) {
   return {
     'responseError': function (rejection) {
       if (rejection.status == 401) {

@@ -6,10 +6,7 @@ var bankApp = angular.module('bankApp', ['ngRoute', 'bankCtrl']);
 
 bankApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
-          .when('/', {
-            templateUrl: 'partials/register.html',
-            controller: 'registerCtrl'
-          }).when('/r/register', {
+          .when('/register', {
             templateUrl: 'partials/register.html',
             controller: 'registerCtrl'
           })
@@ -17,5 +14,10 @@ bankApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/account.html',
             controller: 'accountCtrl'
           })
-          .otherwise({redirectTo: '/account'});
+          .otherwise({
+            controller: function () {
+              window.location.replace('/login');
+            },
+            template: "<div></div>"
+          });
 }]);
