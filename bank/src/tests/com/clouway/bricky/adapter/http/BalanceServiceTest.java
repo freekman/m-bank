@@ -54,18 +54,6 @@ public class BalanceServiceTest {
   }
 
   @Test
-  public void unauthorizedDeposit() throws Exception {
-    pretendDepositAmountIs(20);
-    context.checking(new Expectations() {{
-      oneOf(repository).depositToCurrentUser(20);
-      will(throwException(new UnauthorizedException()));
-    }});
-
-    Reply<?> result = service.deposit(request);
-    assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(SC_UNAUTHORIZED)));
-  }
-
-  @Test
   public void negativeAmountDeposit() throws Exception {
     pretendDepositAmountIs(-20);
 
@@ -111,18 +99,6 @@ public class BalanceServiceTest {
   }
 
   @Test
-  public void unauthorizedWithdraw() throws Exception {
-    pretendWithdrawAmountIs(20);
-    context.checking(new Expectations() {{
-      oneOf(repository).withdrawFromCurrentUser(20);
-      will(throwException(new UnauthorizedException()));
-    }});
-
-    Reply<?> result = service.withdraw(request);
-    assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(SC_UNAUTHORIZED)));
-  }
-
-  @Test
   public void queryUserInfo() throws Exception {
     context.checking(new Expectations() {{
       oneOf(repository).getCurrentUser();
@@ -130,17 +106,6 @@ public class BalanceServiceTest {
     }});
     Reply<?> result = service.userInfo();
     assertThat(result, isEqualToReply(Reply.with(userWithBalance(20)).ok()));
-  }
-
-  @Test
-  public void unauthorizedUserInfoQuery() throws Exception {
-    context.checking(new Expectations() {{
-      oneOf(repository).getCurrentUser();
-      will(throwException(new UnauthorizedException()));
-    }});
-
-    Reply<?> reply = service.userInfo();
-    assertThat(reply, isEqualToReply(Reply.with("Operation failed.").status(SC_UNAUTHORIZED)));
   }
 
   private void pretendWithdrawAmountIs(double amount) {

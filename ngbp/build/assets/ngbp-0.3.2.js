@@ -1,5 +1,5 @@
 /**
- * ngbp - v0.3.2 - 2015-05-28
+ * ngbp - v0.3.2 - 2015-05-29
  * https://github.com/ngbp/ngbp
  *
  * Copyright (c) 2015 Josh David Miller
@@ -38709,10 +38709,6 @@ var bankApp = angular.module('bankApp', ['ngRoute', 'bankCtrl']);
 
 bankApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
-          .when('/register', {
-            templateUrl: 'partials/register.html',
-            controller: 'registerCtrl'
-          })
           .when('/account', {
             templateUrl: 'partials/account.html',
             controller: 'accountCtrl'

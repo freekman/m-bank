@@ -41,24 +41,20 @@ public class SecurityFilter implements Filter {
     String requestURI = req.getRequestURI();
     boolean sessionExpired = manager.isUserSessionExpired();
 
-    System.out.println(requestURI);
-
     if (sessionExpired) {
       manager.closeUserSession();
-      if (requestURI.contains("/login") || requestURI.contains("/register") || requestURI.equals("/") || requestURI.contains(".css") || requestURI.contains(".js")) {
+      if (requestURI.contains("/login") || requestURI.contains("/register") || requestURI.contains(".css") || requestURI.contains(".js")) {
         filterChain.doFilter(req, resp);
         return;
       }
-      resp.sendRedirect("/login");
+      resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
 
-    if (!sessionExpired) {
-      manager.refreshUserSession();
-      if ("/login".equalsIgnoreCase(requestURI)) {
-        resp.sendRedirect("/#/account");
-        return;
-      }
+    manager.refreshUserSession();
+    if ("/login".equalsIgnoreCase(requestURI)) {
+      resp.sendRedirect("/#/account");
+      return;
     }
 
     filterChain.doFilter(req, resp);

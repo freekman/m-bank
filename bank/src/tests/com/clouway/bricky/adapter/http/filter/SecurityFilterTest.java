@@ -52,11 +52,12 @@ public class SecurityFilterTest {
   }
 
   @Test
-  public void removeRedundantSession() throws Exception { // TODO should redirect to login appropriately
+  public void removeRedundantSession() throws Exception {
     context.checking(new Expectations() {{
       oneOf(manager).isUserSessionExpired();
       will(returnValue(true));
       oneOf(manager).closeUserSession();
+      oneOf(response).sendError(401);
       allowing(request);
       allowing(chain);
     }});

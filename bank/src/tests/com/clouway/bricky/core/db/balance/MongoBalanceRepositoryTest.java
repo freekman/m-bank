@@ -60,16 +60,6 @@ public class MongoBalanceRepositoryTest {
     assertThat(user.name, is(equalTo("Mark")));
   }
 
-  @Test(expected = UnauthorizedException.class)
-  public void attemptDepositOfExpiredUser() throws Exception {
-    context.checking(new Expectations() {{
-      oneOf(session).getSid();
-      will(returnValue(Optional.absent()));
-    }});
-
-    repository.depositToCurrentUser(30);
-  }
-
   @Test
   public void withdrawFromUser() throws Exception {
     pretendSessionExitsFor("Alf");
@@ -91,16 +81,6 @@ public class MongoBalanceRepositoryTest {
 
     assertThat(user.balance, is(equalTo(10d)));
     assertThat(user.name, is(equalTo("Alf")));
-  }
-
-  @Test(expected = UnauthorizedException.class)
-  public void withdrawFromExpiredUser() throws Exception {
-    context.checking(new Expectations() {{
-      oneOf(session).getSid();
-      will(returnValue(Optional.absent()));
-    }});
-
-    repository.withdrawFromCurrentUser(10);
   }
 
   @Test(expected = FundDeficitException.class)

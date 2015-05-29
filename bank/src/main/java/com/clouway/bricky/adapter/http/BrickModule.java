@@ -13,5 +13,6 @@ public class BrickModule extends SitebricksModule {
     at("/r/logout").serve(LogoutService.class);
     at("/r/balance").serve(BalanceService.class);
     at("/login").show(Login.class);
+    at("/register").show(Register.class);
   }
 }

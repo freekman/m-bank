@@ -8,9 +8,9 @@ import com.clouway.bricky.core.user.CurrentUser;
  */
 public interface BalanceRepository {
 
-  CurrentUser depositToCurrentUser(double amount) throws UnauthorizedException;
+  CurrentUser depositToCurrentUser(double amount);
 
-  CurrentUser withdrawFromCurrentUser(double amount) throws FundDeficitException, UnauthorizedException;
+  CurrentUser withdrawFromCurrentUser(double amount) throws FundDeficitException;
 
   CurrentUser getCurrentUser();
 }

@@ -10,6 +10,7 @@ import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.headless.Service;
+import com.google.sitebricks.http.Get;
 import com.google.sitebricks.http.Post;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -36,15 +37,13 @@ public class BalanceService {
   @At("/deposit")
   public Reply<?> deposit(Request request) {
     AmountDTO dto = request.read(AmountDTO.class).as(Json.class);
-    try {
-      if (dto.amount < 0) {
-        return Reply.with("Operation failed.").status(SC_BAD_REQUEST).as(Json.class);
-      }
-      CurrentUser user = repository.depositToCurrentUser(dto.amount);
-      return Reply.with(user.balance).status(SC_CREATED).as(Json.class);
-    } catch (UnauthorizedException e) {
-      return Reply.with("Operation failed.").status(SC_UNAUTHORIZED).as(Json.class);
+
+    if (dto.amount < 0) {
+      return Reply.with("Operation failed.").status(SC_BAD_REQUEST).as(Json.class);
     }
+    CurrentUser user = repository.depositToCurrentUser(dto.amount);
+    return Reply.with(user.balance).status(SC_CREATED).as(Json.class);
+
   }
 
   @Post
@@ -60,21 +59,14 @@ public class BalanceService {
       return Reply.with(user.balance).status(SC_CREATED).as(Json.class);
     } catch (FundDeficitException e) {
       return Reply.with("Operation failed.").status(SC_FORBIDDEN).as(Json.class);
-    } catch (UnauthorizedException e) {
-      return Reply.with("Operation failed.").status(SC_UNAUTHORIZED).as(Json.class);
     }
   }
 
   @Post
   @At("/info")
   public Reply<?> userInfo() {
-    try {
-      CurrentUser user = repository.getCurrentUser();
-      return Reply.with(user).ok().as(Json.class);
-    } catch (UnauthorizedException e) {
-      return Reply.with("Operation failed.").status(SC_UNAUTHORIZED).as(Json.class);
-    }
-
+    CurrentUser user = repository.getCurrentUser();
+    return Reply.with(user).ok().as(Json.class);
   }
 
 }

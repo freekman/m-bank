@@ -1,6 +1,5 @@
 package com.clouway.bricky.core.db.balance;
 
-import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.sesion.Session;
 import com.clouway.bricky.core.user.CurrentUser;
 import com.google.common.base.Optional;
@@ -28,35 +27,31 @@ public class MongoBalanceRepository implements BalanceRepository {
   @Override
   public CurrentUser depositToCurrentUser(double amount) {
     Optional<String> sid = session.getSid();
-    if (sid.isPresent()) {
-      accounts.updateOne(eq("session.sid", sid.get()), new Document("$inc", new Document("balance", amount)));
-      return getCurrentUser();
-    }
-    throw new UnauthorizedException();
+    accounts.updateOne(eq("session.sid", sid.get()), new Document("$inc", new Document("balance", amount)));
+    return getCurrentUser();
   }
 
   @Override
   public CurrentUser withdrawFromCurrentUser(double amount) throws FundDeficitException {
     Optional<String> sid = session.getSid();
-    if (sid.isPresent()) {
-      CurrentUser user = getCurrentUser();
-      if (user.balance < amount) {
-        throw new FundDeficitException();
-      }
-      accounts.updateOne(eq("session.sid", sid.get()), new Document("$inc", new Document("balance", -amount)));
-      return new CurrentUser(user.name, user.balance - amount);
-    }
 
-    throw new UnauthorizedException();
+    CurrentUser user = getCurrentUser();
+    if (user.balance < amount) {
+      throw new FundDeficitException();
+    }
+    accounts.updateOne(eq("session.sid", sid.get()), new Document("$inc", new Document("balance", -amount)));
+    return new CurrentUser(user.name, user.balance - amount);
+
   }
 
   @Override
   public CurrentUser getCurrentUser() {
     Optional<String> sid = session.getSid();
-    if (sid.isPresent()) {
-      Document user = accounts.find(new Document("session.sid", sid.get())).first();
-      return new CurrentUser(user.getString("username"), user.getDouble("balance"));
+    Document user = accounts.find(new Document("session.sid", sid.get())).first();
+    Double cash = user.getDouble("balance");
+    if (cash == null) {
+      cash = 0d;
     }
-    throw new UnauthorizedException();
+    return new CurrentUser(user.getString("username"), cash);
   }
 }
