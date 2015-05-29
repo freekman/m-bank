@@ -11,7 +11,7 @@ public class MainServer {
   public static void main(String[] args) throws Exception {
     Server server = new Server(8080);
     WebAppContext appContext = new WebAppContext();
-    appContext.setWar("src/main/webapp");
+    appContext.setWar("brick-bank.war");
     server.setHandler(appContext);
     server.start();
     server.join();

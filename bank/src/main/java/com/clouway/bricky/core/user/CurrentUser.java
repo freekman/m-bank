@@ -22,7 +22,6 @@ public class CurrentUser {
     CurrentUser that = (CurrentUser) o;
 
     return Double.compare(that.balance, balance) == 0 && !(name != null ? !name.equals(that.name) : that.name != null);
-
   }
 
   @Override
