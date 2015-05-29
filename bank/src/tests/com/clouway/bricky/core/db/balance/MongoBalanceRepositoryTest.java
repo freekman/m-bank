@@ -1,6 +1,5 @@
 package com.clouway.bricky.core.db.balance;
 
-import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.sesion.Session;
 import com.clouway.bricky.core.user.CurrentUser;
 import com.github.fakemongo.junit.FongoRule;
@@ -22,14 +21,13 @@ import static org.junit.Assert.*;
  */
 public class MongoBalanceRepositoryTest {
 
-  private MongoBalanceRepository repository;
-  private Session session;
-
   @Rule
   public FongoRule fongo = new FongoRule();
-
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
+
+  private MongoBalanceRepository repository;
+  private Session session;
   private MongoDatabase bank;
 
   @Before

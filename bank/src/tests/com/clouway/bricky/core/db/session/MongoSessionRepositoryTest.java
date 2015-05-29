@@ -22,14 +22,12 @@ import static org.junit.Assert.*;
  */
 public class MongoSessionRepositoryTest {
 
-  private SessionClock clock;
-  private MongoSessionRepository repository;
-
   @Rule
   public FongoRule fongo = new FongoRule();
-
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
+  private SessionClock clock;
+  private MongoSessionRepository repository;
   private MongoDatabase db;
 
   @Before

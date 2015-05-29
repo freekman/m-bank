@@ -17,12 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityFilterTest {
 
 
-  private SecurityFilter filter;
-
-
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
-
+  private SecurityFilter filter;
   private SessionManager manager;
   private HttpServletRequest request;
   private HttpServletResponse response;

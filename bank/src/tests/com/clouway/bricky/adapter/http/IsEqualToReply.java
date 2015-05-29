@@ -28,6 +28,11 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
     this.expectedValue = expectedValue;
   }
 
+  @Factory
+  public static Matcher<Reply<?>> isEqualToReply(Reply<?> operand) {
+    return new IsEqualToReply(operand);
+  }
+
   @Override
   protected boolean matchesSafely(Reply<?> actualValue) {
     boolean match;
@@ -63,11 +68,6 @@ public class IsEqualToReply extends TypeSafeMatcher<Reply<?>> {
             .appendText(" entity:'" + optExpectedEntity.orNull() + "'")
             .appendText(" redirectUri:'" + optExpectedUri.orNull() + "'")
             .appendText(" status:'" + optExpectedStatus.orNull() + "'");
-  }
-
-  @Factory
-  public static Matcher<Reply<?>> isEqualToReply(Reply<?> operand) {
-    return new IsEqualToReply(operand);
   }
 
   @Override

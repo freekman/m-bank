@@ -17,14 +17,13 @@ import static org.junit.Assert.*;
  */
 public class UserSessionManagerTest {
 
+  @Rule
+  public JUnitRuleMockery context = new JUnitRuleMockery();
   private UserSessionManager manager;
   private Session session;
   //  private HttpServletResponse response;
 //  private HttpServletRequest request;
   private SessionRepository repository;
-
-  @Rule
-  public JUnitRuleMockery context = new JUnitRuleMockery();
 
   @Before
   public void setUp() throws Exception {

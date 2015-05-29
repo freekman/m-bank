@@ -1,6 +1,5 @@
 package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.db.balance.BalanceRepository;
 import com.clouway.bricky.core.db.balance.FundDeficitException;
 import com.clouway.bricky.core.user.CurrentUser;
@@ -17,7 +16,6 @@ import org.junit.Test;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.clouway.bricky.adapter.http.IsEqualToReply.isEqualToReply;
-import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -25,13 +23,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class BalanceServiceTest {
 
+  @Rule
+  public JUnitRuleMockery context = new JUnitRuleMockery();
   private BalanceService service;
   private Request request;
   private RequestRead requestRead;
   private BalanceRepository repository;
-
-  @Rule
-  public JUnitRuleMockery context = new JUnitRuleMockery();
 
   @Before
   public void setUp() throws Exception {

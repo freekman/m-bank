@@ -1,6 +1,5 @@
 package com.clouway.bricky.adapter.http;
 
-import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.db.balance.BalanceRepository;
 import com.clouway.bricky.core.db.balance.FundDeficitException;
 import com.clouway.bricky.core.user.CurrentUser;
@@ -10,13 +9,11 @@ import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.headless.Service;
-import com.google.sitebricks.http.Get;
 import com.google.sitebricks.http.Post;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CREATED;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>

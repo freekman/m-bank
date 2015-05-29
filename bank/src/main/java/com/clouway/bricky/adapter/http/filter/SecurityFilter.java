@@ -52,7 +52,7 @@ public class SecurityFilter implements Filter {
     }
 
     manager.refreshUserSession();
-    if ("/login".equalsIgnoreCase(requestURI)) {
+    if ("/login".equalsIgnoreCase(requestURI) || requestURI.contains("/register")) {
       resp.sendRedirect("/#/account");
       return;
     }

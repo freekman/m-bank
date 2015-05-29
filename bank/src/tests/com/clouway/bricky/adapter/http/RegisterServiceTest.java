@@ -17,12 +17,11 @@ import static org.junit.Assert.*;
  */
 public class RegisterServiceTest {
 
+  @Rule
+  public JUnitRuleMockery context = new JUnitRuleMockery();
   private RegisterService service;
   private UserRepository repository;
   private Request request;
-
-  @Rule
-  public JUnitRuleMockery context = new JUnitRuleMockery();
 
   @Before
   public void setUp() throws Exception {

@@ -18,12 +18,11 @@ import org.junit.Test;
  */
 public class UserRegistryTest {
 
+  @Rule
+  public JUnitRuleMockery context = new JUnitRuleMockery();
   private UserRegistry userRegistry;
   private UserRepository repository;
   private Validator<User> validator;
-
-  @Rule
-  public JUnitRuleMockery context = new JUnitRuleMockery();
 
   @Before
   public void setUp() throws Exception {

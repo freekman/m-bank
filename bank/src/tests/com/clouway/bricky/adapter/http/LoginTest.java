@@ -23,12 +23,11 @@ import static org.junit.Assert.*;
  */
 public class LoginTest {
 
+  @Rule
+  public JUnitRuleMockery context = new JUnitRuleMockery();
   private Login login;
   private Registry registry;
   private SessionManager manager;
-
-  @Rule
-  public JUnitRuleMockery context = new JUnitRuleMockery();
 
   @Before
   public void setUp() throws Exception {

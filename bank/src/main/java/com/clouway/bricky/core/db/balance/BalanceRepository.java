@@ -1,6 +1,5 @@
 package com.clouway.bricky.core.db.balance;
 
-import com.clouway.bricky.core.UnauthorizedException;
 import com.clouway.bricky.core.user.CurrentUser;
 
 /**

@@ -19,26 +19,11 @@ import static org.junit.Assert.*;
  */
 public class CurrentSessionTest {
 
-  private class FakeProvider<T> implements Provider<T> {
-
-    private final T item;
-
-    FakeProvider(T item) {
-      this.item = item;
-    }
-
-    @Override
-    public T get() {
-      return item;
-    }
-  }
-
+  @Rule
+  public JUnitRuleMockery context = new JUnitRuleMockery();
   private CurrentSession session;
   private HttpServletResponse response;
   private HttpServletRequest request;
-
-  @Rule
-  public JUnitRuleMockery context = new JUnitRuleMockery();
 
   @Before
   public void setUp() throws Exception {
@@ -88,6 +73,20 @@ public class CurrentSessionTest {
   @NotNull
   private Cookie[] dummyCookie() {
     return new Cookie[]{new Cookie("sid", "session_id")};
+  }
+
+  private class FakeProvider<T> implements Provider<T> {
+
+    private final T item;
+
+    FakeProvider(T item) {
+      this.item = item;
+    }
+
+    @Override
+    public T get() {
+      return item;
+    }
   }
 
 }
