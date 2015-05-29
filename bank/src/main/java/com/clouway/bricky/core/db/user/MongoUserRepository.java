@@ -14,7 +14,7 @@ import static com.mongodb.client.model.Filters.eq;
  */
 public class MongoUserRepository implements UserRepository {
 
-  private MongoCollection<Document> collection;
+  private final MongoCollection<Document> collection;
 
   @Inject
   public MongoUserRepository(MongoDatabase db) {

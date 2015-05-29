@@ -124,7 +124,6 @@ describe('Controllers', function () {
     });
 
     it('should fetch user info', function () {
-
       var dummyUser = {name: "Marian", balance: 123};
 
       scope.fetchUser();

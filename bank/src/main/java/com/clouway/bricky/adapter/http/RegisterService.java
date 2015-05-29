@@ -24,7 +24,7 @@ import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 public class RegisterService {
 
   private final UserRepository repository;
-  private Validator<UserDTO> validator;
+  private final Validator<UserDTO> validator;
 
   @Inject
   public RegisterService(UserRepository repository, Validator<UserDTO> validator) {

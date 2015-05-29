@@ -8,8 +8,8 @@ import com.google.common.base.Optional;
  */
 public class UserDTORule implements ValidationRule<UserDTO> {
 
-  private String nameRule = "[A-z0-9]{3,30}";
-  private String passwordRule = "[^\\^!@#$%^&*()_=]{3,20}";
+  private final String nameRule = "[A-z0-9]{3,30}";
+  private final String passwordRule = "[^\\^!@#$%&*()_=]{3,20}";
 
   @Override
   public Optional<String> apply(UserDTO user) {

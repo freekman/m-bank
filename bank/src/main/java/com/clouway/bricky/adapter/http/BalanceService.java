@@ -18,12 +18,11 @@ import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 /**
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
-
 @Service
 @At("/r/balance")
 public class BalanceService {
 
-  private BalanceRepository repository;
+  private final BalanceRepository repository;
 
   @Inject
   public BalanceService(BalanceRepository repository) {

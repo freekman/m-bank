@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 public class Encrypt {
 
   public String sha1(String input) {
-    MessageDigest mDigest = null;
+    MessageDigest mDigest;
     try {
       mDigest = MessageDigest.getInstance("SHA1");
     } catch (NoSuchAlgorithmException e) {
@@ -18,9 +18,9 @@ public class Encrypt {
     }
 
     byte[] result = mDigest.digest(input.getBytes());
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < result.length; i++) {
-      sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+    StringBuilder sb = new StringBuilder();
+    for (byte aResult : result) {
+      sb.append(Integer.toString((aResult & 0xff) + 0x100, 16).substring(1));
     }
 
     return sb.toString();

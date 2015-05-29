@@ -21,8 +21,7 @@ public class CurrentUser {
 
     CurrentUser that = (CurrentUser) o;
 
-    if (Double.compare(that.balance, balance) != 0) return false;
-    return !(name != null ? !name.equals(that.name) : that.name != null);
+    return Double.compare(that.balance, balance) == 0 && !(name != null ? !name.equals(that.name) : that.name != null);
 
   }
 

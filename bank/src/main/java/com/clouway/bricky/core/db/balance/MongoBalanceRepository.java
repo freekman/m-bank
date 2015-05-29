@@ -16,7 +16,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class MongoBalanceRepository implements BalanceRepository {
 
   private final MongoCollection<Document> accounts;
-  private Session session;
+  private final Session session;
 
   @Inject
   public MongoBalanceRepository(MongoDatabase database, Session session) {

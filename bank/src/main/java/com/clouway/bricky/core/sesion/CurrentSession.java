@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CurrentSession implements Session {
 
-  private Encrypt encrypt;
-  private Provider<HttpServletRequest> requestProvider;
-  private Provider<HttpServletResponse> responseProvider;
+  private final Encrypt encrypt;
+  private final Provider<HttpServletRequest> requestProvider;
+  private final Provider<HttpServletResponse> responseProvider;
 
   @Inject
   public CurrentSession(Encrypt encrypt, Provider<HttpServletRequest> requestProvider, Provider<HttpServletResponse> responseProvider) {

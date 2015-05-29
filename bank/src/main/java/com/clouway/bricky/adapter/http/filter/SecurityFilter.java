@@ -20,7 +20,7 @@ import java.io.IOException;
 @Singleton
 public class SecurityFilter implements Filter {
 
-  private SessionManager manager;
+  private final SessionManager manager;
 
   @Inject
   public SecurityFilter(SessionManager manager) {

@@ -10,8 +10,8 @@ import com.google.inject.Inject;
  */
 public class UserSessionManager implements SessionManager {
 
-  private SessionRepository repository;
-  private Session session;
+  private final SessionRepository repository;
+  private final Session session;
 
   @Inject
   public UserSessionManager(Session session, SessionRepository repository) {

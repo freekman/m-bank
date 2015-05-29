@@ -22,10 +22,10 @@ public class Login {
 
   public String username;
   public String password;
-  public List<String> messages = Lists.newArrayList();
+  public final List<String> messages = Lists.newArrayList();
 
-  private Registry registry;
-  private SessionManager manager;
+  private final Registry registry;
+  private final SessionManager manager;
 
   @Inject
   public Login(Registry registry, SessionManager manager) {
