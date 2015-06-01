@@ -1,7 +1,6 @@
 package com.clouway.bricky.core.db.user;
 
 import com.clouway.bricky.core.user.User;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 

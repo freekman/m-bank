@@ -6,7 +6,6 @@ import com.clouway.bricky.core.db.user.UserRepository;
 import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.core.user.UserRegistry;
 import com.google.common.base.Optional;
-import org.jetbrains.annotations.NotNull;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
