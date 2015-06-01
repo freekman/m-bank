@@ -68,7 +68,6 @@ public class UserRegistryTest {
     userRegistry.authorize(testUser());
   }
 
-  @NotNull
   private User testUser() {
     return new User("Marian", "pswd");
   }

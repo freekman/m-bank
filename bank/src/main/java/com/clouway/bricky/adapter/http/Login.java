@@ -38,7 +38,7 @@ public class Login {
     try {
       User user = new User(username, password);
       registry.authorize(user);
-      manager.openSessionFor(user);
+      manager.openSession(user);
     } catch (UnauthorizedException e) {
       messages.add("Wrong username or password");
       return null;

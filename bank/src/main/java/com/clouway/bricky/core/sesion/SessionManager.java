@@ -12,7 +12,7 @@ public interface SessionManager {
    *
    * @param user that will have a session opened for.
    */
-  void openSessionFor(User user);
+  void openSession(User user);
 
   /**
    * Performs a check if there is a opened session for the current user and if has expired.

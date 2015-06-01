@@ -40,7 +40,7 @@ public class LoginTest {
   public void happyPath() throws Exception {
     context.checking(new Expectations() {{
       oneOf(registry).authorize(with(any(User.class)));
-      oneOf(manager).openSessionFor(with(any(User.class)));
+      oneOf(manager).openSession(with(any(User.class)));
     }});
 
     Reply<?> reply = login.login();

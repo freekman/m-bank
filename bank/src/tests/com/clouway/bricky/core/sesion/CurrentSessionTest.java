@@ -1,7 +1,6 @@
 package com.clouway.bricky.core.sesion;
 
 import com.google.inject.Provider;
-import org.jetbrains.annotations.NotNull;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
@@ -14,15 +13,30 @@ import javax.servlet.http.HttpServletResponse;
 
 import static org.junit.Assert.*;
 
-/**
- * @author Marian Zlatev <mzlatev91@gmail.com>
- */
 public class CurrentSessionTest {
+
+  /**
+   * @author Marian Zlatev <mzlatev91@gmail.com>
+   */
+  private class FakeProvider<T> implements Provider<T> {
+
+    private final T item;
+
+    FakeProvider(T item) {
+      this.item = item;
+    }
+
+    @Override
+    public T get() {
+      return item;
+    }
+  }
 
   @Rule
   public JUnitRuleMockery context = new JUnitRuleMockery();
   private CurrentSession session;
   private HttpServletResponse response;
+
   private HttpServletRequest request;
 
   @Before
@@ -70,23 +84,8 @@ public class CurrentSessionTest {
     session.detach();
   }
 
-  @NotNull
   private Cookie[] dummyCookie() {
     return new Cookie[]{new Cookie("sid", "session_id")};
-  }
-
-  private class FakeProvider<T> implements Provider<T> {
-
-    private final T item;
-
-    FakeProvider(T item) {
-      this.item = item;
-    }
-
-    @Override
-    public T get() {
-      return item;
-    }
   }
 
 }

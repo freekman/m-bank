@@ -64,7 +64,6 @@ public abstract class UserDbContractTest {
     assertFalse(repository.isAuthentic(gaston));
   }
 
-  @NotNull
   private User getTestUser() {
     return new User("Marian", "pswd");
   }

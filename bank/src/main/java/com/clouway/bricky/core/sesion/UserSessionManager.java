@@ -20,7 +20,7 @@ public class UserSessionManager implements SessionManager {
   }
 
   @Override
-  public void openSessionFor(User user) {
+  public void openSession(User user) {
     repository.addSession(user, session.attach());
   }
 
