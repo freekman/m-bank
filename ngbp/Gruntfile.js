@@ -48,7 +48,7 @@ module.exports = function (grunt) {
         'src/partials/*.html',
         'src/index.html'
       ],
-      tasks: ['jshint','concat', 'copy']
+      tasks: ['jshint', 'concat', 'copy']
     },
     /**
      * `grunt concat` concatenates multiple source files into a single file.
@@ -610,6 +610,8 @@ module.exports = function (grunt) {
    */
 
   grunt.registerTask('concatBank', ['watch']);
+
+  grunt.registerTask('packageBank', ['jshint','karma', 'concat', 'copy']);
 
   /* ========================================================================= */
 

@@ -1,5 +1,6 @@
 package com.clouway.bricky.core;
 
+import com.clouway.bricky.PropertyReader;
 import com.clouway.bricky.core.db.balance.BalanceRepository;
 import com.clouway.bricky.core.db.balance.MongoBalanceRepository;
 import com.clouway.bricky.core.db.session.MongoSessionRepository;
@@ -16,6 +17,12 @@ import com.mongodb.client.MongoDatabase;
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 public class PersistentDbModule extends AbstractModule {
+  private PropertyReader properties;
+
+  public PersistentDbModule(PropertyReader reader) {
+    this.properties = reader;
+  }
+
   @Override
   protected void configure() {
     bind(UserRepository.class).to(MongoUserRepository.class);
@@ -28,12 +35,12 @@ public class PersistentDbModule extends AbstractModule {
   @Singleton
   @Provides
   MongoClient mongoClientProvider() {
-    return new MongoClient("localhost", 27017);
+    return new MongoClient(properties.getDbHost(), properties.getDbPort());
   }
 
   @Provides
   MongoDatabase provideBankDb(MongoClient mongoClient) {
-    return mongoClient.getDatabase("bank");
+    return mongoClient.getDatabase(properties.getDbName());
   }
 
 }

@@ -1,6 +1,6 @@
 package com.clouway.bricky.core.user;
 
-import com.clouway.bricky.adapter.http.validation.ValidationRule;
+import com.clouway.bricky.http.validation.ValidationRule;
 import com.google.common.base.Optional;
 
 /**
