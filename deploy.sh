@@ -12,20 +12,17 @@ fi
 cd ../bank
 mvn clean package
 if [ $? -ne 0 ]
-	then echo 'Failed to jar backend project.!'
+	then echo 'Failed to jar backend project!'
 	return
 fi
 
 # Transfer packaged project to dev
-destination=/home/clouway/demo-dev/
-
 devdest=clouway@dev.telcong.com:/opt/telcong/incubator/m-bank/
 
-rsync -v config.properties $destination
-rsync -v target/BrickBank-jar-with-dependencies.jar $destination
-rsync -vr src/main/webapp/ $destination/frontend/
+rsync -v config.properties $devdest
+rsync -v target/BrickBank-jar-with-dependencies.jar $devdest
+rsync -vr src/main/webapp/ $devdest/frontend/
 
 # Start up newly transferred project
-cd $destination
-java -jar BrickBank-jar-with-dependencies.jar config.properties 
-cd
+ssh clouway@dev.telcong.com sudo stop upstmbank
+ssh clouway@dev.telcong.com sudo start upstmbank
