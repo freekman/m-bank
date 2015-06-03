@@ -5,7 +5,9 @@ import com.clouway.bricky.http.BrickModule;
 import com.clouway.bricky.http.HttpModule;
 import com.clouway.bricky.http.HttpServletModule;
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceFilter;
+import com.google.inject.servlet.GuiceServletContextListener;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -20,22 +22,28 @@ public class MainServer {
 
   public static void main(String[] args) throws Exception {
     PropertyReader reader = getPropertyReader(args);
-    Guice.createInjector(new HttpServletModule(), new HttpModule(), new BrickModule(), new PersistentDbModule(reader));
     Server jetty = getJetty(reader);
     jetty.start();
     jetty.join();
   }
 
-
-  public static Server getJetty(PropertyReader reader) {
+  private static Server getJetty(final PropertyReader reader) {
     Server server = new Server(reader.getJettyPort());
 
     ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS);
+
+    servletContextHandler.addEventListener(new GuiceServletContextListener() {
+      @Override
+      protected Injector getInjector() {
+        return Guice.createInjector(new HttpServletModule(), new HttpModule(), new BrickModule(), new PersistentDbModule(reader));
+      }
+    });
+
     servletContextHandler.addFilter(GuiceFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
 
     // You MUST add DefaultServlet or your server will always return 404s
     servletContextHandler.addServlet(DefaultServlet.class, "/");
-    servletContextHandler.setResourceBase("src/main/webapp");
+    servletContextHandler.setResourceBase("frontend");
     return server;
   }
 
@@ -43,8 +51,9 @@ public class MainServer {
     String propName;
     if (args != null && args.length != 0) {
       propName = args[0];
+      System.out.println("PROP FILE: " + propName);
     } else {
-      propName = "config.properties";
+      propName = "../config.properties";
     }
 
     return new PropertyReader(propName);
