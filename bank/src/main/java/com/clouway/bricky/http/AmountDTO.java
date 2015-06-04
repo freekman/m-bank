@@ -5,9 +5,9 @@ package com.clouway.bricky.http;
  */
 class AmountDTO {
 
-  public double amount;
+  Double amount;
 
-  public void setAmount(double amount) {
+  void setAmount(Double amount) {
     this.amount = amount;
   }
 }
