@@ -1,5 +1,6 @@
 package com.clouway.bricky.http;
 
+import com.clouway.bricky.JsonM;
 import com.clouway.bricky.persistence.balance.BalanceRepository;
 import com.clouway.bricky.persistence.balance.FundDeficitException;
 import com.clouway.bricky.core.user.CurrentUser;
@@ -126,7 +127,7 @@ public class BalanceServiceTest {
     context.checking(new Expectations() {{
       oneOf(request).read(AmountDTO.class);
       will(returnValue(requestRead));
-      oneOf(requestRead).as(Json.class);
+      oneOf(requestRead).as(JsonM.class);
       will(returnValue(dto));
     }});
   }

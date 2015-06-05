@@ -1,21 +1,16 @@
 package com.clouway.bricky.http;
 
+import com.clouway.bricky.JsonM;
 import com.clouway.bricky.core.user.CurrentUser;
 import com.clouway.bricky.persistence.balance.BalanceRepository;
 import com.clouway.bricky.persistence.balance.FundDeficitException;
 import com.google.inject.Inject;
-import com.google.inject.TypeLiteral;
 import com.google.sitebricks.At;
-import com.google.sitebricks.client.Transport;
 import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.headless.Service;
 import com.google.sitebricks.http.Post;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CREATED;
@@ -38,7 +33,9 @@ public class BalanceService {
   @Post
   @At("/deposit")
   public Reply<?> deposit(Request request) {
-    AmountDTO dto = request.read(AmountDTO.class).as(Json.class);
+    AmountDTO dto = request.read(AmountDTO.class).as(JsonM.class);
+
+    System.out.println("dto parsed " + dto.amount);
 
     if (dto.amount < 0) {
       return Reply.with("Operation failed.").status(SC_BAD_REQUEST).as(Json.class);
