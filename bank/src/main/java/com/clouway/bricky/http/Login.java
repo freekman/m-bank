@@ -1,7 +1,7 @@
 package com.clouway.bricky.http;
 
 import com.clouway.bricky.core.Registry;
-import com.clouway.bricky.core.UnauthorizedException;
+import com.clouway.bricky.core.UnauthenticatedException;
 import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
 import com.google.common.collect.Lists;
@@ -37,9 +37,9 @@ public class Login {
   public Reply<?> login() {
     try {
       User user = new User(username, password);
-      registry.authorize(user);
+      registry.authenticate(user);
       manager.openSession(user);
-    } catch (UnauthorizedException e) {
+    } catch (UnauthenticatedException e) {
       messages.add("Wrong username or password");
       return null;
     }

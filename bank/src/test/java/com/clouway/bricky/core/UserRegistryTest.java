@@ -2,7 +2,7 @@ package com.clouway.bricky.core;
 
 import com.clouway.bricky.http.validation.ValidationRule;
 import com.clouway.bricky.http.validation.Validator;
-import com.clouway.bricky.core.db.user.UserRepository;
+import com.clouway.bricky.persistence.user.UserRepository;
 import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.core.user.UserRegistry;
 import com.google.common.base.Optional;
@@ -40,10 +40,10 @@ public class UserRegistryTest {
       will(returnValue(true));
     }});
 
-    userRegistry.authorize(testUser());
+    userRegistry.authenticate(testUser());
   }
 
-  @Test(expected = UnauthorizedException.class)
+  @Test(expected = UnauthenticatedException.class)
   public void failNonValidUserAuthorization() throws Exception {
     context.checking(new Expectations() {{
       oneOf(validator).validate(with(any(User.class)), with(any(ValidationRule.class)));
@@ -52,10 +52,10 @@ public class UserRegistryTest {
       never(repository).isAuthentic(with(any(User.class)));
     }});
 
-    userRegistry.authorize(testUser());
+    userRegistry.authenticate(testUser());
   }
 
-  @Test(expected = UnauthorizedException.class)
+  @Test(expected = UnauthenticatedException.class)
   public void failNonAuthenticUserAuthorization() throws Exception {
     context.checking(new Expectations() {{
       oneOf(validator).validate(with(any(User.class)), with(any(ValidationRule.class)));
@@ -64,7 +64,7 @@ public class UserRegistryTest {
       oneOf(repository).isAuthentic(with(any(User.class)));
       will(returnValue(false));
     }});
-    userRegistry.authorize(testUser());
+    userRegistry.authenticate(testUser());
   }
 
   private User testUser() {

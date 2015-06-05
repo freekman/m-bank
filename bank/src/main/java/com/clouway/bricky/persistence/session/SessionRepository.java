@@ -1,4 +1,4 @@
-package com.clouway.bricky.core.db.session;
+package com.clouway.bricky.persistence.session;
 
 import com.clouway.bricky.core.user.User;
 
@@ -6,6 +6,7 @@ import com.clouway.bricky.core.user.User;
  * @author Marian Zlatev <mzlatev91@gmail.com>
  */
 public interface SessionRepository {
+
   void addSession(User user, String sid);
 
   boolean isSessionExpired(String sid);

@@ -1,7 +1,7 @@
 package com.clouway.bricky.http;
 
 import com.clouway.bricky.http.validation.Validator;
-import com.clouway.bricky.core.db.user.UserRepository;
+import com.clouway.bricky.persistence.user.UserRepository;
 import com.clouway.bricky.core.user.User;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;

@@ -10,7 +10,7 @@ import java.util.Properties;
  */
 public class PropertyReader {
 
-  private Properties properties;
+  private final Properties properties;
 
   public PropertyReader(String propName) {
     properties = new Properties();

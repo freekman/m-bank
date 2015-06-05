@@ -1,12 +1,12 @@
-package com.clouway.bricky.core;
+package com.clouway.bricky.persistence;
 
 import com.clouway.bricky.PropertyReader;
-import com.clouway.bricky.core.db.balance.BalanceRepository;
-import com.clouway.bricky.core.db.balance.MongoBalanceRepository;
-import com.clouway.bricky.core.db.session.MongoSessionRepository;
-import com.clouway.bricky.core.db.session.SessionRepository;
-import com.clouway.bricky.core.db.user.MongoUserRepository;
-import com.clouway.bricky.core.db.user.UserRepository;
+import com.clouway.bricky.persistence.balance.BalanceRepository;
+import com.clouway.bricky.persistence.balance.MongoBalanceRepository;
+import com.clouway.bricky.persistence.session.MongoSessionRepository;
+import com.clouway.bricky.persistence.session.SessionRepository;
+import com.clouway.bricky.persistence.user.MongoUserRepository;
+import com.clouway.bricky.persistence.user.UserRepository;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -25,11 +25,11 @@ public class PersistentDbModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(UserRepository.class).to(MongoUserRepository.class);
+    bind(UserRepository.class).to(MongoUserRepository.class).in(Singleton.class);
 
-    bind(SessionRepository.class).to(MongoSessionRepository.class);
+    bind(SessionRepository.class).to(MongoSessionRepository.class).in(Singleton.class);
 
-    bind(BalanceRepository.class).to(MongoBalanceRepository.class);
+    bind(BalanceRepository.class).to(MongoBalanceRepository.class).in(Singleton.class);
   }
 
   @Singleton

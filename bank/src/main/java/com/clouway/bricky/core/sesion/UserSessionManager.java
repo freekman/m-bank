@@ -1,6 +1,6 @@
 package com.clouway.bricky.core.sesion;
 
-import com.clouway.bricky.core.db.session.SessionRepository;
+import com.clouway.bricky.persistence.session.SessionRepository;
 import com.clouway.bricky.core.user.User;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;

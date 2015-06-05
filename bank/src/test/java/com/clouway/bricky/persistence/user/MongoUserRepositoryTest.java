@@ -1,4 +1,4 @@
-package com.clouway.bricky.core.db.user;
+package com.clouway.bricky.persistence.user;
 
 import com.github.fakemongo.junit.FongoRule;
 import org.junit.Rule;

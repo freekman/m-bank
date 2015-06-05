@@ -1,4 +1,4 @@
-package com.clouway.bricky.core.db.balance;
+package com.clouway.bricky.persistence.balance;
 
 import com.clouway.bricky.core.sesion.Session;
 import com.clouway.bricky.core.user.CurrentUser;

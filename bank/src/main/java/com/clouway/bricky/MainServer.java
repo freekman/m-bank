@@ -1,6 +1,6 @@
 package com.clouway.bricky;
 
-import com.clouway.bricky.core.PersistentDbModule;
+import com.clouway.bricky.persistence.PersistentDbModule;
 import com.clouway.bricky.http.BrickModule;
 import com.clouway.bricky.http.HttpModule;
 import com.clouway.bricky.http.HttpServletModule;
@@ -48,15 +48,13 @@ public class MainServer {
   }
 
   private static PropertyReader getPropertyReader(String[] args) {
-    String propName;
+    String configurationFile = "config.properties";
+
     if (args != null && args.length != 0) {
-      propName = args[0];
-      System.out.println("PROP FILE: " + propName);
-    } else {
-      propName = "../config.properties";
+      configurationFile = args[0];
     }
 
-    return new PropertyReader(propName);
+    return new PropertyReader(configurationFile);
   }
 
 }

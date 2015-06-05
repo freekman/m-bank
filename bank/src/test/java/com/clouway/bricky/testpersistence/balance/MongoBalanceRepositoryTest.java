@@ -1,7 +1,9 @@
-package com.clouway.bricky.core.db.balance;
+package com.clouway.bricky.testpersistence.balance;
 
 import com.clouway.bricky.core.sesion.Session;
 import com.clouway.bricky.core.user.CurrentUser;
+import com.clouway.bricky.persistence.balance.FundDeficitException;
+import com.clouway.bricky.persistence.balance.MongoBalanceRepository;
 import com.github.fakemongo.junit.FongoRule;
 import com.google.common.base.Optional;
 import com.mongodb.client.MongoDatabase;

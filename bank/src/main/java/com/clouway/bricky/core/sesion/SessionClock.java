@@ -7,7 +7,17 @@ import java.util.Date;
  */
 public interface SessionClock {
 
+  /**
+   * Generate new expiration time for a session.
+   *
+   * @return date when session should expire.
+   */
   Date newExpirationTime();
 
+  /**
+   * Get current time.
+   *
+   * @return current date.
+   */
   Date getTime();
 }

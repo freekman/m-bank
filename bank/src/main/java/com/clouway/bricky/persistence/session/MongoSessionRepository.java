@@ -1,4 +1,4 @@
-package com.clouway.bricky.core.db.session;
+package com.clouway.bricky.persistence.session;
 
 import com.clouway.bricky.core.sesion.SessionClock;
 import com.clouway.bricky.core.user.User;

@@ -1,9 +1,9 @@
 package com.clouway.bricky.core.user;
 
-import com.clouway.bricky.http.validation.Validator;
 import com.clouway.bricky.core.Registry;
-import com.clouway.bricky.core.UnauthorizedException;
-import com.clouway.bricky.core.db.user.UserRepository;
+import com.clouway.bricky.core.UnauthenticatedException;
+import com.clouway.bricky.http.validation.Validator;
+import com.clouway.bricky.persistence.user.UserRepository;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
@@ -21,12 +21,12 @@ public class UserRegistry implements Registry {
   }
 
   @Override
-  public void authorize(User user) throws UnauthorizedException {
+  public void authenticate(User user) throws UnauthenticatedException {
     Optional<String> error = validator.validate(user, new UserRule());
     if (!error.isPresent() && repository.isAuthentic(user)) {
       return;
     }
-    throw new UnauthorizedException();
+    throw new UnauthenticatedException();
   }
 
 }

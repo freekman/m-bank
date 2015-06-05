@@ -1,7 +1,7 @@
 package com.clouway.bricky.http;
 
 import com.clouway.bricky.core.Registry;
-import com.clouway.bricky.core.UnauthorizedException;
+import com.clouway.bricky.core.UnauthenticatedException;
 import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.user.User;
 import com.google.sitebricks.headless.Reply;
@@ -39,7 +39,7 @@ public class LoginTest {
   @Test
   public void happyPath() throws Exception {
     context.checking(new Expectations() {{
-      oneOf(registry).authorize(with(any(User.class)));
+      oneOf(registry).authenticate(with(any(User.class)));
       oneOf(manager).openSession(with(any(User.class)));
     }});
 
@@ -51,8 +51,8 @@ public class LoginTest {
   @Test
   public void userAuthorizationFail() throws Exception {
     context.checking(new Expectations() {{
-      oneOf(registry).authorize(with(any(User.class)));
-      will(throwException(new UnauthorizedException()));
+      oneOf(registry).authenticate(with(any(User.class)));
+      will(throwException(new UnauthenticatedException()));
     }});
 
     Reply<?> reply = this.login.login();

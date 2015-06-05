@@ -1,7 +1,7 @@
 package com.clouway.bricky.http;
 
-import com.clouway.bricky.core.db.balance.BalanceRepository;
-import com.clouway.bricky.core.db.balance.FundDeficitException;
+import com.clouway.bricky.persistence.balance.BalanceRepository;
+import com.clouway.bricky.persistence.balance.FundDeficitException;
 import com.clouway.bricky.core.user.CurrentUser;
 import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;

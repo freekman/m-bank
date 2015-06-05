@@ -1,4 +1,4 @@
-package com.clouway.bricky.core.db.user;
+package com.clouway.bricky.persistence.user;
 
 import com.clouway.bricky.core.user.User;
 import com.google.inject.Inject;

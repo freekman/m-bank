@@ -1,6 +1,6 @@
 package com.clouway.bricky.http;
 
-import com.clouway.bricky.core.db.user.UserRepository;
+import com.clouway.bricky.persistence.user.UserRepository;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import org.jmock.Expectations;
