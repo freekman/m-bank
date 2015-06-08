@@ -1,9 +1,9 @@
 package com.clouway.bricky.http;
 
 import com.clouway.bricky.JsonM;
+import com.clouway.bricky.core.user.CurrentUser;
 import com.clouway.bricky.persistence.balance.BalanceRepository;
 import com.clouway.bricky.persistence.balance.FundDeficitException;
-import com.clouway.bricky.core.user.CurrentUser;
 import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
@@ -106,9 +106,12 @@ public class BalanceServiceTest {
     assertThat(result, isEqualToReply(Reply.with(userWithBalance(20)).ok()));
   }
 
+  private CurrentUser userWithBalance(double balance) {
+    return new CurrentUser("DummyUser", balance);
+  }
+
   private void pretendWithdrawAmountIs(double amount) {
-    final AmountDTO dto = new AmountDTO();
-    dto.setAmount(amount);
+    final AmountDTO dto = new AmountDTO(amount);
     context.checking(new Expectations() {{
       oneOf(request).read(AmountDTO.class);
       will(returnValue(requestRead));
@@ -117,13 +120,8 @@ public class BalanceServiceTest {
     }});
   }
 
-  private CurrentUser userWithBalance(double balance) {
-    return new CurrentUser("DummyUser", balance);
-  }
-
   private void pretendDepositAmountIs(double amount) {
-    final AmountDTO dto = new AmountDTO();
-    dto.setAmount(amount);
+    final AmountDTO dto = new AmountDTO(amount);
     context.checking(new Expectations() {{
       oneOf(request).read(AmountDTO.class);
       will(returnValue(requestRead));

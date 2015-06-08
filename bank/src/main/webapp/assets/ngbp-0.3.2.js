@@ -1,5 +1,5 @@
 /**
- * ngbp - v0.3.2 - 2015-06-03
+ * ngbp - v0.3.2 - 2015-06-08
  * https://github.com/ngbp/ngbp
  *
  * Copyright (c) 2015 Josh David Miller

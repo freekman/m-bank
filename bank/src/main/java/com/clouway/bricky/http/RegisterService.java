@@ -1,9 +1,9 @@
 package com.clouway.bricky.http;
 
+import com.clouway.bricky.JsonM;
+import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.http.validation.Validator;
 import com.clouway.bricky.persistence.user.UserRepository;
-import com.clouway.bricky.core.user.User;
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.sitebricks.At;
 import com.google.sitebricks.client.transport.Json;
@@ -39,17 +39,13 @@ public class RegisterService {
     if (repository.isExisting(username)) {
       return Reply.with("Username exists").as(Json.class).status(SC_FORBIDDEN);
     }
+
     return Reply.with("Username is free").as(Json.class).status(SC_ACCEPTED);
   }
 
   @Post
   public Reply<?> register(Request request) {
-    UserDTO dto = request.read(UserDTO.class).as(Json.class);
-
-    Optional<String> error = validator.validate(dto, new UserDTORule());
-    if (error.isPresent()) {
-      return Reply.with(error.get()).as(Json.class).status(SC_FORBIDDEN);
-    }
+    UserDTO dto = request.read(UserDTO.class).as(JsonM.class);
 
     User user = new User(dto.username, dto.password);
     if (repository.register(user)) {

@@ -39,11 +39,10 @@ public class SecurityFilter implements Filter {
     HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
     String requestURI = req.getRequestURI();
-    boolean sessionExpired = manager.isUserSessionExpired();
 
-    if (sessionExpired) {
+    if (manager.isUserSessionExpired()) {
       manager.closeUserSession();
-      if (requestURI.contains("/login") || requestURI.contains("/register") || requestURI.contains(".css") || requestURI.contains(".js")) {
+      if (isRequestingStaticResource(requestURI)) {
         filterChain.doFilter(req, resp);
         return;
       }
@@ -52,7 +51,7 @@ public class SecurityFilter implements Filter {
     }
 
     manager.refreshUserSession();
-    if ("/login".equalsIgnoreCase(requestURI) || requestURI.contains("/register")) {
+    if (isRequestingStaticPages(requestURI)) {
       resp.sendRedirect("/#/account");
       return;
     }
@@ -63,5 +62,13 @@ public class SecurityFilter implements Filter {
   @Override
   public void destroy() {
 
+  }
+
+  private boolean isRequestingStaticResource(String requestURI) {
+    return isRequestingStaticPages(requestURI) || requestURI.contains(".css") || requestURI.contains(".js");
+  }
+
+  private boolean isRequestingStaticPages(String requestURI) {
+    return requestURI.contains("/login") || requestURI.contains("/register");
   }
 }

@@ -15,6 +15,6 @@ public interface Registry {
    * @param user who's credentials will be authenticated.
    * @throws UnauthenticatedException If authentication fails exception will be thrown.
    */
-  void authenticate(User user) throws UnauthenticatedException;
+  void authenticate(User user);
 
 }

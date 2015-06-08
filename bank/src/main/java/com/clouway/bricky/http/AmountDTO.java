@@ -10,9 +10,10 @@ class AmountDTO {
 
   @NotNull
   @Min(0)
-  Double amount;
+  final Double amount;
 
-  void setAmount(Double amount) {
+  public AmountDTO(Double amount) {
     this.amount = amount;
   }
+
 }

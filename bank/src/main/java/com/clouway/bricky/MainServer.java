@@ -1,9 +1,9 @@
 package com.clouway.bricky;
 
-import com.clouway.bricky.persistence.PersistentDbModule;
 import com.clouway.bricky.http.BrickModule;
 import com.clouway.bricky.http.HttpModule;
 import com.clouway.bricky.http.HttpServletModule;
+import com.clouway.bricky.persistence.PersistentDbModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceFilter;
@@ -43,7 +43,7 @@ public class MainServer {
 
     // You MUST add DefaultServlet or your server will always return 404s
     servletContextHandler.addServlet(DefaultServlet.class, "/");
-    servletContextHandler.setResourceBase("frontend");
+    servletContextHandler.setResourceBase("src/main/webapp");
     return server;
   }
 

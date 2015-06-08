@@ -1,32 +1,34 @@
 package com.clouway.bricky.http;
 
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * @author Marian Zlatev (mzlatev91@gmail.com)
  */
 class UserDTO {
 
-  public String username;
-  public String password;
-  public String repassword;
+  @NotNull
+  @Size(min = 3, max = 30)
+  final String username;
 
-  public void setUsername(String username) {
+  @NotNull
+  @Size(min = 3, max = 20)
+  final String password;
+
+  @NotNull
+  @Size(min = 3, max = 20)
+  final String repassword;
+
+  public UserDTO(String repassword, String password, String username) {
+    this.repassword = repassword;
+    this.password = password;
     this.username = username;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public void setRepassword(String repassword) {
-    this.repassword = repassword;
-  }
-
-  @Override
-  public String toString() {
-    return "UserDTO{" +
-            "username='" + username + '\'' +
-            ", password='" + password + '\'' +
-            ", repassword='" + repassword + '\'' +
-            '}';
+  @AssertTrue(message = "The password fields must match")
+  private boolean isValid() {
+    return this.password.equals(this.repassword);
   }
 }

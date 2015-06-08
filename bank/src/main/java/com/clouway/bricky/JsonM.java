@@ -7,11 +7,14 @@ import com.google.sitebricks.client.Transport;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -25,33 +28,64 @@ public class JsonM implements Transport {
   @Override
   public <T> T in(InputStream inputStream, Class<T> aClass) throws IOException {
 
-    String json = new BufferedReader(new BufferedReader(new InputStreamReader(inputStream))).readLine();
+    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-    System.out.println("JsonM json: " + json);
+    T dto = gson.fromJson(reader.readLine(), aClass);
 
-    T dto = gson.fromJson(json, aClass);
+    reader.close();
 
-    Set<ConstraintViolation<T>> constraintViolations = validator.validate(dto, aClass);
+    Set<ConstraintViolation<T>> constraintViolations = validator.validate(dto);
 
     if (constraintViolations.isEmpty()) {
       return dto;
     }
 
-    throw new JsonParseException();
+    throw new JsonParseException(buildErrorMessage(constraintViolations));
   }
 
   @Override
   public <T> T in(InputStream inputStream, TypeLiteral<T> typeLiteral) throws IOException {
-    return null;
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+    T dto = gson.fromJson(reader.readLine(), typeLiteral.getType());
+
+    reader.close();
+
+    Set<ConstraintViolation<T>> constraintViolations = validator.validate(dto);
+    if (constraintViolations.isEmpty()) {
+      return dto;
+    }
+
+    throw new JsonParseException(buildErrorMessage(constraintViolations));
   }
 
   @Override
   public <T> void out(OutputStream outputStream, Class<T> aClass, T t) throws IOException {
-
+    PrintWriter writer = new PrintWriter(new BufferedOutputStream(outputStream));
+    writer.println(gson.toJson(t));
+    writer.flush();
+    writer.close();
   }
 
   @Override
   public String contentType() {
-    return null;
+    return "application/json";
   }
+
+  private <T> String buildErrorMessage(Set<ConstraintViolation<T>> violations) {
+    Iterator<ConstraintViolation<T>> iterator = violations.iterator();
+    StringBuilder builder = new StringBuilder();
+
+    while (iterator.hasNext()) {
+      ConstraintViolation<T> next = iterator.next();
+      builder.append(next.getPropertyPath().iterator().next().getName())
+              .append(" - ")
+              .append(next.getMessage())
+              .append("\n");
+    }
+
+    return builder.toString();
+  }
+
 }
