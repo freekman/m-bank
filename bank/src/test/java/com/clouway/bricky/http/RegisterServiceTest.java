@@ -26,7 +26,7 @@ public class RegisterServiceTest {
   @Before
   public void setUp() throws Exception {
     repository = context.mock(UserRepository.class);
-    service = new RegisterService(repository, null);
+    service = new RegisterService(repository);
     request = context.mock(Request.class);
   }
 

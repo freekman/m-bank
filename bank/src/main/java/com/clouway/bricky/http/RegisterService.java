@@ -2,11 +2,9 @@ package com.clouway.bricky.http;
 
 import com.clouway.bricky.JsonM;
 import com.clouway.bricky.core.user.User;
-import com.clouway.bricky.http.validation.Validator;
 import com.clouway.bricky.persistence.user.UserRepository;
 import com.google.inject.Inject;
 import com.google.sitebricks.At;
-import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.headless.Service;
@@ -24,12 +22,10 @@ import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 public class RegisterService {
 
   private final UserRepository repository;
-  private final Validator<UserDTO> validator;
 
   @Inject
-  public RegisterService(UserRepository repository, Validator<UserDTO> validator) {
+  public RegisterService(UserRepository repository) {
     this.repository = repository;
-    this.validator = validator;
   }
 
   @Get
@@ -37,10 +33,10 @@ public class RegisterService {
     String username = request.param("username");
 
     if (repository.isExisting(username)) {
-      return Reply.with("Username exists").as(Json.class).status(SC_FORBIDDEN);
+      return Reply.with("Username exists").as(JsonM.class).status(SC_FORBIDDEN);
     }
 
-    return Reply.with("Username is free").as(Json.class).status(SC_ACCEPTED);
+    return Reply.with("Username is free").as(JsonM.class).status(SC_ACCEPTED);
   }
 
   @Post
@@ -49,10 +45,10 @@ public class RegisterService {
 
     User user = new User(dto.username, dto.password);
     if (repository.register(user)) {
-      return Reply.with("Registration successful").as(Json.class).status(SC_ACCEPTED);
+      return Reply.with("Registration successful").as(JsonM.class).status(SC_ACCEPTED);
     }
 
-    return Reply.with("Username already exists.").as(Json.class).status(SC_FORBIDDEN);
+    return Reply.with("Username already exists.").as(JsonM.class).status(SC_FORBIDDEN);
   }
 
 }

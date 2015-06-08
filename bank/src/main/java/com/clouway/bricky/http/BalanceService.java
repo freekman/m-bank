@@ -6,13 +6,11 @@ import com.clouway.bricky.persistence.balance.BalanceRepository;
 import com.clouway.bricky.persistence.balance.FundDeficitException;
 import com.google.inject.Inject;
 import com.google.sitebricks.At;
-import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.headless.Service;
 import com.google.sitebricks.http.Post;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_CREATED;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
@@ -35,29 +33,21 @@ public class BalanceService {
   public Reply<?> deposit(Request request) {
     AmountDTO dto = request.read(AmountDTO.class).as(JsonM.class);
 
-    System.out.println("dto parsed " + dto.amount);
-
-    if (dto.amount < 0) {
-      return Reply.with("Operation failed.").status(SC_BAD_REQUEST).as(Json.class);
-    }
     CurrentUser user = repository.depositToCurrentUser(dto.amount);
-    return Reply.with(user.balance).status(SC_CREATED).as(Json.class);
 
+    return Reply.with(user.balance).status(SC_CREATED).as(JsonM.class);
   }
 
   @Post
   @At("/withdraw")
   public Reply<?> withdraw(Request request) {
-    AmountDTO dto = request.read(AmountDTO.class).as(Json.class);
+    AmountDTO dto = request.read(AmountDTO.class).as(JsonM.class);
 
-    if (dto.amount < 0) {
-      return Reply.with("Operation failed.").status(SC_FORBIDDEN).as(Json.class);
-    }
     try {
       CurrentUser user = repository.withdrawFromCurrentUser(dto.amount);
-      return Reply.with(user.balance).status(SC_CREATED).as(Json.class);
+      return Reply.with(user.balance).status(SC_CREATED).as(JsonM.class);
     } catch (FundDeficitException e) {
-      return Reply.with("Operation failed.").status(SC_FORBIDDEN).as(Json.class);
+      return Reply.with("Operation failed.").status(SC_FORBIDDEN).as(JsonM.class);
     }
   }
 
@@ -65,7 +55,7 @@ public class BalanceService {
   @At("/info")
   public Reply<?> userInfo() {
     CurrentUser user = repository.getCurrentUser();
-    return Reply.with(user).ok().as(Json.class);
+    return Reply.with(user).ok().as(JsonM.class);
   }
 
 }

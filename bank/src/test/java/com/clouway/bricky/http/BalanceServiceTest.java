@@ -4,7 +4,6 @@ import com.clouway.bricky.JsonM;
 import com.clouway.bricky.core.user.CurrentUser;
 import com.clouway.bricky.persistence.balance.BalanceRepository;
 import com.clouway.bricky.persistence.balance.FundDeficitException;
-import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.headless.Request.RequestRead;
@@ -51,14 +50,6 @@ public class BalanceServiceTest {
     assertThat(result, isEqualToReply(Reply.with(amount).status(HttpServletResponse.SC_CREATED)));
   }
 
-  @Test
-  public void negativeAmountDeposit() throws Exception {
-    pretendDepositAmountIs(-20);
-
-    Reply<?> result = service.deposit(request);
-
-    assertThat(result, isEqualToReply(Reply.with("Operation failed.").status(HttpServletResponse.SC_BAD_REQUEST)));
-  }
 
   @Test
   public void withdrawHappyPath() throws Exception {
@@ -72,14 +63,6 @@ public class BalanceServiceTest {
 
     Reply<?> reply = service.withdraw(request);
     assertThat(reply, isEqualToReply(Reply.with(balance).status(HttpServletResponse.SC_CREATED)));
-  }
-
-  @Test
-  public void withdrawNegativeAmount() throws Exception {
-    pretendWithdrawAmountIs(-10);
-
-    Reply<?> reply = service.withdraw(request);
-    assertThat(reply, isEqualToReply(Reply.with("Operation failed.").status(HttpServletResponse.SC_FORBIDDEN)));
   }
 
   @Test
@@ -115,7 +98,7 @@ public class BalanceServiceTest {
     context.checking(new Expectations() {{
       oneOf(request).read(AmountDTO.class);
       will(returnValue(requestRead));
-      oneOf(requestRead).as(Json.class);
+      oneOf(requestRead).as(JsonM.class);
       will(returnValue(dto));
     }});
   }

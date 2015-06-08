@@ -1,7 +1,5 @@
 package com.clouway.bricky.http;
 
-import com.clouway.bricky.http.validation.FormValidator;
-import com.clouway.bricky.http.validation.Validator;
 import com.clouway.bricky.core.Registry;
 import com.clouway.bricky.core.sesion.CurrentSession;
 import com.clouway.bricky.core.sesion.SandClock;
@@ -11,6 +9,8 @@ import com.clouway.bricky.core.sesion.SessionManager;
 import com.clouway.bricky.core.sesion.UserSessionManager;
 import com.clouway.bricky.core.user.User;
 import com.clouway.bricky.core.user.UserRegistry;
+import com.clouway.bricky.http.validation.FormValidator;
+import com.clouway.bricky.http.validation.Validator;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 

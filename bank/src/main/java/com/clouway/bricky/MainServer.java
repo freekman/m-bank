@@ -43,7 +43,7 @@ public class MainServer {
 
     // You MUST add DefaultServlet or your server will always return 404s
     servletContextHandler.addServlet(DefaultServlet.class, "/");
-    servletContextHandler.setResourceBase("src/main/webapp");
+    servletContextHandler.setResourceBase("frontend");
     return server;
   }
 

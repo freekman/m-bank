@@ -1,10 +1,10 @@
 package com.clouway.bricky.core;
 
+import com.clouway.bricky.core.user.User;
+import com.clouway.bricky.core.user.UserRegistry;
 import com.clouway.bricky.http.validation.ValidationRule;
 import com.clouway.bricky.http.validation.Validator;
 import com.clouway.bricky.persistence.user.UserRepository;
-import com.clouway.bricky.core.user.User;
-import com.clouway.bricky.core.user.UserRegistry;
 import com.google.common.base.Optional;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
