@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="../assets/ngbp-0.3.2.css">
+    <link rel="stylesheet" href="../assets/ngbp-0.3.2.jss">
+</head>
+<body>
+<div>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/login">Bank</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+                <li><a href="/#/account">Account</a></li>
+            </ul>
+        </div>
+
+        <!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container top-buffer">
+    <div class="row">
+
+        <div class="col-lg-offset-4 col-lg-4">
+            <h2>Login</h2>
+
+            <form action="/login" method="post" name="loginForm">
+                <div class="form-group">
+                    <label for="usrname">Username</label>
+                    <input class="form-control" type="text" id="usrname" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="pswd">Password</label>
+                    <input class="form-control" type="password" id="pswd" name="password" required>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-large btn-success b" type="submit" ng-disabled="!loginForm.$valid">
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-4 col-lg-offset-4">
+            @ShowIf(!messages.isEmpty())
+            <div class="panel panel-warning">
+                <div class="panel-heading">Incorrect input</div>
+                <div class="panel-body">
+                    <ul>
+                        @Repeat(items=messages, var="message")
+                        <li>${message}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

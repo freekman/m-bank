@@ -1,0 +1,91 @@
+<div class="container">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/login">Bank</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                    <li class="active"><a href="/#/account">Account</a></li>
+                </ul>
+                <ul class="nav navbar-right navbar-nav">
+                    <li><a href="/r/logout">Logout</a></li>
+                </ul>
+            </div>
+
+
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+
+    <div class="top-buffer">
+        <h2>Account information</h2>
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6">
+            <div class="pull-left label label-success info ">Welcome:{{username}}</div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="pull-right label label-primary info ">Balance:{{balance}}</div>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-lg-5 jumbotron">
+            <form name="depositForm">
+                <div class="form-group">
+                    <label for="deposit">Deposit</label>
+                    <input id="deposit" class="form-control" type="number" name="depositAmount" ng-model="depositValue"
+                           placeholder="Please enter amount to deposit" required ng-pattern="/^[1-9][0-9]{0,5}$/">
+                </div>
+                <button class="btn btn-primary" ng-disabled="depositForm.depositAmount.$invalid"
+                        ng-click="deposit(depositValue)">Submit
+                </button>
+            </form>
+        </div>
+
+        <div class="col-lg-2"></div>
+
+        <div class="col-lg-5 jumbotron">
+            <form name="withdrawForm">
+                <div class="form-group">
+                    <label for="withdraw">Withdraw</label>
+                    <input id="withdraw" class="form-control" type="number" name="withdrawAmount"
+                           ng-model="withdrawValue"
+                           placeholder="Please enter amount to withdraw" required ng-pattern="/^[1-9][0-9]{0,5}$/">
+                </div>
+                <button class="btn btn-primary" ng-disabled="withdrawForm.withdrawAmount.$invalid"
+                        ng-click="withdraw(withdrawValue)">Submit
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="col-lg-push-4 col-lg-4">
+        <div class="panel top-buffer" ng-class="statusIsOk ? 'panel-success': 'panel-danger'"
+             ng-show="statusMessage != null">
+            <div class="panel-heading">Message</div>
+            <div class="panel-body">
+                <ul>{{statusMessage}}</ul>
+            </div>
+        </div>
+    </div>
+
+</div>

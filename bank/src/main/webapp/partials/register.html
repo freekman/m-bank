@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app="bankCtrl">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="../assets/ngbp-0.3.2.css">
+    <script src="../assets/ngbp-0.3.2.js"></script>
+
+</head>
+<body ng-controller="registerCtrl">
+
+<div>
+    <div>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/login">Bank</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/login">Login</a></li>
+                        <li class="active"><a href="/register">Register</a></li>
+                        <li><a href="/#/account">Account</a></li>
+                    </ul>
+                </div>
+
+                <!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        <div class="container">
+
+            <div class="row top-buffer">
+
+                <div class="col-lg-4 col-lg-offset-4">
+                    <h2>Register</h2>
+
+                    <form name="userForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input class="form-control" type="text" name="userName" id="username" ng-model="user.name"
+                                   required ng-blur="lookup(user)"
+                                   placeholder="Please enter username">
+                            <label class="label label-danger"
+                                   ng-show="userForm.userName.$error.required">Required!</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input class="form-control " type="password" name="password" id="password"
+                                   ng-model="user.password"
+                                   ng-minlength="3" ng-maxlength="10" placeholder="Please enter password" required>
+                            <label class="label label-danger"
+                                   ng-show="userForm.password.$error.required">Required!</label>
+                            <label class="label label-warning"
+                                   ng-show="userForm.password.$error.minlength">Too short!</label>
+                            <label class="label label-warning"
+                                   ng-show="userForm.password.$error.maxlength">Too long!</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="repassword">Repeat password</label>
+                            <input class="form-control" type="password" name="rePassword" id="repassword"
+                                   ng-model="user.repassword"
+                                   ng-minlength="3" ng-maxlength="10" placeholder="Please repeat entered password"
+                                   required>
+                            <label class="label label-danger"
+                                   ng-show="userForm.rePassword.$error.required">Required!</label>
+                            <label class="label label-warning"
+                                   ng-show="userForm.rePassword.$error.minlength">Too short!</label>
+                            <label class="label label-warning"
+                                   ng-show="userForm.rePassword.$error.maxlength">Too long!</label>
+                        </div>
+                        <button class="btn btn-lg btn-success" ng-disabled="!userForm.$valid" ng-click="register(user)">
+                            Submit
+                        </button>
+                    </form>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="panel top-buffer" ng-class="statusIsOk ? 'panel-success':'panel-danger' "
+                         ng-show="statusMessage != null">
+                        <div class="panel-heading">Message</div>
+                        <div class="panel-body">
+                            <ul>{{statusMessage}}</ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
